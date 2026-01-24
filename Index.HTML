@@ -425,9 +425,17 @@
     </div>
 
     <div class="controls no-print">
+        <div id="statusBadge"
+            style="padding: 5px; background: #fee2e2; color: #991b1b; font-size: 0.75rem; text-align: center; border-radius: 4px; margin-bottom: 10px; display: none; font-weight: bold; border: 1px solid #f87171;">
+            👀 กำลังดูข้อมูลเก่า (Read Only)
+        </div>
+        <div id="syncStatus"
+            style="font-size: 0.7rem; text-align: center; margin-bottom: 10px; color: #6366f1; display: none;">
+            ⏳ กำลังส่งข้อมูลไปยัง Google Sheets...
+        </div>
         <button id="updateBtn" onclick="updateCurrentHistory()"
             style="padding: 10px 15px; background: #f59e0b; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 5px; display: none; width: 100%; font-weight: bold;">
-            🔄 อัปเดตข้อมูล (Update)
+            🔄 บันทึกการแก้ไข (Save Edit)
         </button>
         <button onclick="saveToHistory()"
             style="padding: 10px 15px; background: #6366f1; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 15px; display: block; width: 100%; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -470,6 +478,30 @@
             document.getElementById('saveModal').style.display = 'none';
         }
 
+        // Google Sheet Integration
+        const SPREADSHEET_ID = "1vA0cIZuJYQz8-FmMZzx2A9IX85dk1eFtH7DM8MS8CMU";
+
+        // This function will be called if the file is run within Google Apps Script environment
+        // or we use google.script.run if this is an Apps Script Web App.
+        // Assuming the user will host this as a Web App:
+        function sendDataToSheet(entry) {
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                document.getElementById('syncStatus').style.display = 'block';
+                google.script.run
+                    .withSuccessHandler(() => {
+                        document.getElementById('syncStatus').style.display = 'none';
+                        alert('บันทึกไปยัง Google Sheets เรียบร้อยแล้ว!');
+                    })
+                    .withFailureHandler((err) => {
+                        document.getElementById('syncStatus').style.display = 'none';
+                        alert('เกิดข้อผิดพลาดในการส่งข้อมูล: ' + err);
+                    })
+                    .saveInspectionData(entry);
+            } else {
+                console.warn("Google Apps Script environment not detected. Data saved only locally.");
+            }
+        }
+
         function confirmSaveHistory() {
             const input = document.getElementById('modalInput');
             const weekText = input.value.trim();
@@ -502,6 +534,9 @@
             history.unshift(entry);
             localStorage.setItem('fmt_history', JSON.stringify(history));
 
+            // Sync to Google Sheets
+            sendDataToSheet(entry);
+
             closeSaveModal();
             renderHistoryList();
         }
@@ -531,9 +566,10 @@
             pendingLoadItem = item;
             const modal = document.getElementById('loadModal');
             const textEl = document.getElementById('loadModalText');
-            textEl.innerHTML = `ต้องการโหลดข้อมูลของ <b>"${item.label}"</b> มาแสดงเพื่อแก้ไขใช่หรือไม่?`;
+            textEl.innerHTML = `ต้องการเรียกดูข้อมูลของ <b>"${item.label}"</b> ใช่หรือไม่?`;
 
             const btn = document.getElementById('confirmLoadBtn');
+            btn.innerHTML = "👁️ เรียกดูข้อมูล (View Only)";
             btn.onclick = confirmLoadHistory;
 
             modal.style.display = 'flex';
@@ -563,7 +599,12 @@
             });
 
             currentLoadedId = item.id;
+
+            // Show "Read-Only" indicator and Update button (Update button allows saving changes)
+            document.getElementById('statusBadge').style.display = 'block';
+            document.getElementById('statusBadge').innerHTML = `👀 ดูข้อมูล: ${item.label}`;
             document.getElementById('updateBtn').style.display = 'block';
+
             closeLoadModal();
         }
 
@@ -593,7 +634,11 @@
             history[index].timestamp = new Date().toLocaleString('th-TH') + " (อัปเดตแล้ว)";
 
             localStorage.setItem('fmt_history', JSON.stringify(history));
-            alert('อัปเดตข้อมูลเรียบร้อย!');
+            alert('อัปเดตข้อมูลย้อนหลังเรียบร้อย!');
+
+            // Sync Update to Sheets (sending as new entry or update logic)
+            sendDataToSheet(history[index]);
+
             renderHistoryList();
         }
 
