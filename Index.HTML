@@ -4,892 +4,942 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบฟอร์มตรวจเช็คเครื่องจักรและอุปกรณ์ระบบสารสนเทศ (FMT) - Stacked</title>
+    <title>แบบฟอร์มตรวจเช็คเครื่องจักรและอุปกรณ์ระบบสารสนเทศ (FMT-37)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@400;600;700&display=swap"
         rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #000;
-            /* Black for strict matching of the image usually, but I'll stick to dark grey/black for "exact" look or keep the teal? The image is black/white simple table. Let's go with professional black/dark teal. */
-            --border-color: #000;
-            --white: #ffffff;
-        }
+    <link rel="stylesheet" href="style.css">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Sarabun', sans-serif;
-        }
-
-        body {
-            background-color: #e5e5e5;
-            padding: 20px;
-            color: #000;
-        }
-
-        .sheet-container {
-            width: 297mm;
-            /* A4 Landscape width */
-            background: white;
-            margin: 0 auto 30px auto;
-            padding: 10mm;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        /* Generic Header */
-        .form-header {
-            display: flex;
-            border: 2px solid black;
-            margin-bottom: 5px;
-        }
-
-        .logo-box {
-            width: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-right: 1px solid black;
-        }
-
-        .company-name {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            border-right: 1px solid black;
-            padding: 5px;
-        }
-
-        .form-title {
-            flex-grow: 1.5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            border-right: 1px solid black;
-            padding: 5px;
-        }
-
-        .form-meta {
-            width: 140px;
-            font-size: 0.75rem;
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .main-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            border: 2px solid black;
-        }
-
-        th,
-        td {
-            border: 1px solid black;
-            padding: 4px;
-        }
-
-        /* Column Widths to match image */
-        .col-category {
-            width: 30px;
-            text-align: center;
-            vertical-align: middle;
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
-        }
-
-        .col-item {
-            width: 180px;
-        }
-
-        .col-std {
-            width: 180px;
-        }
-
-        .col-machine {
-            width: 25px;
-            text-align: center;
-            padding: 0;
-        }
-
-        .col-remark {
-            width: 80px;
-        }
-
-        .machine-header-cell {
-            height: 25px;
-            background: #eee;
-        }
-
-        .category-cell {
-            font-weight: bold;
-            background: #f9f9f9;
-        }
-
-        .check-cell {
-            height: 20px;
-            cursor: pointer;
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .check-cell:hover {
-            background-color: #f0f0f0;
-        }
-
-        .status-ok {
-            color: black;
-        }
-
-        .status-bad {
-            color: black;
-        }
-
-        /* Footer Section */
-        .footer-section {
-            margin-top: 10px;
-            border: 1px solid black;
-            padding: 5px;
-            font-size: 0.8rem;
-        }
-
-        .correction-row {
-            display: flex;
-            border-bottom: 1px solid black;
-            min-height: 30px;
-            align-items: stretch;
-        }
-
-        .correction-label {
-            padding: 5px;
-            border-right: 1px solid black;
-            white-space: nowrap;
-            background: #eee;
-        }
-
-        .correction-input {
-            flex-grow: 1;
-            padding: 5px;
-        }
-
-        .legend-row {
-            display: flex;
-            margin-top: 5px;
-            gap: 20px;
-        }
-
-        .legend-box {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            border: 1px solid black;
-            padding: 2px 5px;
-            margin-right: 5px;
-        }
-
-        .signature-table {
-            width: 100%;
-            margin-top: 5px;
-            border-collapse: collapse;
-        }
-
-        .signature-table td {
-            border: 1px solid black;
-            text-align: center;
-            padding: 2px;
-            vertical-align: top;
-            height: 40px;
-        }
-
-        .signature-header {
-            background: #eee;
-            font-weight: bold;
-            height: auto !important;
-        }
-
-        /* Print Controls */
-        .controls {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            z-index: 1000;
-        }
-
-        /* PERSISTENCE UI */
-        .history-sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 250px;
-            background: #f8fafc;
-            border-right: 2px solid #ddd;
-            padding: 15px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .history-item {
-            background: white;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .history-item:hover {
-            border-color: #007bff;
-            background: #eff6ff;
-        }
-
-        .history-item .date {
-            font-weight: bold;
-            color: #1e293b;
-        }
-
-        .history-item .week {
-            color: #64748b;
-            font-size: 0.75rem;
-        }
-
-        body {
-            background-color: #e5e5e5;
-            padding: 20px 20px 20px 270px;
-            /* Offset for sidebar */
-            color: #000;
-        }
-
-        @media print {
-            body {
-                padding: 0;
-                background: white;
-            }
-
-            .history-sidebar,
-            .no-print,
-            .modal-overlay {
-                display: none !important;
-            }
-        }
-
-        /* CUSTOM MODAL */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            /* Hidden by default */
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            backdrop-filter: blur(4px);
-        }
-
-        .custom-modal {
-            background: white;
-            padding: 24px;
-            border-radius: 16px;
-            width: 400px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -6px rgba(0, 0, 0, 0.1);
-            animation: modalSlideUp 0.3s ease-out;
-        }
-
-        @keyframes modalSlideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #111827;
-        }
-
-        .modal-body {
-            margin-bottom: 24px;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .modal-input:focus {
-            border-color: #6366f1;
-        }
-
-        .modal-footer {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
-
-        .btn-modal {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: opacity 0.2s;
-        }
-
-        .btn-save {
-            background: #6366f1;
-            color: white;
-        }
-
-        .btn-cancel {
-            background: #f3f4f6;
-            color: #4b5563;
-        }
-
-        .btn-modal:hover {
-            opacity: 0.9;
-        }
-    </style>
 </head>
 
 <body>
-
     <div id="saveModal" class="modal-overlay">
         <div class="custom-modal">
-            <div class="modal-header">💾 บันทึกข้อมูล</div>
-            <div class="modal-body">
-                <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 10px;">
-                    กรุณาระบุสัปดาห์หรือชื่อที่ต้องการบันทึก:</p>
-                <input type="text" id="modalInput" class="modal-input" placeholder="เช่น สัปดาห์ที่ 4/2569">
-            </div>
-            <div class="modal-footer">
-                <button onclick="closeSaveModal()" class="btn-modal btn-cancel">ยกเลิก</button>
-                <button onclick="confirmSaveHistory()" class="btn-modal btn-save">ตกลง</button>
+            <h3 style="margin-bottom: 15px;">💾 บันทึกข้อมูล</h3>
+            <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 10px;">ระบุชื่องานที่ต้องการบันทึก:</p>
+            <input type="text" id="modalInput"
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; margin-bottom: 20px;">
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button onclick="document.getElementById('saveModal').style.display='none'" class="btn"
+                    style="width:auto; padding: 8px 20px; background:#f3f4f6;">ยกเลิก</button>
+                <button onclick="confirmSaveHistory()" class="btn btn-primary"
+                    style="width:auto; padding: 8px 20px;">ตกลง</button>
             </div>
         </div>
     </div>
 
     <div id="loadModal" class="modal-overlay">
         <div class="custom-modal">
-            <div class="modal-header">📂 โหลดข้อมูลเก่า</div>
-            <div class="modal-body">
-                <p id="loadModalText" style="font-size: 1rem; color: #374151;"></p>
-                <p style="font-size: 0.85rem; color: #6b7280; margin-top: 8px;">
-                    ข้อมูลปัจจุบันในตารางจะถูกแทนที่ด้วยข้อมูลที่บันทึกไว้</p>
-            </div>
-            <div class="modal-footer">
-                <button onclick="closeLoadModal()" class="btn-modal btn-cancel">ยกเลิก</button>
-                <button id="confirmLoadBtn" class="btn-modal btn-save">✏️ แก้ไขข้อมูลนี้</button>
+            <h3 style="margin-bottom: 15px;">📂 โหลดข้อมูลเก่า</h3>
+            <p id="loadModalText" style="margin-bottom: 20px;"></p>
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button onclick="document.getElementById('loadModal').style.display='none'" class="btn"
+                    style="width:auto; padding: 8px 20px; background:#f3f4f6;">ยกเลิก</button>
+                <button id="confirmLoadBtn" class="btn btn-primary"
+                    style="width:auto; padding: 8px 20px;">แก้ไขข้อมูลนี้</button>
             </div>
         </div>
     </div>
 
     <div class="history-sidebar no-print">
-        <div style="font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #000; padding-bottom: 5px;">
-            📑 ประวัติการตรวจ
+        <div class="sidebar-header">
+            <div class="sidebar-title">📋 ฟอร์มที่เลือก</div>
+            <select id="fmtSelector" onchange="switchFMT(this.value)"
+                style="width: 100%; padding: 8px; margin-top: 10px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--font-main);">
+                <option value="37">FMT-37 (ระบบสารสนเทศ)</option>
+                <option value="02">FMT-02 (ฉีดโฟมประจำวัน)</option>
+            </select>
         </div>
-        <div id="history-list">
-            <!-- Saved items will appear here -->
+        <div class="sidebar-header">
+            <div class="sidebar-title">📋 ประวัติการตรวจเช็ค</div>
+            <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 5px;">ฝ่าย / แผนก ซ่อมบำรุง</div>
+        </div>
+        <div class="sidebar-actions">
+            <input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" style="cursor: pointer;">
+            <label for="selectAll" style="cursor: pointer; font-weight: 600;">เลือกทั้งหมด</label>
+        </div>
+        <div class="sidebar-content" id="history-list">
+            <!-- Items injected here -->
         </div>
     </div>
 
     <div class="controls no-print">
         <div id="statusBadge"
-            style="padding: 5px; background: #fee2e2; color: #991b1b; font-size: 0.75rem; text-align: center; border-radius: 4px; margin-bottom: 10px; display: none; font-weight: bold; border: 1px solid #f87171;">
-            👀 กำลังดูข้อมูลเก่า (Read Only)
+            style="padding: 8px; background: #fee2e2; color: #991b1b; font-size: 0.75rem; text-align: center; border-radius: 8px; margin-bottom: 10px; display: none; font-weight: bold; border: 1px solid #fecaca;">
+            👀 Viewing History</div>
+
+        <button id="updateBtn" class="btn" onclick="updateCurrentHistory()"
+            style="display: none; background: var(--warning); color: white;"><span>🔄 อัปเดตข้อมูลเดิม</span></button>
+        <button class="btn btn-primary" onclick="saveToHistory()"><span>💾 บันทึกใหม่</span></button>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button class="btn btn-success" onclick="markAllNormal()"
+                style="font-size: 0.75rem; padding: 10px 5px;"><span>✅ ติ๊กผ่านทั้งหมด</span></button>
+            <button class="btn btn-danger" onclick="clearAll()" style="font-size: 0.75rem; padding: 10px 5px;"><span>🗑️
+                    ล้างทั้งหมด</span></button>
         </div>
-        <div id="syncStatus"
-            style="font-size: 0.7rem; text-align: center; margin-bottom: 10px; color: #6366f1; display: none;">
-            ⏳ กำลังส่งข้อมูลไปยัง Google Sheets...
-        </div>
-        <button id="updateBtn" onclick="updateCurrentHistory()"
-            style="padding: 10px 15px; background: #f59e0b; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 5px; display: none; width: 100%; font-weight: bold;">
-            🔄 บันทึกการแก้ไข (Save Edit)
+
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border);">
+
+        <button class="btn btn-primary" onclick="printSelected()" id="printSelectedBtn"
+            style="background: #000; display: none;">
+            <span>🖨️ พิมพ์รายการที่เลือก</span>
         </button>
-        <button onclick="saveToHistory()"
-            style="padding: 10px 15px; background: #6366f1; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 15px; display: block; width: 100%; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            💾 บันทึก (Save)
-        </button>
-        <button onclick="markAllNormal()"
-            style="padding: 8px 15px; background: #059669; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 5px; display: block; width: 100%;">
-            ✅ ติ๊กถูกทั้งหมด
-        </button>
-        <button onclick="clearAll()"
-            style="padding: 8px 15px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 15px; display: block; width: 100%;">
-            🗑️ ล้างทั้งหมด
-        </button>
-        <hr style="margin: 10px 0; border: 0.5px solid #ddd;">
-        <button onclick="window.print()"
-            style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%;">
-            🖨️ Print / Save PDF
+
+        <button class="btn btn-outline" onclick="window.print()">
+            <span>🖨️ พิมพ์หน้าปัจจุบัน</span>
         </button>
     </div>
 
+    <div id="print-area"></div>
+
+
     <div id="forms-container"></div>
 
-
-
     <script>
-        // Init logic
+        let currentFMT = 37;
+        let currentLoadedId = null;
+        let pendingLoadItem = null;
+
+        // Drag-to-fill variables
+        let isDragging = false;
+        let dragStartState = 0;
+        let dragStartCell = null;
+
+        // Helper functions for Thai dates (Buddhist Era)
+        const thaiMonths = [
+            'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+            'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+        ];
+
+        function toBuddhistYear(year) {
+            return parseInt(year) + 543;
+        }
+
+        function formatThaiDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = toBuddhistYear(date.getFullYear());
+            return `${day}/${month}/${year}`;
+        }
+
+        function toThaiDateStr(dateStr) {
+            return formatThaiDate(dateStr);
+        }
+
+        function getCurrentThaiYear() {
+            return toBuddhistYear(new Date().getFullYear());
+        }
+
+        const checklistData37 = [
+            {
+                category: "คอมพิวเตอร์และอุปกรณ์พ่วง (Computer & Peripherals)",
+                items: [
+                    { name: "1. หน้าจอ (Monitor)", std: "สะอาด, ไม่แตกร้าว, ภาพคมชัดไม่มีเส้น" },
+                    { name: "2. ตัวเครื่อง (Case/CPU)", std: "สะอาด, พัดลมหมุนปกติ, ไม่มีเสียงดังผิดปกติ" },
+                    { name: "3. แป้นพิมพ์และเมาส์", std: "สะอาด, ใช้งานได้ครบทุกปุ่ม, ไม่ค้าง" },
+                    { name: "4. สายไฟและปลั๊ก (Power Cord)", std: "สภาพสมบูรณ์ไม่ฉีกขาด, เสียบแน่น, ความร้อนปกติ" },
+                    { name: "5. สาย LAN (LAN Cable)", std: "สภาพสมบูรณ์, หัวต่อไม่แตก, เสียบแน่น" },
+                    { name: "6. ป้ายชื่อเครื่อง (Machine ID)", std: "สะอาด, ชัดเจน, ติดแน่น" }
+                ]
+            },
+            {
+                category: "เครื่องพิมพ์และสแกนเนอร์ (Printer & Scanner)",
+                items: [
+                    { name: "7. ถาดกระดาษและลูกกลิ้ง", std: "สะอาด, ไม่มีสิ่งแปลกปลอม, กระดาษไม่ติด" },
+                    { name: "8. ตลับหมึกและงานพิมพ์", std: "ปริมาณเพียงพอ, งานพิมพ์ชัดเจนไม่มีรอยเปื้อน" },
+                    { name: "9. กระจกสแกนเนอร์", std: "สะอาด, ไม่มีรอยขีดข่วนหรือคราบ" }
+                ]
+            },
+            {
+                category: "เครื่องสำรองไฟ (UPS)",
+                items: [
+                    { name: "10. สถานะไฟและเสียง (Status)", std: "ไฟเขียวปกติ, ไม่มีเสียงเตือนผิดปกติ" },
+                    { name: "11. สภาพตัวเครื่องและแบตเตอรี่", std: "ไม่บวม, ไม่มีความร้อนสูง, สายเสียบแน่น" }
+                ]
+            },
+            {
+                category: "สภาพแวดล้อม (Environmental)",
+                items: [
+                    { name: "12. ความสะอาดและระเบียบ", std: "จัดระเบียบสายไฟเรียบร้อย, อากาศถ่ายเทดี" }
+                ]
+            }
+        ];
+
+        const checklistData02 = [
+            {
+                category: "ระบบ SAFETY",
+                items: [
+                    { name: "ประตูเปิด-ปิด ซ้าย-ขวา", std: "เปิด-ปิด ได้สะดวก" },
+                    { name: "Limit switch ซ้าย-ขวา", std: "เปิดเครื่องหยุด - ปิดเครื่องเดิน" },
+                    { name: "ตัวล็อค ประตูซ้าย-ขวา", std: "ล็อคประตูได้แน่น" },
+                    { name: "EMERGENCY STOP", std: "กดแล้วเครื่องหยุด" }
+                ]
+            },
+            {
+                category: "ระบบไฟฟ้า",
+                items: [
+                    { name: "ตู้ควบคุม", std: "สะอาด ไม่มีของวางเกะกะ" },
+                    { name: "สายไฟฟ้าในตู้ควบคุม", std: "เป็นระเบียบ ไม่ชำรุด" },
+                    { name: "สายไฟฟ้าทางเข้าเครื่อง", std: "เป็นระเบียบ/ ร้อยท่อ/ ไม่ชำรุด" },
+                    { name: "Switch Control", std: "ทำงานได้ดี ไม่ชำรุด" },
+                    { name: "อุปกรณ์ในตู้ควบคุม", std: "ไม่ร้อน ไหม้ อัดแน่น" }
+                ]
+            },
+            {
+                category: "ระบบไฮดรอลิค",
+                items: [
+                    { name: "Solenoid Valve", std: "ทำงานปกติ ไม่รั่ว" },
+                    { name: "กระบอกสูบ", std: "ยึดแน่น ไม่รั่ว" },
+                    { name: "แรงดัน Mold press", std: "อยู่ในค่า 80-120 บาร์" },
+                    { name: "ระดับน้ำมัน", std: "อยู่ในระดับกำหนด" }
+                ]
+            },
+            {
+                category: "ระบบ Steam",
+                items: [
+                    { name: "Valve Steam", std: "เปิด-ปิด ได้ ไม่รั่ว" },
+                    { name: "Pressur gauge contactor", std: "ทำงานตัด-ต่อ ปกติ" },
+                    { name: "Glove Valve", std: "เปิด-ปิด ได้ ไม่รั่ว" },
+                    { name: "Pressur gauge contactor", std: "สายสตรีมไม่แตก ไม่รั่ว" }
+                ]
+            },
+            {
+                category: "ระบบลม",
+                items: [
+                    { name: "Solenoid Valve", std: "ทำงานปกติ ไม่รั่ว" },
+                    { name: "สายลม", std: "ไม่รั่ว ไม่แตก" }
+                ]
+            },
+            {
+                category: "ระบบน้ำ",
+                items: [
+                    { name: "Solenoid Valve", std: "ทำงานปกติ ไม่รั่ว" }
+                ]
+            },
+            {
+                category: "ระบบกล",
+                items: [
+                    { name: "เพลาต่าง ๆ", std: "มีจาระบี ไม่โค้งงอ" }
+                ]
+            }
+        ];
+
         window.addEventListener('load', () => {
             renderHistoryList();
+            renderAllTables();
         });
 
-        function saveToHistory() {
-            const modal = document.getElementById('saveModal');
-            const input = document.getElementById('modalInput');
-            input.value = "สัปดาห์ที่ " + new Date().toLocaleDateString('th-TH');
-            modal.style.display = 'flex';
-            input.focus();
+        function switchFMT(val) {
+            currentFMT = parseInt(val);
+            renderAllTables();
+            renderHistoryList();
         }
 
-        function closeSaveModal() {
-            document.getElementById('saveModal').style.display = 'none';
-        }
-
-        // Google Sheet Integration
-        const SPREADSHEET_ID = "1vA0cIZuJYQz8-FmMZzx2A9IX85dk1eFtH7DM8MS8CMU";
-
-        // This function will be called if the file is run within Google Apps Script environment
-        // or we use google.script.run if this is an Apps Script Web App.
-        // Assuming the user will host this as a Web App:
-        function sendDataToSheet(entry) {
-            if (typeof google !== 'undefined' && google.script && google.script.run) {
-                document.getElementById('syncStatus').style.display = 'block';
-                google.script.run
-                    .withSuccessHandler(() => {
-                        document.getElementById('syncStatus').style.display = 'none';
-                        alert('บันทึกไปยัง Google Sheets เรียบร้อยแล้ว!');
-                    })
-                    .withFailureHandler((err) => {
-                        document.getElementById('syncStatus').style.display = 'none';
-                        alert('เกิดข้อผิดพลาดในการส่งข้อมูล: ' + err);
-                    })
-                    .saveInspectionData(entry);
-            } else {
-                console.warn("Google Apps Script environment not detected. Data saved only locally.");
+        function renderAllTables() {
+            document.getElementById('forms-container').innerHTML = '';
+            if (currentFMT === 37) {
+                renderExactTable37(1, 20);
+                renderExactTable37(21, 40);
+                renderExactTable37(41, 54);
+            } else if (currentFMT === 2) {
+                renderExactTable02();
             }
         }
 
-        function confirmSaveHistory() {
-            const input = document.getElementById('modalInput');
-            const weekText = input.value.trim();
-            if (!weekText) {
-                alert('กรุณาใส่ชื่อรายการ');
-                return;
+        function toThaiDigits(str) {
+            return str; // Return as is (Arabic numerals)
+        }
+
+        function toThaiDateStr(dateStr) {
+            if (!dateStr) return "";
+            const [y, m, d] = dateStr.split('-');
+            const beYear = parseInt(y) + 543;
+            return `${d}/${m}/${beYear}`;
+        }
+
+
+        function renderExactTable37(startNum, endNum) {
+            const div = document.createElement('div');
+            div.className = 'sheet-container';
+
+            let machineHeaders = '';
+            for (let i = 0; i < 20; i++) {
+                let num = startNum + i;
+                let isExist = num <= 54;
+                machineHeaders += `<th style="width: 28px; text-align: center; cursor: ${isExist ? 'pointer' : 'default'}" ${isExist ? `onclick="toggleColumn(${num})"` : ''}>${isExist ? num : ''}</th>`;
             }
 
-            const cells = document.querySelectorAll('.check-cell');
-            const cellData = [];
-            cells.forEach(cell => {
-                cellData.push({
-                    num: cell.dataset.num,
-                    state: cell.dataset.state
+            let rowsHtml = '';
+            checklistData37.forEach(group => {
+                group.items.forEach((item, idx) => {
+                    rowsHtml += `<tr>
+                        ${idx === 0 ? `<td rowspan="${group.items.length}" class="category-cell"><div class="vertical-text">${group.category}</div></td>` : ''}
+                        <td class="col-item" style="font-size:0.75rem;">${item.name}</td>
+                        <td class="col-std" style="font-size:0.7rem;">${item.std}</td>`;
+                    for (let i = 0; i < 20; i++) {
+                        let num = startNum + i;
+                        let isExist = num <= 54;
+                        rowsHtml += `<td class="check-cell mach-${num}" data-state="0" data-num="${num}" style="background: ${isExist ? '#fff' : '#fdfdfd'}" ${isExist ? `onclick="toggle(this)"` : ''}></td>`;
+                    }
+                    rowsHtml += `<td contenteditable="true" class="row-remark"></td></tr>`;
                 });
             });
 
-            const remarks = [];
-            document.querySelectorAll('.correction-input').forEach(el => remarks.push(el.textContent));
+            const thaiDate = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            div.innerHTML = `
+                <header class="form-header">
+                    <div class="logo-box">◆</div>
+                    <div class="company-name">POLYFOAM HIGH-TECH (PFH)</div>
+                    <div class="form-title">ตารางการตรวจเช็คเครื่องจักรและอุปกรณ์ในระบบสารสนเทศ</div>
+                    <div class="form-meta">
+                        <div><b>Doc No:</b> FMT-37</div>
+                        <div><b>Revision:</b> 00</div>
+                        <div><b>Eff. Date:</b> 01/01/2567</div>
+                        <div style="margin-top:2px; color:var(--primary); font-weight:bold;">วันที่: ${thaiDate}</div>
+                    </div>
+                </header>
+
+                <table class="main-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">หมวด</th>
+                            <th rowspan="2">รายการตรวจสอบ</th>
+                            <th rowspan="2">มาตรฐานการตรวจเช็ค</th>
+                            <th colspan="20">หมายเลขเครื่อง (Machine No.)</th>
+                            <th rowspan="2">หมายเหตุ</th>
+                        </tr>
+                        <tr>${machineHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div class="footer-section">
+                    <div style="display:flex; justify-content: space-between; gap: 20px;">
+                        <div style="flex:1.5;">
+                            <div style="font-weight:bold; margin-bottom: 5px; border-bottom: 2px solid var(--primary); display: inline-block; font-size:0.85rem;">รายละเอียดการแก้ไข (Action Taken)</div>
+                            <div class="correction-input" contenteditable="true" style="min-height: 80px; border: 1px dashed #000; padding: 8px; font-size: 0.8rem; background:#fff;"></div>
+                            <div style="display:flex; margin-top:10px; gap:15px; font-size: 0.75rem;">
+                                <strong>สัญลักษณ์:</strong>
+                                <span><b style="color:var(--success)">/</b> ปกติ</span>
+                                <span><b style="color:var(--danger)">X</b> ไม่ปกติ</span>
+                                <span><b>-</b> ไม่มีอุปกรณ์</span>
+                            </div>
+                        </div>
+                        <div style="flex:1;">
+                            <table class="signature-table">
+                                <tr>
+                                    <td>ผู้บันทึก (Recorder)</td>
+                                    <td>ผู้ตรวจเช็ค (Checker)</td>
+                                    <td>ผู้อนุมัติ (Approver)</td>
+                                </tr>
+                                <tr style="height:50px;"><td></td><td></td><td></td></tr>
+                                <tr>
+                                    <td>วันที่: <span class="thai-date-display"></span><input type="date" class="date-input" onchange="this.previousElementSibling.innerText = toThaiDateStr(this.value)"></td>
+                                    <td>วันที่: <span class="thai-date-display"></span><input type="date" class="date-input" onchange="this.previousElementSibling.innerText = toThaiDateStr(this.value)"></td>
+                                    <td>วันที่: <span class="thai-date-display"></span><input type="date" class="date-input" onchange="this.previousElementSibling.innerText = toThaiDateStr(this.value)"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('forms-container').appendChild(div);
+        }
+
+        function renderExactTable02() {
+            const div = document.createElement('div');
+            div.className = 'sheet-container';
+
+            let dateHeaders = '';
+            for (let i = 1; i <= 31; i++) {
+                dateHeaders += `<th style="width: 20px; text-align: center; cursor: pointer" onclick="toggleColumn(${i})">${i}</th>`;
+            }
+
+            let rowsHtml = '';
+            checklistData02.forEach(group => {
+                // Category Header Row
+                rowsHtml += `<tr style="background: #fdfdfd;">
+                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
+                    ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+                </tr>`;
+
+                group.items.forEach((item, idx) => {
+                    rowsHtml += `<tr>
+                        <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${item.name}</td>
+                        <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${item.std}</td>`;
+                    for (let i = 1; i <= 31; i++) {
+                        rowsHtml += `<td class="check-cell mach-${i}" data-state="0" data-num="${i}" onclick="toggle(this)" style="border: 1px solid #000;"></td>`;
+                    }
+                    rowsHtml += `</tr>`;
+                });
+            });
+
+            const thaiDate = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long' });
+
+            div.innerHTML = `
+                <div style="border: 2px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="border: none; border-bottom: 2px solid #000;">
+                        <div class="logo-box" style="border-right: 2px solid #000; padding: 8px 15px; width: auto; flex: 1;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเช็คเครื่องจักรฉีดโฟมประจำวัน</div>
+                        <div style="flex: 1.2; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>เดือน</b>
+                            <select class="fmt02-month-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                                <option value="">เลือก</option>
+                                ${thaiMonths.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('')}
+                            </select>
+                            <select class="fmt02-year-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                                <option value="">ปี</option>
+                                ${Array.from({ length: 10 }, (_, i) => getCurrentThaiYear() - 5 + i).map(y => `<option value="${y}">${y}</option>`).join('')}
+                            </select>
+                            <b style="margin-left: auto;">FMT-02</b>
+                            <b style="margin-left: 10px;">Re:#0</b>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; border-bottom: 2px solid #000; font-size: 0.8rem;">
+                        <div style="flex: 1.2; padding: 6px 10px; border-right: 2px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span contenteditable="true" class="fmt02-m-no" style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;"></span></div>
+                        <div style="flex: 2; padding: 6px 10px; border-right: 2px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">INJECTION MOLDING FOAM</span></div>
+                        <div style="flex: 0.9; padding: 6px 10px; border-right: 2px solid #000;">พื้นที่ติดตั้ง:แผนกผลิต</span></div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size: 0.65rem; border-top: none;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:130px;">รายละเอียดของการตรวจเช็ค</th>
+                            <th rowspan="2" style="width:130px;">มาตรฐานการตรวจ</th>
+                            <th colspan="31">Date/วันที่</th>
+                        </tr>
+                        <tr>${dateHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">
+                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                            </div>
+                            <div style="font-size: 0.75rem; line-height: 1.4;">
+                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คแล้วเจอสภาพไม่ปกติพนักงานสำรองทันที ถ้าเป็นงานงานใช้เวลา ให้ลวไหลหลั่งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                            </div>
+                        </div>
+                        <div style="flex: 1.2; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('forms-container').appendChild(div);
+        }
+
+        function toggle(cell) {
+            if (!isDragging) {
+                setCellState(cell, (parseInt(cell.dataset.state) + 1) % 4);
+            }
+        }
+
+        function setCellState(cell, state) {
+            cell.dataset.state = state;
+            cell.classList.remove('status-ok', 'status-bad', 'status-na');
+            if (state === 1) { cell.textContent = "/"; cell.classList.add('status-ok'); }
+            else if (state === 2) { cell.textContent = "X"; cell.classList.add('status-bad'); }
+            else { cell.textContent = ""; }
+        }
+
+        // Drag-to-fill handlers
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('check-cell')) {
+                isDragging = true;
+                dragStartCell = e.target;
+                dragStartState = (parseInt(e.target.dataset.state) + 1) % 4;
+                setCellState(e.target, dragStartState);
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging && e.target.classList.contains('check-cell')) {
+                setCellState(e.target, dragStartState);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            dragStartCell = null;
+        });
+
+        function toggleColumn(num) {
+            const cells = document.querySelectorAll(`.mach-${num}`);
+            if (!cells.length) return;
+            let nextState = (parseInt(cells[0].dataset.state) + 1) % 4;
+            cells.forEach(cell => setCellState(cell, nextState));
+        }
+
+        function saveToHistory() {
+            document.getElementById('modalInput').value = "รอบตรวจ " + new Date().toLocaleDateString('th-TH');
+            document.getElementById('saveModal').style.display = 'flex';
+        }
+
+        function confirmSaveHistory() {
+            const label = document.getElementById('modalInput').value.trim();
+            if (!label) return alert("กรุณาระบุชื่อ");
+
+            const cellStates = Array.from(document.querySelectorAll('.check-cell')).map(c => ({ num: c.dataset.num, state: c.dataset.state }));
+            const rowRemarks = Array.from(document.querySelectorAll('.row-remark')).map(el => el.textContent);
+            const remarks = Array.from(document.querySelectorAll('.correction-input')).map(el => el.textContent);
+            const sigDates = Array.from(document.querySelectorAll('.date-input')).map(el => el.value);
+            const sigNames = Array.from(document.querySelectorAll('.sig-name')).map(el => el.textContent);
+
+            let metadata = {};
+            if (currentFMT === 2) {
+                const monthSelect = document.querySelector('.fmt02-month-select');
+                const yearSelect = document.querySelector('.fmt02-year-select');
+                const monthText = monthSelect && monthSelect.value ? thaiMonths[parseInt(monthSelect.value) - 1] + ' ' + yearSelect.value : '';
+
+                metadata = {
+                    mNo: document.querySelector('.fmt02-m-no')?.textContent || '',
+                    month: monthText,
+                    area: document.querySelector('.fmt02-area')?.textContent || '',
+                    dept: document.querySelector('.fmt02-dept')?.textContent || ''
+                };
+            }
 
             const entry = {
                 id: Date.now(),
-                label: weekText,
+                fmt: currentFMT,
+                label,
                 timestamp: new Date().toLocaleString('th-TH'),
-                data: cellData,
-                remarks: remarks
+                data: cellStates,
+                rowRemarks,
+                remarks,
+                sigDates,
+                sigNames,
+                metadata
             };
-
             let history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
             history.unshift(entry);
             localStorage.setItem('fmt_history', JSON.stringify(history));
 
-            // Sync to Google Sheets
-            sendDataToSheet(entry);
-
-            closeSaveModal();
+            document.getElementById('saveModal').style.display = 'none';
             renderHistoryList();
         }
 
         function renderHistoryList() {
             const container = document.getElementById('history-list');
-            const history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
-            container.innerHTML = history.length === 0 ? '<div style="color:#666; font-size:0.8rem;">ยังไม่มีข้อมูล</div>' : '';
-
+            let history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
+            // Filter by current FMT
+            history = history.filter(h => h.fmt === currentFMT || (currentFMT === 37 && !h.fmt));
+            container.innerHTML = history.length === 0 ? '<div style="color:#94a3b8; font-size:0.8rem; text-align:center; padding:20px;">ยังไม่มีข้อมูล</div>' : '';
             history.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'history-item';
                 div.innerHTML = `
-                    <div class="date">${item.label}</div>
-                    <div class="week">${item.timestamp}</div>
-                    <button onclick="deleteHistory(${item.id}, event)" style="margin-top:5px; font-size:10px; color:red; border:none; background:none; cursor:pointer;">ลบ</button>
+                    <input type="checkbox" class="item-checkbox" data-id="${item.id}" onclick="event.stopPropagation(); handleSelectionChange()">
+                    <div class="date">${toThaiDigits(item.label)}</div>
+                    <div class="timestamp">${toThaiDigits(item.timestamp)}</div>
+                    <button class="delete-btn" onclick="deleteHistory(${item.id}, event)">&times;</button>
                 `;
-                div.onclick = () => loadHistory(item);
+                div.onclick = () => {
+                    pendingLoadItem = item;
+                    document.getElementById('loadModalText').innerText = `ต้องการดูข้อมูลของ "${item.label}" ใช่หรือไม่?`;
+                    document.getElementById('confirmLoadBtn').onclick = confirmLoadHistory;
+                    document.getElementById('loadModal').style.display = 'flex';
+                };
                 container.appendChild(div);
             });
+            handleSelectionChange();
         }
 
-        let pendingLoadItem = null;
-        let currentLoadedId = null; // Track which entry is currently on screen
-
-        function loadHistory(item) {
-            pendingLoadItem = item;
-            const modal = document.getElementById('loadModal');
-            const textEl = document.getElementById('loadModalText');
-            textEl.innerHTML = `ต้องการเรียกดูข้อมูลของ <b>"${item.label}"</b> ใช่หรือไม่?`;
-
-            const btn = document.getElementById('confirmLoadBtn');
-            btn.innerHTML = "👁️ เรียกดูข้อมูล (View Only)";
-            btn.onclick = confirmLoadHistory;
-
-            modal.style.display = 'flex';
+        function toggleSelectAll(cb) {
+            document.querySelectorAll('.item-checkbox').forEach(item => {
+                item.checked = cb.checked;
+            });
+            handleSelectionChange();
         }
 
-        function closeLoadModal() {
-            document.getElementById('loadModal').style.display = 'none';
+        function handleSelectionChange() {
+            const checkedCount = document.querySelectorAll('.item-checkbox:checked').length;
+            const totalCount = document.querySelectorAll('.item-checkbox').length;
+            const printBtn = document.getElementById('printSelectedBtn');
+
+            if (checkedCount > 0) {
+                printBtn.style.display = 'flex';
+                printBtn.innerHTML = `<span>🖨️ พิมพ์รายการที่เลือก (${checkedCount})</span>`;
+            } else {
+                printBtn.style.display = 'none';
+            }
+
+            document.getElementById('selectAll').checked = checkedCount === totalCount && totalCount > 0;
         }
 
-        function confirmLoadHistory() {
-            if (!pendingLoadItem) return;
-            const item = pendingLoadItem;
+        function printSelected() {
+            const checkedIds = Array.from(document.querySelectorAll('.item-checkbox:checked')).map(cb => parseInt(cb.dataset.id));
+            if (checkedIds.length === 0) return;
 
-            // Clear current first
-            clearAll();
+            const history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
+            const selectedItems = history.filter(h => checkedIds.includes(h.id));
 
-            // Load cells
-            const allCells = document.querySelectorAll('.check-cell');
-            item.data.forEach((d, index) => {
-                if (allCells[index]) setCellState(allCells[index], parseInt(d.state));
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = '';
+
+            selectedItems.forEach(item => {
+                const formHTML = generateFormHTMLFromData(item);
+                printArea.innerHTML += formHTML;
             });
 
-            // Load remarks
-            const remarkInputs = document.querySelectorAll('.correction-input');
-            item.remarks.forEach((text, index) => {
-                if (remarkInputs[index]) remarkInputs[index].textContent = text;
+            window.print();
+            printArea.innerHTML = '';
+        }
+
+        function generateFormHTMLFromData(item) {
+            if (item.fmt === 2) return renderStaticForm02(item);
+            return renderStaticForm37(item);
+        }
+
+        function renderStaticForm37(item) {
+            let fullHTML = '';
+            const ranges = [1, 21, 41];
+
+            ranges.forEach(start => {
+                let machineHeaders = '';
+                for (let i = 0; i < 20; i++) {
+                    let num = start + i;
+                    machineHeaders += `<th style="width: 28px; text-align: center;">${num <= 54 ? num : ''}</th>`;
+                }
+
+                let rowsHtml = '';
+                let cellIndexOffset = 0;
+                if (start == 21) cellIndexOffset = checklistData.reduce((a, g) => a + g.items.length, 0) * 20;
+                if (start == 41) cellIndexOffset = checklistData.reduce((a, g) => a + g.items.length, 0) * 40;
+
+                let localCellCounter = 0;
+                checklistData.forEach(group => {
+                    group.items.forEach((chkItem, idx) => {
+                        const itemsCount = checklistData.reduce((a, g) => a + g.items.length, 0);
+                        const rowIdxInGroup = checklistData.flatMap(g => g.items).indexOf(chkItem);
+                        const tableIdx = ranges.indexOf(start);
+                        const overallRowIdx = tableIdx * itemsCount + rowIdxInGroup;
+                        const rowRemarkText = (item.rowRemarks && item.rowRemarks[overallRowIdx]) ? item.rowRemarks[overallRowIdx] : "";
+
+                        rowsHtml += `<tr>
+                            ${idx === 0 ? `<td rowspan="${group.items.length}" class="category-cell"><div class="vertical-text">${group.category}</div></td>` : ''}
+                            <td class="col-item" style="font-size:0.75rem;">${chkItem.name}</td>
+                            <td class="col-std" style="font-size:0.7rem;">${chkItem.std}</td>`;
+
+                        for (let i = 0; i < 20; i++) {
+                            let num = start + i;
+                            let isExist = num <= 54;
+                            let state = 0;
+                            if (isExist) {
+                                const cellIdxInItemData = cellIndexOffset + (rowIdxInGroup * 20) + i;
+                                state = item.data[cellIdxInItemData] ? parseInt(item.data[cellIdxInItemData].state) : 0;
+                            }
+
+                            let content = "";
+                            let cls = "";
+                            if (state === 1) { content = "/"; cls = "status-ok"; }
+                            else if (state === 2) { content = "X"; cls = "status-bad"; }
+                            else if (state === 3) { content = "-"; cls = "status-na"; }
+
+                            rowsHtml += `<td class="check-cell ${cls}" style="text-align:center; font-weight:800; border: 1px solid #000;">${content}</td>`;
+                        }
+                        rowsHtml += `<td style="border: 1px solid #000; font-size: 0.7rem;">${rowRemarkText}</td></tr>`;
+                    });
+                });
+
+                fullHTML += `
+                <div class="sheet-container" style="page-break-after: always; border:1px solid #000; margin-bottom: 20px;">
+                    <header class="form-header">
+                        <div class="logo-box">◆</div>
+                        <div class="company-name">POLYFOAM HIGH-TECH (PFH)</div>
+                        <div class="form-title">ตารางการตรวจเช็คเครื่องจักรและอุปกรณ์ในระบบสารสนเทศ</div>
+                        <div class="form-meta">
+                            <div><b>Doc No:</b> FMT-37</div>
+                            <div><b>Revision:</b> 00</div>
+                            <div><b>Eff. Date:</b> 01/01/2567</div>
+                            <div style="margin-top:2px; color:var(--primary); font-weight:bold;">วันที่: ${item.timestamp.split(' ')[0]}</div>
+                        </div>
+                    </header>
+
+                    <table class="main-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">หมวด</th>
+                                <th rowspan="2">รายการตรวจสอบ</th>
+                                <th rowspan="2">มาตรฐานการตรวจเช็ค</th>
+                                <th colspan="20">หมายเลขเครื่อง (Machine No.)</th>
+                                <th rowspan="2">หมายเหตุ</th>
+                            </tr>
+                            <tr>${machineHeaders}</tr>
+                        </thead>
+                        <tbody>${rowsHtml}</tbody>
+                    </table>
+                    <div class="footer-section">
+                        <div style="display:flex; justify-content: space-between; gap: 20px;">
+                            <div style="flex:1.5;">
+                                <div style="font-weight:bold; margin-bottom: 5px; border-bottom: 2px solid var(--primary); display: inline-block; font-size:0.85rem;">รายละเอียดการแก้ไข (Action Taken)</div>
+                                <div style="min-height: 80px; border: 1px dashed #000; padding: 8px; font-size: 0.8rem; background:#fff;">${item.remarks[ranges.indexOf(start)] || ''}</div>
+                            </div>
+                            <div style="flex:1;">
+                                <table class="signature-table">
+                                    <tr><td>ผู้บันทึก (Recorder)</td><td>ผู้ตรวจเช็ค (Checker)</td><td>ผู้อนุมัติ (Approver)</td></tr>
+                                    <tr style="height:50px;"><td></td><td></td><td></td></tr>
+                                    <tr>
+                                        <td>วันที่: ${toThaiDateStr(item.sigDates[ranges.indexOf(start) * 3] || "")}</td>
+                                        <td>วันที่: ${toThaiDateStr(item.sigDates[ranges.indexOf(start) * 3 + 1] || "")}</td>
+                                        <td>วันที่: ${toThaiDateStr(item.sigDates[ranges.indexOf(start) * 3 + 2] || "")}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
             });
-
-            currentLoadedId = item.id;
-
-            // Show "Read-Only" indicator and Update button (Update button allows saving changes)
-            document.getElementById('statusBadge').style.display = 'block';
-            document.getElementById('statusBadge').innerHTML = `👀 ดูข้อมูล: ${item.label}`;
-            document.getElementById('updateBtn').style.display = 'block';
-
-            closeLoadModal();
+            return fullHTML;
         }
 
-        function updateCurrentHistory() {
-            if (!currentLoadedId) return;
-
-            let history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
-            const index = history.findIndex(h => h.id === currentLoadedId);
-
-            if (index === -1) {
-                alert('ไม่พบข้อมูลต้นฉบับเพื่ออัปเดต');
-                return;
+        function renderStaticForm02(item) {
+            let dateHeaders = '';
+            for (let i = 1; i <= 31; i++) {
+                dateHeaders += `<th style="width: 20px; text-align: center;">${i}</th>`;
             }
 
-            const cells = document.querySelectorAll('.check-cell');
-            const cellData = [];
-            cells.forEach(cell => {
-                cellData.push({ num: cell.dataset.num, state: cell.dataset.state });
-            });
-
-            const remarks = [];
-            document.querySelectorAll('.correction-input').forEach(el => remarks.push(el.textContent));
-
-            // Overwrite data
-            history[index].data = cellData;
-            history[index].remarks = remarks;
-            history[index].timestamp = new Date().toLocaleString('th-TH') + " (อัปเดตแล้ว)";
-
-            localStorage.setItem('fmt_history', JSON.stringify(history));
-            alert('อัปเดตข้อมูลย้อนหลังเรียบร้อย!');
-
-            // Sync Update to Sheets (sending as new entry or update logic)
-            sendDataToSheet(history[index]);
-
-            renderHistoryList();
-        }
-
-        function deleteHistory(id, event) {
-            event.stopPropagation();
-            if (!confirm('ต้องการลบทิ้งใช่หรือไม่?')) return;
-            let history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
-            history = history.filter(item => item.id !== id);
-            localStorage.setItem('fmt_history', JSON.stringify(history));
-            renderHistoryList();
-
-            if (currentLoadedId === id) {
-                currentLoadedId = null;
-                document.getElementById('updateBtn').style.display = 'none';
-            }
-        }
-
-        const checklistData = [
-            {
-                category: "คอมพิวเตอร์",
-                items: [
-                    { name: "หน้าจอ (Monitor)", std: "ไม่เป็นเส้นภาพ ไม่ลาย ไม่กระตุก" },
-                    { name: "ปลั๊กไฟ", std: "ไม่ขาดไม่เปื่อย" },
-                    { name: "แป้นพิมพ์ (Keyboard)", std: "ไม่หลุดออกไม่เลือนจนมองไม่เห็น" },
-                    { name: "สวิตช์เปิด-ปิด", std: "ใช้งานได้ตามปกติ" },
-                    { name: "สายไฟ", std: "จัดเก็บเป็นระเบียบ" },
-                    { name: "ช่องต่อ USB", std: "ไม่หลวม ไม่คลอน" },
-                    { name: "CPU", std: "ใช้งานได้ตามปกติ" },
-                    { name: "เมาส์ (Mouse)", std: "ใช้งานได้ตามปกติ ไม่ค้าง" }
-                ]
-            },
-            {
-                category: "เครื่องปริ้นเตอร์",
-                items: [
-                    { name: "ปลั๊กไฟ", std: "ไม่ขาดไม่เปื่อย" },
-                    { name: "สวิตช์เปิด-ปิด", std: "เปิดสัญญาณไฟติด-ปิดดับ" },
-                    { name: "คุณภาพงานพิมพ์", std: "ชัดเจนไม่เลือนลางไม่เปรอะเปื้อน" },
-                    { name: "ลูกกลิ้ง (Roller)", std: "สะอาดไม่เป็นคราบ" }
-                ]
-            },
-            {
-                category: "เครื่องสแกน",
-                items: [
-                    { name: "จอวางเอกสาร", std: "สะอาดไม่เป็นคราบ" },
-                    { name: "คุณภาพงาน", std: "ชัดเจนไม่เลือนลางไม่เป็นเส้น" },
-                    { name: "ปลั๊กไฟ", std: "ไม่ขาดไม่เปื่อย" },
-                    { name: "สวิตช์เปิด-ปิด", std: "ใช้งานได้ตามปกติ" }
-                ]
-            },
-            {
-                category: "เครื่องโทรสาร",
-                items: [
-                    { name: "คุณภาพงานพิมพ์", std: "ชัดเจนไม่เลือนลางไม่เปรอะเปื้อน" },
-                    { name: "ปลั๊กไฟ", std: "ไม่ขาดไม่เปื่อย" },
-                    { name: "ลูกกลิ้ง (Roller)", std: "สะอาดไม่เป็นคราบ" }
-                ]
-            }
-        ];
-
-
-        // RE-WRITE render logic to be safer with Table structure
-        function renderExactTable(startNum, endNum) {
-            const div = document.createElement('div');
-            div.className = 'sheet-container';
-
-            // Dynamic Header Slots
-            let machineHeaders = '';
-            let totalSlots = 20; // Default grid width
-
-            for (let i = 0; i < totalSlots; i++) {
-                let num = startNum + i;
-                let content = (num <= 54) ? num : '';
-                let isActive = (num <= 54);
-                let clickAttr = isActive ? `onclick="toggleColumn(${num})"` : '';
-                let cursorStyle = isActive ? 'cursor: pointer;' : '';
-                let title = isActive ? 'title="คลิกเพื่อเลือกทั้งแถว (Click to select all)"' : '';
-
-                machineHeaders += `<th style="width: 25px; text-align: center; font-size: 0.8rem; background: #fff; ${cursorStyle}" ${clickAttr} ${title}>${content}</th>`;
-            }
-
-            // Rows
             let rowsHtml = '';
-            checklistData.forEach(group => {
-                group.items.forEach((item, idx) => {
-                    rowsHtml += `<tr>`;
-                    // Category
-                    if (idx === 0) {
-                        rowsHtml += `<td rowspan="${group.items.length}" class="col-category category-cell">${group.category}</td>`;
-                    }
-                    // Content
-                    rowsHtml += `<td class="col-item">${item.name}</td>`;
-                    rowsHtml += `<td class="col-std">${item.std}</td>`;
+            checklistData02.forEach(group => {
+                // Category Header Row
+                rowsHtml += `<tr style="background: #fdfdfd;">
+                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+                    ${Array(31).fill('<td style="border: 1px solid #000;"></td>').join('')}
+                </tr>`;
 
-                    // Checkboxes
-                    for (let i = 0; i < totalSlots; i++) {
-                        let num = startNum + i;
-                        let isDisabled = (num > 54);
-                        let bgStyle = isDisabled ? 'background: #fdfdfd; cursor: default;' : '';
-                        let clickAttr = isDisabled ? '' : 'onclick="toggle(this)"';
-                        // Add class mach-N to identify column
-                        rowsHtml += `<td class="check-cell mach-${num}" style="${bgStyle}" ${clickAttr} data-state="0" data-num="${num}"></td>`;
-                    }
+                group.items.forEach((chkItem, idx) => {
+                    rowsHtml += `<tr>
+                        <td class="col-item" style="font-size:0.65rem; padding-left: 15px; border: 1px solid #000;">${chkItem.name}</td>
+                        <td class="col-std" style="font-size:0.65rem; border: 1px solid #000;">${chkItem.std}</td>`;
+                    for (let i = 1; i <= 31; i++) {
+                        const cellIdx = checklistData02.flatMap(g => g.items).indexOf(chkItem) * 31 + (i - 1);
+                        const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                        let content = "";
+                        let cls = "";
+                        if (state === 1) { content = "/"; cls = "status-ok"; }
+                        else if (state === 2) { content = "X"; cls = "status-bad"; }
 
-                    // Remark
-                    rowsHtml += `<td contenteditable="true"></td>`;
+                        rowsHtml += `<td class="check-cell ${cls}" style="text-align:center; font-weight:800; border: 1px solid #000; width:22px;">${content}</td>`;
+                    }
                     rowsHtml += `</tr>`;
                 });
             });
 
-            div.innerHTML = `
-                <header class="form-header">
-                    <div class="logo-box" style="width: 50px; font-size: 1.2rem;">◆</div>
-                    <div class="company-name" style="width: 280px; font-size: 1.1rem;">POLYFOAM HIGH-TECH (PFH)</div>
-                    <div class="form-title" style="font-size: 1rem;">ตารางการตรวจเช็คเครื่องจักรและอุปกรณ์ในระบบสารสนเทศ</div>
-                    <div class="form-meta" style="flex-grow: 1; border-right: none;">
-                         <div style="font-size: 0.75rem; text-align: right;">สัปดาห์ที่.. FMT-37Re#0</div>
-                         <div style="border-bottom: 1px dashed black; height: 18px; margin-top: 5px;"></div>
-                    </div>
-                </header>
-                
-                <table class="main-table">
-                    <thead>
-                        <tr>
-                            <th rowspan="2" class="col-category">รายการ</th>
-                            <th rowspan="2" class="col-item">รายละเอียดของการตรวจเช็ค</th>
-                            <th rowspan="2" class="col-std">มาตรฐานการตรวจ</th>
-                            <th colspan="${totalSlots}" style="background: #fff; font-size: 0.7rem; font-weight: normal; height: 18px; padding: 2px;">หมายเลขเครื่อง</th>
-                            <th rowspan="2" class="col-remark">หมายเหตุ</th>
-                        </tr>
-                        <tr>
-                            ${machineHeaders}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${rowsHtml}
-                    </tbody>
-                </table>
+            const mData = item.metadata || {};
 
-                <div class="footer-section">
-                    <div class="correction-row">
-                        <div class="correction-label">รายละเอียดการแก้ไข</div>
-                        <div class="correction-input" contenteditable="true"></div>
-                    </div>
-                    
-                    <div style="display: flex; margin-top: 10px; gap: 10px;">
-                        <div style="flex: 1;">
-                            <div class="legend-row" style="margin-bottom: 5px;">
-                                <span style="margin-right: 10px; font-weight: bold; text-decoration: underline;">หมายเหตุ</span>
-                                <span style="margin-right: 15px;">ระบุ / ปกติ</span>
-                                <span>X ไม่ปกติ</span>
-                            </div>
-                            <div style="font-size: 0.75rem; line-height: 1.4;">
-                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติไม่ต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อม
+            return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+                <div style="border: 2px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="border: none; border-bottom: 2px solid #000;">
+                        <div class="logo-box" style="border-right: 2px solid #000; padding: 8px 15px; width: auto; flex: 1;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเช็คเครื่องจักรฉีดโฟมประจำวัน</div>
+                        <div style="flex: 0.8; padding: 8px 12px; display: flex; flex-direction: column; gap: 3px; font-size: 0.75rem;">
+                            <div><b>เดือน</b> ${mData.month || '................../..................'}</div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><b>FMT-02</b></span>
+                                <span><b>Re:#0</b></span>
                             </div>
                         </div>
-                        
-                        <div style="width: 45%;">
-                            <table class="signature-table">
-                                <tr style="background: #eee;">
-                                    <td width="15%">ลงชื่อ</td>
-                                    <td>ผู้บันทึก</td>
-                                    <td>ผู้ตรวจเช็ค</td>
-                                    <td>ผู้อนุมัติ</td>
+                    </div>
+
+                    <div style="display: flex; border-bottom: 2px solid #000; font-size: 0.8rem;">
+                        <div style="flex: 1.2; padding: 6px 10px; border-right: 2px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
+                        <div style="flex: 2; padding: 6px 10px; border-right: 2px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">INJECTION MOLDING FOAM</span></div>
+                        <div style="flex: 0.9; padding: 6px 10px; border-right: 2px solid #000;">พื้นที่ติดตั้ง: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 60px;">${mData.area || ''}</span></div>
+                        <div style="flex: 0.9; padding: 6px 10px;">แผนกผลิต: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 60px;">${mData.dept || ''}</span></div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size:0.6rem; width:100%; border-top: none;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:120px;">รายละเอียดของการตรวจเช็ค</th>
+                            <th rowspan="2" style="width:120px;">มาตรฐานการตรวจ</th>
+                            <th colspan="31">Date/วันที่</th>
+                        </tr>
+                        <tr>${dateHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">
+                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                            </div>
+                            <div style="font-size: 0.75rem; line-height: 1.4;">
+                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คแล้วเจอสภาพไม่ปกติพนักงานสำรองทันที ถ้าเป็นงานงานใช้เวลา ให้ลวไหลหลั่งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                            </div>
+                        </div>
+                        <div style="flex: 1.2; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
                                 </tr>
-                                <tr>
-                                    <td style="font-size: 0.7rem;">ลายเซ็น</td>
-                                    <td style="height: 25px;"></td>
-                                    <td></td>
-                                    <td></td>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
                                 </tr>
-                                <tr>
-                                    <td style="font-size: 0.7rem;">ชื่อ</td>
-                                    <td style="height: 25px;"></td>
-                                    <td></td>
-                                    <td></td>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
                                 </tr>
-                                <tr>
-                                    <td style="font-size: 0.7rem;">วันที่</td>
-                                    <td>/ /</td>
-                                    <td>/ /</td>
-                                    <td>/ /</td>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center;">___/___/______</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center;">___/___/______</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center;">___/___/______</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
-             `;
-
-            document.getElementById('forms-container').appendChild(div);
+            </div>`;
         }
 
-        // Generate the 3 sheets
-        renderExactTable(1, 20);
-        renderExactTable(21, 40);
-        renderExactTable(41, 54); // Will fill up to 20 slots but gray out rest
 
-        function toggle(cell) {
-            let state = parseInt(cell.dataset.state);
-            state = (state + 1) % 3;
-            setCellState(cell, state);
-        }
-
-        function setCellState(cell, state) {
-            cell.dataset.state = state;
-            cell.classList.remove('status-ok', 'status-bad');
-            cell.textContent = "";
-
-            if (state === 1) {
-                cell.textContent = "/";
-                cell.classList.add('status-ok');
-            }
-            if (state === 2) {
-                cell.textContent = "X";
-                cell.classList.add('status-bad');
-            }
-        }
-
-        function toggleColumn(num) {
-            const cells = document.querySelectorAll(`.mach-${num}`);
-            if (cells.length === 0) return;
-
-            // Determine next state based on the first cell's current state
-            // Cycle: Empty(0) -> All OK(1) -> All Bad(2) -> Empty(0)
-            let currentState = parseInt(cells[0].dataset.state || 0);
-            let nextState = (currentState + 1) % 3;
-
-            cells.forEach(cell => {
-                setCellState(cell, nextState);
-            });
-        }
-        function markAllNormal() {
+        function confirmLoadHistory() {
+            const item = pendingLoadItem;
+            clearAll();
             const cells = document.querySelectorAll('.check-cell');
-            cells.forEach(cell => {
-                const machineNum = parseInt(cell.dataset.num);
-                // Only affect machines 1-54 and don't overwrite manual 'X' entries
-                if (machineNum <= 54 && cell.dataset.state !== '2') {
-                    setCellState(cell, 1);
+            item.data.forEach((d, i) => { if (cells[i]) setCellState(cells[i], parseInt(d.state)); });
+            const remarks = document.querySelectorAll('.correction-input');
+            item.remarks.forEach((txt, i) => { if (remarks[i]) remarks[i].textContent = txt; });
+            const dates = document.querySelectorAll('.date-input');
+            item.sigDates.forEach((val, i) => {
+                if (dates[i]) {
+                    dates[i].value = val;
+                    if (dates[i].previousElementSibling) {
+                        dates[i].previousElementSibling.innerText = toThaiDateStr(val);
+                    }
+                }
+            });
+
+            const rowRemarks = document.querySelectorAll('.row-remark');
+            if (item.rowRemarks) {
+                item.rowRemarks.forEach((txt, i) => { if (rowRemarks[i]) rowRemarks[i].textContent = txt; });
+            }
+
+            if (item.fmt === 2 && item.metadata) {
+                if (document.querySelector('.fmt02-m-no')) document.querySelector('.fmt02-m-no').textContent = item.metadata.mNo || '';
+
+                // Parse and set month/year
+                if (item.metadata.month && document.querySelector('.fmt02-month-select')) {
+                    const parts = item.metadata.month.split(' ');
+                    if (parts.length >= 2) {
+                        const monthIdx = thaiMonths.indexOf(parts[0]);
+                        if (monthIdx >= 0) {
+                            document.querySelector('.fmt02-month-select').value = monthIdx + 1;
+                        }
+                        document.querySelector('.fmt02-year-select').value = parts[1];
+                    }
+                }
+
+                if (document.querySelector('.fmt02-area')) document.querySelector('.fmt02-area').textContent = item.metadata.area || '';
+                if (document.querySelector('.fmt02-dept')) document.querySelector('.fmt02-dept').textContent = item.metadata.dept || '';
+            }
+
+            currentLoadedId = item.id;
+            document.getElementById('statusBadge').style.display = 'block';
+            document.getElementById('statusBadge').innerText = `👀 Viewing: ${item.label}`;
+            document.getElementById('updateBtn').style.display = 'block';
+            document.getElementById('loadModal').style.display = 'none';
+        }
+
+        function updateCurrentHistory() {
+            if (!currentLoadedId) return;
+            let history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
+            const idx = history.findIndex(h => h.id === currentLoadedId);
+            if (idx === -1) return;
+
+            history[idx].data = Array.from(document.querySelectorAll('.check-cell')).map(c => ({ num: c.dataset.num, state: c.dataset.state }));
+            history[idx].rowRemarks = Array.from(document.querySelectorAll('.row-remark')).map(el => el.textContent);
+            history[idx].remarks = Array.from(document.querySelectorAll('.correction-input')).map(el => el.textContent);
+            history[idx].sigDates = Array.from(document.querySelectorAll('.date-input')).map(el => el.value);
+            history[idx].timestamp = new Date().toLocaleString('th-TH') + " (Updated)";
+
+            localStorage.setItem('fmt_history', JSON.stringify(history));
+            alert("อัปเดตข้อมูลสำเร็จ");
+            renderHistoryList();
+        }
+
+        function deleteHistory(id, event) {
+            event.stopPropagation();
+            if (!confirm("ลบข้อมูลนี้?")) return;
+            let history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
+            history = history.filter(h => h.id !== id);
+            localStorage.setItem('fmt_history', JSON.stringify(history));
+            renderHistoryList();
+            if (currentLoadedId === id) {
+                currentLoadedId = null;
+                document.getElementById('statusBadge').style.display = 'none';
+                document.getElementById('updateBtn').style.display = 'none';
+            }
+        }
+
+        function markAllNormal() {
+            document.querySelectorAll('.check-cell').forEach(c => {
+                if (currentFMT === 37) {
+                    const num = parseInt(c.dataset.num);
+                    if (num <= 54 && c.dataset.state == '0') setCellState(c, 1);
+                } else {
+                    if (c.dataset.state == '0') setCellState(c, 1);
                 }
             });
         }
 
         function clearAll() {
-            const cells = document.querySelectorAll('.check-cell');
-            cells.forEach(cell => {
-                const machineNum = parseInt(cell.dataset.num);
-                if (machineNum <= 54) {
-                    setCellState(cell, 0);
-                }
-            });
+            document.querySelectorAll('.check-cell').forEach(c => setCellState(c, 0));
+            document.querySelectorAll('.correction-input').forEach(el => el.textContent = '');
+            document.querySelectorAll('.date-input').forEach(el => el.value = '');
         }
     </script>
+
 </body>
 
 </html>
