@@ -368,6 +368,13 @@
             z-index: 1000;
             width: 220px;
             border: 1px solid var(--border);
+            cursor: move;
+            user-select: none;
+        }
+
+        .controls button,
+        .controls input {
+            cursor: pointer;
         }
 
         .btn {
@@ -1664,6 +1671,45 @@
             if (!currentLoadedId) return;
             saveLocally();
         }
+
+        // Draggable Controls
+        const controls = document.querySelector('.controls');
+        let isDraggingControls = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        controls.addEventListener('mousedown', (e) => {
+            if (e.target.closest('button') || e.target.closest('input')) return;
+
+            isDraggingControls = true;
+
+            const rect = controls.getBoundingClientRect();
+            dragOffsetX = e.clientX - rect.left;
+            dragOffsetY = e.clientY - rect.top;
+
+            controls.style.right = 'auto'; // Disable 'right' so 'left' takes over
+            controls.style.left = rect.left + 'px';
+            controls.style.top = rect.top + 'px';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDraggingControls) return;
+            e.preventDefault();
+
+            const x = e.clientX - dragOffsetX;
+            const y = e.clientY - dragOffsetY;
+
+            // Optional: Boundary checks to keep it on screen
+            const maxX = window.innerWidth - controls.offsetWidth;
+            const maxY = window.innerHeight - controls.offsetHeight;
+
+            controls.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+            controls.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDraggingControls = false;
+        });
 
     </script>
 
