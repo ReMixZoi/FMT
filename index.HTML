@@ -943,26 +943,32 @@
 
             div.innerHTML = `
                 <div style="border: 2px solid #000; margin-bottom: 0;">
-                    <div class="form-header" style="border: none; border: 2px solid #000; ">
-                        <div class="logo-box" border: 2px solid #000;  padding: 8px 15px; width: auto; flex: 1;">
-                            <div class="company-name"border-right: 2px solid #000; ="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
-                        </div>
-                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเช็คเครื่องจักรฉีดโฟมประจำวัน</div>
-                        <div style="flex: 1.2; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
-                            <b>เดือน</b>
-                            <select class="fmt02-month-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
-                                <option value="">เลือก</option>
-                                ${thaiMonths.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('')}
-                            </select>
-                            <select class="fmt02-year-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
-                                <option value="">ปี</option>
-                                ${Array.from({ length: 10 }, (_, i) => getCurrentThaiYear() - 5 + i).map(y => `<option value="${y}">${y}</option>`).join('')}
-                            </select>
-                            <b style="margin-left: auto;">FMT-02</b>
-                            <b style="margin-left: 10px;">Re:#0</b>
-                        </div>
-                    </div>
+    <div class="form-header" style="border: none; border-bottom: 2px solid #000; display: flex;">
+        
+        <div class="logo-box" style="padding: 8px 15px; width: auto; flex: 1; display: flex; flex-direction: row; gap: 10px; align-items: center;">
+            <img src="Logo.png" alt="Logo" style="height: 38px; width: auto;">
+            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+        </div>
 
+        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; font-size: 1rem; font-weight: 700; text-align: center;">
+            ตารางการตรวจเช็คเครื่องจักรฉีดโฟมประจำวัน
+        </div>
+
+        <div style="flex: 1.2; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+            <b>เดือน</b>
+            <select class="fmt02-month-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                <option value="">เลือก</option>
+                ${thaiMonths.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('')}
+            </select>
+            <select class="fmt02-year-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                <option value="">ปี</option>
+                ${Array.from({ length: 10 }, (_, i) => getCurrentThaiYear() - 5 + i).map(y => `<option value="${y}">${y}</option>`).join('')}
+            </select>
+            <b style="margin-left: auto;">FMT-02</b>
+            <b style="margin-left: 10px;">Re:#0</b>
+        </div>
+    </div>
+</div>
                     <div style="display: flex; border-bottom: 2px solid #000; font-size: 0.8rem;">
                         <div style="flex: 1.2; padding: 6px 10px;border-right: 2px solid #000; ">เครื่องจักรหมายเลข / Machine No.: <span contenteditable="true" class="fmt02-m-no" style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;"></span></div>
                         <div style="flex: 2; padding: 6px 10px;border-right: 2px solid #000; ">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">INJECTION MOLDING FOAM</span></div>
@@ -1806,6 +1812,7 @@
 </body>
 
 </html>
+
 
 
 
