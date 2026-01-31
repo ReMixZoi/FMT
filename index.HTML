@@ -47,8 +47,11 @@
             <div class="sidebar-title">📋 ฟอร์มที่เลือก</div>
             <select id="fmtSelector" onchange="switchFMT(this.value)"
                 style="width: 100%; padding: 8px; margin-top: 10px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--font-main);">
+                <option value="01">FMT-01 (ต้นกำลังประจำวัน)</option>
                 <option value="02">FMT-02 (ฉีดโฟมประจำวัน)</option>
-                <option value="03">FMT-03 (ระบบส่งสัญญาณ)</option>
+                <option value="03">FMT-03 (นิ่งเม็ดประจำวัน)</option>
+                <option value="05">FMT-05 (ปั๊มลมประจำวัน)</option>
+                <option value="06">FMT-06 (ปั๊มสูญญากาศประจำวัน)</option>
                 <option value="37">FMT-37 (ระบบสารสนเทศ)</option>
 
 
@@ -109,7 +112,7 @@
     <div id="forms-container"></div>
 
     <script>
-        let currentFMT = 2;
+        let currentFMT = 3;
         let currentLoadedId = null;
         let pendingLoadItem = null;
 
@@ -238,62 +241,111 @@
                 ]
             }
         ];
-        const checklistData03 = [{
-            category: "ระบบ SAFETY",
-            items: [
-                { name: "ประตูเปิด-ปิด ซ้าย-ขวา", std: "เปิด-ปิด ได้สะดวก" },
-                { name: "Limit switch ซ้าย-ขวา", std: "เปิดเครื่องหยุด - ปิดเครื่องเดิน" },
-                { name: "ตัวล็อค ประตูซ้าย-ขวา", std: "ล็อคประตูได้แน่น" },
-                { name: "EMERGENCY STOP", std: "กดแล้วเครื่องหยุด" }
-            ]
-        },
-        {
-            category: "ระบบไฟฟ้า",
-            items: [
-                { name: "ตู้ควบคุม", std: "สะอาด ไม่มีของวางเกะกะ" },
-                { name: "สายไฟฟ้าในตู้ควบคุม", std: "เป็นระเบียบ ไม่ชำรุด" },
-                { name: "สายไฟฟ้าทางเข้าเครื่อง", std: "เป็นระเบียบ/ ร้อยท่อ/ ไม่ชำรุด" },
-                { name: "Switch Control", std: "ทำงานได้ดี ไม่ชำรุด" },
-                { name: "อุปกรณ์ในตู้ควบคุม", std: "ไม่ร้อน ไหม้ อัดแน่น" }
-            ]
-        },
-        {
-            category: "ระบบไฮดรอลิค",
-            items: [
-                { name: "Solenoid Valve", std: "ทำงานปกติ ไม่รั่ว" },
-                { name: "กระบอกสูบ", std: "ยึดแน่น ไม่รั่ว" },
-                { name: "แรงดัน Mold press", std: "อยู่ในค่า 80-120 บาร์" },
-                { name: "ระดับน้ำมัน", std: "อยู่ในระดับกำหนด" }
-            ]
-        },
-        {
-            category: "ระบบ Steam",
-            items: [
-                { name: "Valve Steam", std: "เปิด-ปิด ได้ ไม่รั่ว" },
-                { name: "Pressur gauge contactor", std: "ทำงานตัด-ต่อ ปกติ" },
-                { name: "Glove Valve", std: "เปิด-ปิด ได้ ไม่รั่ว" },
-                { name: "Pressur gauge contactor", std: "สายสตรีมไม่แตก ไม่รั่ว" }
-            ]
-        },
-        {
-            category: "ระบบลม",
-            items: [
-                { name: "Solenoid Valve", std: "ทำงานปกติ ไม่รั่ว" },
-                { name: "สายลม", std: "ไม่รั่ว ไม่แตก" }
-            ]
-        },
-        {
-            category: "ระบบน้ำ",
-            items: [
-                { name: "Solenoid Valve", std: "ทำงานปกติ ไม่รั่ว" }
-            ]
-        },
-        {
-            category: "ระบบกล",
-            items: [
-                { name: "เพลาต่าง ๆ", std: "มีจาระบี ไม่โค้งงอ" }
-            ]
-        }];
+        const checklistData03 = [
+            {
+                category: "ระบบไฟฟ้า",
+                items: [
+                    { name: "ตู้ควบคุม", std: "สะอาด ไม่มีของอย่างอื่นวาง" },
+                    { name: "สายไฟฟ้าในตู้ควบคุม", std: "เป็นระเบียบ ไม่ชำรุด" },
+                    { name: "สายไฟรอบเครื่อง", std: "เป็นระเบียบ/ ร้อยท่อ/ ไม่ชำรุด" },
+                    { name: "เซ็นเซอร์", std: "ทำงานได้ดี ไม่ชำรุด" },
+                    { name: "อุปกรณ์ภายในตู้ควบคุม", std: "ไม่ร้อน ไหม้ ยึดแน่น" },
+                    { name: "มอเตอร์และเกียร์", std: "ทำงานปกติ ไม่มีเสียงดัง" },
+                    { name: "หลอดไฟส่องถัง", std: "ทำงานปกติ" }
+                ]
+            },
+            {
+                category: "ระบบไอน้ำ (Steam)",
+                items: [
+                    { name: "Valve Steam", std: "เปิด-ปิด ได้ ไม่รั่ว" },
+                    { name: "Reducing valve (วาล์วปรับแรงดัน)", std: "ทำงานตัด-ต่อ ปกติ" },
+                    { name: "สตรีมแทร็ป", std: "เปิด-ปิด ได้ ไม่รั่ว" }
+                ]
+            },
+            {
+                category: "ระบบลม",
+                items: [
+                    { name: "Solenoid Valve", std: "ทำงานปกติ ไม่รั่ว" },
+                    { name: "กระบอกลม เปิด-ปิด เม็ดลง", std: "ทำงานปกติ ไม่รั่ว" },
+                    { name: "วาล์ว เปิด-ปิด เม็ดลง", std: "ปิด-เปิดปกติไม่รั่ว" }
+                ]
+            },
+            {
+                category: "ระบบกล",
+                items: [
+                    { name: "เพลาต่าง ๆ", std: "มีจารบี ไม่ไก่งอ" }
+                ]
+            }
+        ];
+        const checklistData05 = [
+            {
+                category: "ระบบ SAFETY",
+                items: [
+                    { name: "ตัดการทำงานเมื่อความร้อนขึ้นสูง", std: "120 C ขึ้นไป" },
+                    { name: "ตัดต่อแรงดัน", std: "ตัด 7 บาร์ ต่อที่ 6 บาร์" }
+                ]
+            },
+            {
+                category: "ระบบไฟฟ้า",
+                items: [
+                    { name: "ตู้ควบคุม", std: "สะอาด ไม่มีของอย่างอื่นวาง" },
+                    { name: "สายไฟฟ้าในตู้ควบคุม", std: "เป็นระเบียบ ไม่ชำรุด" },
+                    { name: "สายไฟรอบเครื่อง", std: "เป็นระเบียบ/ ร้อยท่อ/ ไม่ชำรุด" },
+                    { name: "อุปกรณ์ภายในตู้ควบคุม", std: "ไม่ร้อน /ไหม้ /ยึดแน่น" }
+                ]
+            },
+            {
+                category: "ระบบน้ำมัน",
+                items: [
+                    { name: "ความร้อน", std: "ไม่เกิน 105 C" },
+                    { name: "ระดับน้ำมัน", std: "อยู่ขีดสีเขียว" },
+                    { name: "ข้อต่อต่าง ๆ", std: "ไม่มีการรั่วซึม" }
+                ]
+            },
+            {
+                category: "ระบบลม",
+                items: [
+                    { name: "ไส้กรองลม", std: "ทำงานปกติ ไม่รั่ว" },
+                    { name: "ตะแกรงกรองลมเข้า", std: "สะอาด" },
+                    { name: "รังผึ้งระบายความร้อน", std: "สะอาด" },
+                    { name: "ตัวกรองระบายน้ำ", std: "ไม่อุดตันมีน้ำไหล" }
+                ]
+            }
+        ];
+        const checklistData06 = [
+            {
+                category: "ระบบไฟฟ้า",
+                items: [
+                    { name: "ตู้ควบคุม", std: "สะอาด ไม่มีของอย่างอื่นวาง" },
+                    { name: "อุปกรณ์ภายในตู้ควบคุม", std: "ไม่ร้อน /ไหม้ /ยึดแน่น" },
+                    { name: "สายไฟฟ้า", std: "เป็นระเบียบ/ ร้อยท่อ/ ไม่ชำรุด" },
+                    { name: "สายพาน", std: "ตึงไม่หย่อน" },
+                    { name: "มอเตอร์", std: "ไม่มีเสียงดัง /ความร้อนไม่สูง" }
+                ]
+            },
+            {
+                category: "ระบบน้ำ",
+                items: [
+                    { name: "น้ำเลี้ยงปั๊ม", std: "เปิดดูน้ำมีเข้าปกติ" },
+                    { name: "ปั๊มดูดออกจากถัง", std: "ทำงานปกติ" }
+                ]
+            },
+            {
+                category: "ระบบระบายความร้อน",
+                items: [
+                    { name: "ปั๊มระบายความร้อน", std: "ทำงานปกติ" },
+                    { name: "คูลลิ่งระบายความร้อน", std: "ไม่มีรอยรั่วน้ำไหลผ่านปกติ" }
+                ]
+            },
+            {
+                category: "ระบบปั๊มสูญญากาศ",
+                items: [
+                    { name: "เสียง", std: "ทำงานปกติ" },
+                    { name: "ความร้อน", std: "ใช้มือสัมผัสได้ไม่ร้อน" },
+                    { name: "แรงดูด", std: "ไม่ต่ำกว่า 300 นิ้วปรอท" }
+                ]
+            }
+        ];
 
         window.addEventListener('load', () => {
             renderHistoryList();
@@ -308,12 +360,20 @@
 
         function renderAllTables() {
             document.getElementById('forms-container').innerHTML = '';
-            if (currentFMT === 37) {
+            if (currentFMT === 1) {
+                renderExactTable01();
+            } else if (currentFMT === 37) {
                 renderExactTable37(1, 20);
                 renderExactTable37(21, 40);
                 renderExactTable37(41, 54);
             } else if (currentFMT === 2) {
                 renderExactTable02();
+            } else if (currentFMT === 3) {
+                renderExactTable03();
+            } else if (currentFMT === 5) {
+                renderExactTable05();
+            } else if (currentFMT === 6) {
+                renderExactTable06();
             }
         }
 
@@ -328,6 +388,173 @@
             return `${d}/${m}/${beYear}`;
         }
 
+
+        function renderExactTable01() {
+            const div = document.createElement('div');
+            div.className = 'sheet-container';
+
+            const times = ["08.00", "10.00", "12.00", "14.00", "16.00", "18.00", "20.00", "22.00", "24.00", "02.00", "04.00", "06.00"];
+
+            let rowsHtml = '';
+            times.forEach(time => {
+                rowsHtml += `<tr>
+                    <td style="text-align: center; font-weight: bold; border: 1px solid #000;">${time}</td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <!-- Boiler -->
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <!-- Pumps and Cooling -->
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <!-- RO Water -->
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <!-- Water Quantity -->
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <!-- Tank Pressure -->
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                    <td contenteditable="true" class="log-cell" style="border: 1px solid #000; text-align:center;"></td>
+                </tr>`;
+            });
+
+            div.innerHTML = `
+                <div style="border-left: 1px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="display: flex; align-items: stretch;">
+                        <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center;">
+                            <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center;">
+                            ใบรายงานการตรวจเช็คเครื่องจักรต้นกำลัง
+                        </div>
+
+                        <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>ประจำวันที่</b>
+                            <input type="date" class="fmt01-date" style="border: 1px solid #000; padding: 2px;">
+                            <b style="margin-left: auto;">FMT-01</b>
+                            <b style="margin-left: 10px;">Re#0</b>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size: 0.55rem; border-collapse: collapse; width: 100%; border: 1px solid #000; margin-top:0;">
+                    <thead>
+                        <tr style="height: 30px;">
+                            <th rowspan="3" style="width: 40px; border: 1px solid #000;">เวลา</th>
+                            <th rowspan="3" style="width: 40px; border: 1px solid #000;">อุณหภูมิ<br>ปล่อง C&deg;</th>
+                            <th colspan="6" style="border: 1px solid #000;">หม้อไอน้ำ</th>
+                            <th colspan="5" style="border: 1px solid #000;">ปั๊มน้ำ - คูลลิ่ง</th>
+                            <th colspan="4" style="border: 1px solid #000;">น้ำ R.O.</th>
+                            <th colspan="2" style="border: 1px solid #000;">ปริมาณน้ำ</th>
+                            <th colspan="3" style="border: 1px solid #000;">แรงดันที่ถัง</th>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <th rowspan="2" style="border: 1px solid #000;">แรงดัน<br>ไอน้ำ<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">ระดับน้ำ<br>หลอด<br>ขีด</th>
+                            <th rowspan="2" style="border: 1px solid #000;">อุณหภูมิ<br>น้ำเข้า<br>C&deg;</th>
+                            <th rowspan="2" style="border: 1px solid #000;">ปริมาณ<br>น้ำ<br>m<sup>3</sup></th>
+                            <th colspan="2" style="border: 1px solid #000;">ปั๊มที่ใช้สภาพ</th>
+                            <th colspan="5" style="border: 1px solid #000;">เสียงและแรงสั่นสะเทือน</th>
+                            <th rowspan="2" style="border: 1px solid #000; font-size: 0.45rem;">ค่า Conductivity<br>ppm.</th>
+                            <th rowspan="2" style="border: 1px solid #000;">ค่ากรด-<br>ด่าง<br>ph.</th>
+                            <th rowspan="2" style="border: 1px solid #000;">แรงดัน<br>เข้า m/t.<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">แรงดัน<br>ออก m/t.<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">main<br>m<sup>3</sup></th>
+                            <th rowspan="2" style="border: 1px solid #000;">R.O.<br>m<sup>3</sup></th>
+                            <th rowspan="2" style="border: 1px solid #000;">ลม<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">น้ำ<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">แวคคั่ม<br>bar</th>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <th style="border: 1px solid #000;"># 1</th>
+                            <th style="border: 1px solid #000;"># 2</th>
+                            <th style="border: 1px solid #000;">P1</th>
+                            <th style="border: 1px solid #000;">P2</th>
+                            <th style="border: 1px solid #000;">P3</th>
+                            <th style="border: 1px solid #000;">P4</th>
+                            <th style="border: 1px solid #000;">P5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+
+                <div style="display: flex; border: 1px solid #000; border-top: none; font-size: 0.65rem; padding: 10px;">
+                    <div style="flex: 2;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">มาตรฐานในการตรวจเช็คหม้อไอน้ำ</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                            <div>อุณหภูมิปล่อง = &gt; 200 C&deg;</div>
+                            <div>แรงดันไอน้ำ = 6 - 10 bar</div>
+                            <div>ระดับน้ำ = 3 - 6 ขีด</div>
+                            <div>ปั๊มน้ำ = ไม่มีเสียงดังและสั่น</div>
+                        </div>
+                    </div>
+                    <div style="flex: 2; border-left: 1px solid #000; padding-left: 10px;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">มาตรฐานเครื่องกรองน้ำ R.O</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                            <div>ค่า conductivity = 0 - 80 ppm</div>
+                            <div>ค่ากรด-ด่าง = 7 - 9 ph</div>
+                            <div>ค่าต่างแรงดันเข้าออก = 1.5 bar</div>
+                        </div>
+                    </div>
+                    <div style="flex: 2; border-left: 1px solid #000; padding-left: 10px;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">สรุปปริมาณการใช้ทั้งโรงงาน</div>
+                        <div>น้ำ = <span contenteditable="true" class="summary-water" style="border-bottom: 1px solid #000; min-width: 50px; display: inline-block; text-align:center;"></span> m<sup>3</sup></div>
+                    </div>
+                </div>
+
+                <div style="border: 2px solid #000; border-top: none; padding: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">หมายเหตุ</div>
+                            <div contenteditable="true" class="correction-input" style="min-height: 40px; outline: none;"></div>
+                        </div>
+                        <div style="flex: 1.5; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('forms-container').appendChild(div);
+        }
 
         function renderExactTable37(startNum, endNum) {
             const div = document.createElement('div');
@@ -539,7 +766,354 @@
                 </div>`;
             document.getElementById('forms-container').appendChild(div);
         }
+        function renderExactTable03() {
+            const div = document.createElement('div');
+            div.className = 'sheet-container';
 
+            let dateHeaders = '';
+            for (let i = 1; i <= 31; i++) {
+                dateHeaders += `<th style="width: 20px; text-align: center; cursor: pointer" onclick="toggleColumn(${i})">${i}</th>`;
+            }
+
+            let rowsHtml = '';
+            checklistData03.forEach(group => {
+                // Category Header Row
+                rowsHtml += `<tr style="background: #fdfdfd;">
+                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
+                    ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+                </tr>`;
+
+                group.items.forEach((item, idx) => {
+                    rowsHtml += `<tr>
+                        <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${item.name}</td>
+                        <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${item.std}</td>`;
+                    for (let i = 1; i <= 31; i++) {
+                        rowsHtml += `<td class="check-cell mach-${i}" data-state="0" data-num="${i}" style="border: 1px solid #000;"></td>`;
+                    }
+                    rowsHtml += `</tr>`;
+                });
+            });
+
+            div.innerHTML = `
+                <div style="border-left: 1px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="display: flex; align-items: stretch;">
+                        <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center;">
+                            <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center;">
+                            ตารางการตรวจเช็คเครื่องจักรนิ่งเม็ดประจำวัน
+                        </div>
+
+                        <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>เดือน</b>
+                            <select class="fmt02-month-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                                <option value="">เลือก</option>
+                                ${thaiMonths.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('')}
+                            </select>
+                            <select class="fmt02-year-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                                <option value="">ปี</option>
+                                ${Array.from({ length: 10 }, (_, i) => getCurrentThaiYear() - 5 + i).map(y => `<option value="${y}">${y}</option>`).join('')}
+                            </select>
+                            <b style="margin-left: auto;">FMT-03</b>
+                            <b style="margin-left: 10px;">Re#0</b>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; border: 1px solid #000; border-top: none; font-size: 0.8rem;">
+                        <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span contenteditable="true" class="fmt02-m-no" style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;"></span></div>
+                        <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">PREEXPANDER FOAM</span></div>
+                        <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">อาคารผลิต 2<span></div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:130px;">รายละเอียดของการตรวจเช็ค</th>
+                            <th rowspan="2" style="width:130px;">มาตรฐานการตรวจ</th>
+                            <th colspan="31">Date/วันที่</th>
+                        </tr>
+                        <tr>${dateHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">
+                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                            </div>
+                            <div style="font-size: 0.75rem; line-height: 1.4;">
+                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                            </div>
+                        </div>
+                        <div style="flex: 1.2; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('forms-container').appendChild(div);
+        }
+        function renderExactTable05() {
+            const div = document.createElement('div');
+            div.className = 'sheet-container';
+
+            let dateHeaders = '';
+            for (let i = 1; i <= 31; i++) {
+                dateHeaders += `<th style="width: 20px; text-align: center; cursor: pointer" onclick="toggleColumn(${i})">${i}</th>`;
+            }
+
+            let rowsHtml = '';
+            checklistData05.forEach(group => {
+                // Category Header Row
+                rowsHtml += `<tr style="background: #fdfdfd;">
+                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
+                    ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+                </tr>`;
+
+                group.items.forEach((item, idx) => {
+                    rowsHtml += `<tr>
+                        <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${item.name}</td>
+                        <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${item.std}</td>`;
+                    for (let i = 1; i <= 31; i++) {
+                        rowsHtml += `<td class="check-cell mach-${i}" data-state="0" data-num="${i}" style="border: 1px solid #000;"></td>`;
+                    }
+                    rowsHtml += `</tr>`;
+                });
+            });
+
+            div.innerHTML = `
+                <div style="border-left: 1px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="display: flex; align-items: stretch;">
+                        <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center;">
+                            <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center;">
+                            ตารางการตรวจเช็คเครื่องจักรปั๊มลมประจำวัน
+                        </div>
+
+                        <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>เดือน</b>
+                            <select class="fmt02-month-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                                <option value="">เลือก</option>
+                                ${thaiMonths.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('')}
+                            </select>
+                            <select class="fmt02-year-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                                <option value="">ปี</option>
+                                ${Array.from({ length: 10 }, (_, i) => getCurrentThaiYear() - 5 + i).map(y => `<option value="${y}">${y}</option>`).join('')}
+                            </select>
+                            <b style="margin-left: auto;">FMT-05</b>
+                            <b style="margin-left: 10px;">Re#0</b>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; border: 1px solid #000; border-top: none; font-size: 0.8rem;">
+                        <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span contenteditable="true" class="fmt02-m-no" style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;"></span></div>
+                        <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">ปั๊มลม</span></div>
+                        <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">แท่นปั๊มลม<span></div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:130px;">รายละเอียดของการตรวจเช็ค</th>
+                            <th rowspan="2" style="width:130px;">มาตรฐานการตรวจ</th>
+                            <th colspan="31">Date/วันที่</th>
+                        </tr>
+                        <tr>${dateHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">
+                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                            </div>
+                            <div style="font-size: 0.75rem; line-height: 1.4;">
+                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                            </div>
+                        </div>
+                        <div style="flex: 1.2; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('forms-container').appendChild(div);
+        }
+        function renderExactTable06() {
+            const div = document.createElement('div');
+            div.className = 'sheet-container';
+
+            let dateHeaders = '';
+            for (let i = 1; i <= 31; i++) {
+                dateHeaders += `<th style="width: 20px; text-align: center; cursor: pointer" onclick="toggleColumn(${i})">${i}</th>`;
+            }
+
+            let rowsHtml = '';
+            checklistData06.forEach(group => {
+                // Category Header Row
+                rowsHtml += `<tr style="background: #fdfdfd;">
+                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
+                    ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+                </tr>`;
+
+                group.items.forEach((item, idx) => {
+                    rowsHtml += `<tr>
+                        <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${item.name}</td>
+                        <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${item.std}</td>`;
+                    for (let i = 1; i <= 31; i++) {
+                        rowsHtml += `<td class="check-cell mach-${i}" data-state="0" data-num="${i}" style="border: 1px solid #000;"></td>`;
+                    }
+                    rowsHtml += `</tr>`;
+                });
+            });
+
+            div.innerHTML = `
+                <div style="border-left: 1px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="display: flex; align-items: stretch;">
+                        <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center;">
+                            <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center;">
+                            ตารางการตรวจเช็คเครื่องจักรปั๊มสูญญากาศประจำวัน
+                        </div>
+
+                        <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>เดือน</b>
+                            <select class="fmt02-month-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                                <option value="">เลือก</option>
+                                ${thaiMonths.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('')}
+                            </select>
+                            <select class="fmt02-year-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
+                                <option value="">ปี</option>
+                                ${Array.from({ length: 10 }, (_, i) => getCurrentThaiYear() - 5 + i).map(y => `<option value="${y}">${y}</option>`).join('')}
+                            </select>
+                            <b style="margin-left: auto;">FMT-06</b>
+                            <b style="margin-left: 10px;">Re#0</b>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; border: 1px solid #000; border-top: none; font-size: 0.8rem;">
+                        <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span contenteditable="true" class="fmt02-m-no" style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;"></span></div>
+                        <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">ปั๊มสูญญากาศ</span></div>
+                        <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">ข้างอาคารผลิต 1<span></div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:130px;">รายละเอียดของการตรวจเช็ค</th>
+                            <th rowspan="2" style="width:130px;">มาตรฐานการตรวจ</th>
+                            <th colspan="31">Date/วันที่</th>
+                        </tr>
+                        <tr>${dateHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">
+                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                            </div>
+                            <div style="font-size: 0.75rem; line-height: 1.4;">
+                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                            </div>
+                        </div>
+                        <div style="flex: 1.2; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('forms-container').appendChild(div);
+        }
         function toggle(cell) {
             if (!isDragging) {
                 setCellState(cell, (parseInt(cell.dataset.state) + 1) % 4);
@@ -593,13 +1167,16 @@
             if (!label) return alert("กรุณาระบุชื่อ");
 
             const cellStates = Array.from(document.querySelectorAll('.check-cell')).map(c => ({ num: c.dataset.num, state: c.dataset.state }));
+            const logData = Array.from(document.querySelectorAll('.log-cell')).map(c => c.textContent);
+            const summaryWater = document.querySelector('.summary-water')?.textContent || '';
+            const fmt01Date = document.querySelector('.fmt01-date')?.value || '';
             const rowRemarks = Array.from(document.querySelectorAll('.row-remark')).map(el => el.textContent);
             const remarks = Array.from(document.querySelectorAll('.correction-input')).map(el => el.textContent);
             const sigDates = Array.from(document.querySelectorAll('.date-input')).map(el => el.value);
             const sigNames = Array.from(document.querySelectorAll('.sig-name')).map(el => el.textContent);
 
             let metadata = {};
-            if (currentFMT === 2) {
+            if (currentFMT === 2 || currentFMT === 3 || currentFMT === 5 || currentFMT === 6) {
                 const monthSelect = document.querySelector('.fmt02-month-select');
                 const yearSelect = document.querySelector('.fmt02-year-select');
                 const monthText = monthSelect && monthSelect.value ? thaiMonths[parseInt(monthSelect.value) - 1] + ' ' + yearSelect.value : '';
@@ -618,6 +1195,9 @@
                 label,
                 timestamp: new Date().toLocaleString('th-TH'),
                 data: cellStates,
+                logData,
+                summaryWater,
+                fmt01Date,
                 rowRemarks,
                 remarks,
                 sigDates,
@@ -713,7 +1293,11 @@
         }
 
         function generateFormHTMLFromData(item) {
+            if (item.fmt === 1) return renderStaticForm01(item);
             if (item.fmt === 2) return renderStaticForm02(item);
+            if (item.fmt === 3) return renderStaticForm03(item);
+            if (item.fmt === 5) return renderStaticForm05(item);
+            if (item.fmt === 6) return renderStaticForm06(item);
             return renderStaticForm37(item);
         }
 
@@ -819,6 +1403,141 @@
                 </div>`;
             });
             return fullHTML;
+        }
+
+        function renderStaticForm01(item) {
+            const times = ["08.00", "10.00", "12.00", "14.00", "16.00", "18.00", "20.00", "22.00", "24.00", "02.00", "04.00", "06.00"];
+            let rowsHtml = '';
+            times.forEach((time, rIdx) => {
+                rowsHtml += `<tr>
+                    <td style="text-align: center; font-weight: bold; border: 1px solid #000;">${time}</td>`;
+                for (let cIdx = 0; cIdx < 21; cIdx++) {
+                    const valIdx = rIdx * 21 + cIdx;
+                    rowsHtml += `<td style="border: 1px solid #000; text-align:center; height:18px;">${item.logData ? item.logData[valIdx] || '' : ''}</td>`;
+                }
+                rowsHtml += `</tr>`;
+            });
+
+            return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+                <div style="border-left: 1px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="display: flex; align-items: stretch; border: 1px solid #000;">
+                        <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                            <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
+                            ใบรายงานการตรวจเช็คเครื่องจักรต้นกำลัง
+                        </div>
+                        <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>ประจำวันที่</b> ${toThaiDateStr(item.fmt01Date || '')}
+                            <b style="margin-left: auto;">FMT-01</b>
+                            <b style="margin-left: 10px;">Re#0</b>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size: 0.45rem; border-collapse: collapse; width: 100%; border: 1px solid #000; margin-top:0;">
+                    <thead>
+                        <tr style="height: 30px;">
+                            <th rowspan="3" style="width: 40px; border: 1px solid #000;">เวลา</th>
+                            <th rowspan="3" style="width: 40px; border: 1px solid #000;">อุณหภูมิ<br>ปล่อง C&deg;</th>
+                            <th colspan="6" style="border: 1px solid #000;">หม้อไอน้ำ</th>
+                            <th colspan="5" style="border: 1px solid #000;">ปั๊มน้ำ - คูลลิ่ง</th>
+                            <th colspan="4" style="border: 1px solid #000;">น้ำ R.O.</th>
+                            <th colspan="2" style="border: 1px solid #000;">ปริมาณน้ำ</th>
+                            <th colspan="3" style="border: 1px solid #000;">แรงดันที่ถัง</th>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <th rowspan="2" style="border: 1px solid #000;">แรงดัน<br>ไอน้ำ<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">ระดับน้ำ<br>หลอด<br>ขีด</th>
+                            <th rowspan="2" style="border: 1px solid #000;">อุณหภูมิ<br>น้ำเข้า<br>C&deg;</th>
+                            <th rowspan="2" style="border: 1px solid #000;">ปริมาณ<br>น้ำ<br>m<sup>3</sup></th>
+                            <th colspan="2" style="border: 1px solid #000;">ปั๊มที่ใช้สภาพ</th>
+                            <th colspan="5" style="border: 1px solid #000;">เสียงและแรงสั่นสะเทือน</th>
+                            <th rowspan="2" style="border: 1px solid #000; font-size: 0.35rem;">ค่า Conductivity<br>ppm.</th>
+                            <th rowspan="2" style="border: 1px solid #000;">ค่ากรด-<br>ด่าง<br>ph.</th>
+                            <th rowspan="2" style="border: 1px solid #000;">แรงดัน<br>เข้า m/t.<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">แรงดัน<br>ออก m/t.<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">main<br>m<sup>3</sup></th>
+                            <th rowspan="2" style="border: 1px solid #000;">R.O.<br>m<sup>3</sup></th>
+                            <th rowspan="2" style="border: 1px solid #000;">ลม<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">น้ำ<br>bar</th>
+                            <th rowspan="2" style="border: 1px solid #000;">แวคคั่ม<br>bar</th>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <th style="border: 1px solid #000;"># 1</th>
+                            <th style="border: 1px solid #000;"># 2</th>
+                            <th style="border: 1px solid #000;">P1</th>
+                            <th style="border: 1px solid #000;">P2</th>
+                            <th style="border: 1px solid #000;">P3</th>
+                            <th style="border: 1px solid #000;">P4</th>
+                            <th style="border: 1px solid #000;">P5</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+
+                <div style="display: flex; border: 1px solid #000; border-top: none; font-size: 0.6rem; padding: 10px;">
+                    <div style="flex: 2;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">มาตรฐานในการตรวจเช็คหม้อไอน้ำ</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                            <div>อุณหภูมิปล่อง = &gt; 200 C&deg;</div>
+                            <div>แรงดันไอน้ำ = 6 - 10 bar</div>
+                            <div>ระดับน้ำ = 3 - 6 ขีด</div>
+                            <div>ปั๊มน้ำ = ไม่มีเสียงดังและสั่น</div>
+                        </div>
+                    </div>
+                    <div style="flex: 2; border-left: 1px solid #000; padding-left: 10px;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">มาตรฐานเครื่องกรองน้ำ R.O</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                            <div>ค่า conductivity = 0 - 80 ppm</div>
+                            <div>ค่ากรด-ด่าง = 7 - 9 ph</div>
+                            <div>ค่าต่างแรงดันเข้าออก = 1.5 bar</div>
+                        </div>
+                    </div>
+                    <div style="flex: 2; border-left: 1px solid #000; padding-left: 10px;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">สรุปปริมาณการใช้ทั้งโรงงาน</div>
+                        <div>น้ำ = <span style="border-bottom: 1px solid #000; min-width: 50px; display: inline-block; text-align:center;">${item.summaryWater || ''}</span> m<sup>3</sup></div>
+                    </div>
+                </div>
+
+                <div style="border: 2px solid #000; border-top: none; padding: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">หมายเหตุ</div>
+                            <div style="min-height: 40px;">${item.remarks[0] || ''}</div>
+                        </div>
+                        <div style="flex: 1.5; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px; text-align:center;">${item.sigNames[0] || ''}</td>
+                                    <td style="border: 1px solid #000; padding: 2px; text-align:center;">${item.sigNames[1] || ''}</td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px; text-align:center;">${item.sigNames[2] || ''}</td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${toThaiDateStr(item.sigDates[0] || '')}</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${toThaiDateStr(item.sigDates[1] || '')}</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${toThaiDateStr(item.sigDates[2] || '')}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
         }
 
         function renderStaticForm02(item) {
@@ -931,10 +1650,341 @@
             </div>`;
         }
 
+        function renderStaticForm03(item) {
+            let dateHeaders = '';
+            for (let i = 1; i <= 31; i++) {
+                dateHeaders += `<th style="width: 20px; text-align: center;">${i}</th>`;
+            }
+
+            let rowsHtml = '';
+            checklistData03.forEach(group => {
+                rowsHtml += `<tr style="background: #fdfdfd;">
+                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+                    ${Array(31).fill('<td style="border: 1px solid #000;"></td>').join('')}
+                </tr>`;
+
+                group.items.forEach((chkItem, idx) => {
+                    rowsHtml += `<tr>
+                        <td class="col-item" style="font-size:0.65rem; padding-left: 15px; border: 1px solid #000;">${chkItem.name}</td>
+                        <td class="col-std" style="font-size:0.65rem; border: 1px solid #000;">${chkItem.std}</td>`;
+                    for (let i = 1; i <= 31; i++) {
+                        const cellIdx = checklistData03.flatMap(g => g.items).indexOf(chkItem) * 31 + (i - 1);
+                        const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                        let content = "";
+                        let cls = "";
+                        if (state === 1) { content = "/"; cls = "status-ok"; }
+                        else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                        rowsHtml += `<td class="check-cell ${cls}" style="text-align:center; font-weight:800; border: 1px solid #000; width:22px;">${content}</td>`;
+                    }
+                    rowsHtml += `</tr>`;
+                });
+            });
+
+            const mData = item.metadata || {};
+
+            return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+                <div style="border: 2px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="border: none; border-bottom: 2px solid #000;">
+                        <div class="logo-box" style="border-right: 2px solid #000; padding: 8px 15px; width: auto; flex: 1; display: flex; flex-direction: row; gap: 10px; align-items: center;">
+                            <img src="Logo.png" alt="Logo" style="height: 38px; width: auto;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเช็คเครื่องจักรนิ่งเม็ดประจำวัน</div>
+                        <div style="flex: 1.2; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>เดือน</b> ${mData.month || '................../..................'}
+                            <b style="margin-left: auto;">FMT-03</b>
+                            <b style="margin-left: 10px;">Re#0</b>
+                        </div>
+                    </div>
+                    <div style="display: flex; border-bottom: 2px solid #000; font-size: 0.8rem;">
+                        <div style="flex: 1.2; padding: 6px 10px; border-right: 2px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
+                        <div style="flex: 2; padding: 6px 10px; border-right: 2px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">PREEXPANDER FOAM</span></div>
+                        <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: อาคารผลิต 2</div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size:0.6rem; width:100%; border-top: none;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:120px;">รายละเอียดของการตรวจเช็ค</th>
+                            <th rowspan="2" style="width:120px;">มาตรฐานการตรวจ</th>
+                            <th colspan="31">Date/วันที่</th>
+                        </tr>
+                        <tr>${dateHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">
+                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                            </div>
+                            <div style="font-size: 0.75rem; line-height: 1.4;">
+                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                            </div>
+                        </div>
+                        <div style="flex: 1.2; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[0] || '') : ''}</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[1] || '') : ''}</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[2] || '') : ''}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderStaticForm05(item) {
+            let dateHeaders = '';
+            for (let i = 1; i <= 31; i++) {
+                dateHeaders += `<th style="width: 20px; text-align: center;">${i}</th>`;
+            }
+
+            let rowsHtml = '';
+            checklistData05.forEach(group => {
+                rowsHtml += `<tr style="background: #fdfdfd;">
+                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+                    ${Array(31).fill('<td style="border: 1px solid #000;"></td>').join('')}
+                </tr>`;
+
+                group.items.forEach((chkItem, idx) => {
+                    rowsHtml += `<tr>
+                        <td class="col-item" style="font-size:0.65rem; padding-left: 15px; border: 1px solid #000;">${chkItem.name}</td>
+                        <td class="col-std" style="font-size:0.65rem; border: 1px solid #000;">${chkItem.std}</td>`;
+                    for (let i = 1; i <= 31; i++) {
+                        const cellIdx = checklistData05.flatMap(g => g.items).indexOf(chkItem) * 31 + (i - 1);
+                        const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                        let content = "";
+                        let cls = "";
+                        if (state === 1) { content = "/"; cls = "status-ok"; }
+                        else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                        rowsHtml += `<td class="check-cell ${cls}" style="text-align:center; font-weight:800; border: 1px solid #000; width:22px;">${content}</td>`;
+                    }
+                    rowsHtml += `</tr>`;
+                });
+            });
+
+            const mData = item.metadata || {};
+
+            return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+                <div style="border: 2px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="border: none; border-bottom: 2px solid #000;">
+                        <div class="logo-box" style="border-right: 2px solid #000; padding: 8px 15px; width: auto; flex: 1; display: flex; flex-direction: row; gap: 10px; align-items: center;">
+                            <img src="Logo.png" alt="Logo" style="height: 38px; width: auto;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเช็คเครื่องจักรปั๊มลมประจำวัน</div>
+                        <div style="flex: 1.2; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>เดือน</b> ${mData.month || '................../..................'}
+                            <b style="margin-left: auto;">FMT-05</b>
+                            <b style="margin-left: 10px;">Re#0</b>
+                        </div>
+                    </div>
+                    <div style="display: flex; border-bottom: 2px solid #000; font-size: 0.8rem;">
+                        <div style="flex: 1.2; padding: 6px 10px; border-right: 2px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
+                        <div style="flex: 2; padding: 6px 10px; border-right: 2px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">ปั๊มลม</span></div>
+                        <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: แท่นปั๊มลม</div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size:0.6rem; width:100%; border-top: none;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:120px;">รายละเอียดของการตรวจเช็ค</th>
+                            <th rowspan="2" style="width:120px;">มาตรฐานการตรวจ</th>
+                            <th colspan="31">Date/วันที่</th>
+                        </tr>
+                        <tr>${dateHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">
+                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                            </div>
+                            <div style="font-size: 0.75rem; line-height: 1.4;">
+                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                            </div>
+                        </div>
+                        <div style="flex: 1.2; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[0] || '') : ''}</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[1] || '') : ''}</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[2] || '') : ''}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderStaticForm06(item) {
+            let dateHeaders = '';
+            for (let i = 1; i <= 31; i++) {
+                dateHeaders += `<th style="width: 20px; text-align: center;">${i}</th>`;
+            }
+
+            let rowsHtml = '';
+            checklistData06.forEach(group => {
+                rowsHtml += `<tr style="background: #fdfdfd;">
+                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+                    ${Array(31).fill('<td style="border: 1px solid #000;"></td>').join('')}
+                </tr>`;
+
+                group.items.forEach((chkItem, idx) => {
+                    rowsHtml += `<tr>
+                        <td class="col-item" style="font-size:0.65rem; padding-left: 15px; border: 1px solid #000;">${chkItem.name}</td>
+                        <td class="col-std" style="font-size:0.65rem; border: 1px solid #000;">${chkItem.std}</td>`;
+                    for (let i = 1; i <= 31; i++) {
+                        const cellIdx = checklistData06.flatMap(g => g.items).indexOf(chkItem) * 31 + (i - 1);
+                        const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                        let content = "";
+                        let cls = "";
+                        if (state === 1) { content = "/"; cls = "status-ok"; }
+                        else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                        rowsHtml += `<td class="check-cell ${cls}" style="text-align:center; font-weight:800; border: 1px solid #000; width:22px;">${content}</td>`;
+                    }
+                    rowsHtml += `</tr>`;
+                });
+            });
+
+            const mData = item.metadata || {};
+
+            return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+                <div style="border: 2px solid #000; margin-bottom: 0;">
+                    <div class="form-header" style="border: none; border-bottom: 2px solid #000;">
+                        <div class="logo-box" style="border-right: 2px solid #000; padding: 8px 15px; width: auto; flex: 1; display: flex; flex-direction: row; gap: 10px; align-items: center;">
+                            <img src="Logo.png" alt="Logo" style="height: 38px; width: auto;">
+                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        </div>
+                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเช็คเครื่องจักรปั๊มสูญญากาศประจำวัน</div>
+                        <div style="flex: 1.2; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                            <b>เดือน</b> ${mData.month || '................../..................'}
+                            <b style="margin-left: auto;">FMT-06</b>
+                            <b style="margin-left: 10px;">Re#0</b>
+                        </div>
+                    </div>
+                    <div style="display: flex; border-bottom: 2px solid #000; font-size: 0.8rem;">
+                        <div style="flex: 1.2; padding: 6px 10px; border-right: 2px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
+                        <div style="flex: 2; padding: 6px 10px; border-right: 2px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">ปั๊มสูญญากาศ</span></div>
+                        <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: ข้างอาคารผลิต 1</div>
+                    </div>
+                </div>
+
+                <table class="main-table" style="font-size:0.6rem; width:100%; border-top: none;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:120px;">รายละเอียดของการตรวจเช็ค</th>
+                            <th rowspan="2" style="width:120px;">มาตรฐานการตรวจ</th>
+                            <th colspan="31">Date/วันที่</th>
+                        </tr>
+                        <tr>${dateHeaders}</tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                    <div style="display:flex;">
+                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.85rem; font-weight: bold;">
+                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                            </div>
+                            <div style="font-size: 0.75rem; line-height: 1.4;">
+                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                            </div>
+                        </div>
+                        <div style="flex: 1.2; padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                                </tr>
+                                <tr style="height: 35px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000;"></td>
+                                    <td style="border: 1px solid #000; border-right: none;"></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                                    <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[0] || '') : ''}</td>
+                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[1] || '') : ''}</td>
+                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[2] || '') : ''}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
         function applyHistoryState(item) {
             clearAll();
             const cells = document.querySelectorAll('.check-cell');
             item.data.forEach((d, i) => { if (cells[i]) setCellState(cells[i], parseInt(d.state)); });
+
+            if (item.fmt === 1 && item.logData) {
+                const logCells = document.querySelectorAll('.log-cell');
+                item.logData.forEach((val, i) => { if (logCells[i]) logCells[i].textContent = val; });
+                if (document.querySelector('.summary-water')) document.querySelector('.summary-water').textContent = item.summaryWater || '';
+                if (document.querySelector('.fmt01-date')) document.querySelector('.fmt01-date').value = item.fmt01Date || '';
+            }
             const remarks = document.querySelectorAll('.correction-input');
             item.remarks.forEach((txt, i) => { if (remarks[i]) remarks[i].textContent = txt; });
             const dates = document.querySelectorAll('.date-input');
@@ -952,7 +2002,7 @@
                 item.rowRemarks.forEach((txt, i) => { if (rowRemarks[i]) rowRemarks[i].textContent = txt; });
             }
 
-            if (item.fmt === 2 && item.metadata) {
+            if ((item.fmt === 2 || item.fmt === 3 || item.fmt === 5 || item.fmt === 6) && item.metadata) {
                 if (document.querySelector('.fmt02-m-no')) document.querySelector('.fmt02-m-no').textContent = item.metadata.mNo || '';
 
                 // Parse and set month/year
@@ -1156,89 +2206,6 @@
             } finally {
                 saveBtn.disabled = false;
             }
-        }
-
-        function saveLocally() {
-            // ดึงชื่อจาก Modal Input ที่คุณมีอยู่แล้วใน HTML
-            const jobTitle = document.getElementById('modalInput').value;
-
-            if (!jobTitle) {
-                alert("กรุณาระบุชื่อรายการที่บันทึก");
-                return;
-            }
-
-            const checks = [];
-            document.querySelectorAll('.check-cell').forEach(c => checks.push(parseInt(c.dataset.state)));
-
-            const data = {
-                id: Date.now(),
-                fmt: currentFMT,
-                date: new Date().toLocaleDateString('th-TH'),
-                inspector: jobTitle, // ใช้ชื่อที่กรอกใน Modal เป็นชื่อผู้บันทึกชั่วคราว
-                checks: checks,
-                jobName: jobTitle
-            };
-
-            // ส่งไป Sheet
-            sendToGoogleSheet(data);
-
-            // ปิด Modal
-            document.getElementById('saveModal').style.display = 'none';
-        }
-
-        // แก้ไขฟังก์ชัน saveLocally เดิมให้สมบูรณ์
-        function saveLocally() {
-            const inspector = document.getElementById('inspectorName').value;
-            const approver = document.getElementById('approverName').value;
-
-            if (!inspector) {
-                alert("กรุณาระบุชื่อผู้ตรวจสอบก่อนบันทึก");
-                return;
-            }
-
-            // รวบรวมข้อมูลจากฟอร์ม
-            const checks = [];
-            const corrections = [];
-            const dates = [];
-
-            document.querySelectorAll('.check-cell').forEach(c => checks.push(parseInt(c.dataset.state)));
-            document.querySelectorAll('.correction-input').forEach(c => corrections.push(c.textContent));
-            document.querySelectorAll('.date-input').forEach(c => dates.push(c.value));
-
-            const data = {
-                id: currentLoadedId || Date.now(),
-                fmt: currentFMT,
-                date: document.getElementById('inspectDate').value,
-                inspector: inspector,
-                approver: approver,
-                checks: checks,
-                corrections: corrections,
-                dates: dates,
-                jobName: document.getElementById('jobName') ? document.getElementById('jobName').value : "",
-                location: document.getElementById('location') ? document.getElementById('location').value : ""
-            };
-
-            // บันทึกลง LocalStorage (เพื่อดู History ฝั่งซ้าย)
-            let history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
-            if (currentLoadedId) {
-                const index = history.findIndex(h => h.id === currentLoadedId);
-                if (index !== -1) history[index] = data;
-            } else {
-                history.unshift(data);
-            }
-            localStorage.setItem('fmt_history', JSON.stringify(history));
-
-            // อัปเดต UI
-            renderHistoryList();
-
-            // --- ส่งข้อมูลไป Google Sheet ---
-            sendToGoogleSheet(data);
-        }
-
-        // แก้ไขฟังก์ชัน updateHistory (ปุ่มอัปเดต)
-        function updateHistory() {
-            if (!currentLoadedId) return;
-            saveLocally();
         }
 
         // Draggable Controls
