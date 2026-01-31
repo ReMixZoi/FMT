@@ -52,7 +52,6 @@
                 <option value="03">FMT-03 (นิ่งเม็ดประจำวัน)</option>
                 <option value="05">FMT-05 (ปั๊มลมประจำวัน)</option>
                 <option value="06">FMT-06 (ปั๊มสูญญากาศประจำวัน)</option>
-                <option value="16">FMT-16 (เครื่องบดโฟมประจำวัน)</option>
                 <option value="37">FMT-37 (ระบบสารสนเทศ)</option>
 
 
@@ -113,7 +112,7 @@
     <div id="forms-container"></div>
 
     <script>
-        let currentFMT = 16;
+        let currentFMT = 3;
         let currentLoadedId = null;
         let pendingLoadItem = null;
 
@@ -184,32 +183,6 @@
             }
         ];
 
-        const checklistData16 = [
-            {
-                category: "ระบบไฟฟ้า",
-                items: [
-                    { name: "ตู้ควบคุม", std: "ตู้สวิตช์ควบคุมปกติ" },
-                    { name: "อุปกรณ์ต่างๆในตู้", std: "แน่นไม่ร้อน ไม่มีเสียง" },
-                    { name: "มอเตอร์", std: "ไม่ร้อน ไม่มีเสียงดัง" },
-                    { name: "รางเดินสายไฟฟ้า", std: "มีฝาปิดมิดชิดไม่ชำรุด" },
-                    { name: "สายไฟฟ้ารอบเครื่อง", std: "เป็นระเบียบ ไม่ชำรุด" },
-                    { name: "สายไฟฟ้าในตู้ควบคุม", std: "เป็นระเบียบ ไม่ชำรุด" },
-                    { name: "สวิตช์ควบคุมต่างๆ", std: "ทำงานได้ดี ไม่ชำรุด" },
-                    { name: "สวิตช์ Emergency", std: "กดเครื่องหยุดเดิน" }
-                ]
-            },
-            {
-                category: "ระบบกล",
-                items: [
-                    { name: "ท่อลำเลียงเม็ดโฟม", std: "ไม่ขาดชำรุด แตกหัก" },
-                    { name: "ถุงดักฝุ่น", std: "ไม่ขาดชำรุด" },
-                    { name: "เข็มขัดล็อคถุงดักฝุ่น", std: "ล็อคยึดแน่น" },
-                    { name: "ถังพักเม็ดบด", std: "ไม่ผุกร่อน ไม่รั่ว" },
-                    { name: "วาวล์เปิด-ปิดใต้ถังพักเม็ดบด", std: "ทำงานได้ดี ไม่รั่ว" },
-                    { name: "ไซโล", std: "ไม่ขาดชำรุด" }
-                ]
-            }
-        ];
         const checklistData02 = [
             {
                 category: "ระบบ SAFETY",
@@ -401,8 +374,6 @@
                 renderExactTable05();
             } else if (currentFMT === 6) {
                 renderExactTable06();
-            } else if (currentFMT === 16) {
-                renderExactTable16();
             }
         }
 
@@ -473,24 +444,7 @@
                         </tr>
                         <tr>${machineHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div class="footer-section">
                     <div style="display:flex; justify-content: space-between; gap: 20px;">
@@ -601,24 +555,7 @@
                         </tr>
                         <tr>${dateHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
                     <div style="display:flex;">
@@ -734,24 +671,7 @@
                         </tr>
                         <tr>${dateHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
                     <div style="display:flex;">
@@ -867,24 +787,7 @@
                         </tr>
                         <tr>${dateHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
                     <div style="display:flex;">
@@ -985,7 +888,7 @@
                     
 
                     <div style="display: flex; border: 1px solid #000; border-top: none; font-size: 0.8rem;">
-                        <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span contenteditable="true" class="fmt02-m-no" style=" display: inline-block; min-width: 80px;"></span></div>
+                        <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span contenteditable="true" class="fmt02-m-no" style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;"></span></div>
                         <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">ปั๊มสูญญากาศ</span></div>
                         <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">ข้างอาคารผลิต 1<span></div>
                     </div>
@@ -1000,157 +903,7 @@
                         </tr>
                         <tr>${dateHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
-                    <div style="display:flex;">
-                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
-                            <div style="font-size: 0.85rem; font-weight: bold;">
-                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
-                            </div>
-                            <div style="font-size: 0.75rem; line-height: 1.4;">
-                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
-                            </div>
-                        </div>
-                        <div style="flex: 1.2; padding: 0;">
-                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
-                                <tr style="height: 25px;">
-                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
-                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
-                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
-                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
-                                </tr>
-                                <tr style="height: 35px;">
-                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
-                                    <td style="border: 1px solid #000;"></td>
-                                    <td style="border: 1px solid #000;"></td>
-                                    <td style="border: 1px solid #000; border-right: none;"></td>
-                                </tr>
-                                <tr style="height: 25px;">
-                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
-                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
-                                    <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
-                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
-                                </tr>
-                                <tr style="height: 25px;">
-                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
-                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
-                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
-                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>`;
-            document.getElementById('forms-container').appendChild(div);
-        }
-        function renderExactTable16() {
-            const div = document.createElement('div');
-            div.className = 'sheet-container';
-
-            let dateHeaders = '';
-            for (let i = 1; i <= 31; i++) {
-                dateHeaders += `<th style="width: 20px; text-align: center; cursor: pointer" onclick="toggleColumn(${i})">${i}</th>`;
-            }
-
-            let rowsHtml = '';
-            checklistData16.forEach(group => {
-                // Category Header Row
-                rowsHtml += `<tr style="background: #fdfdfd;">
-                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
-                    ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
-                </tr>`;
-
-                group.items.forEach((item, idx) => {
-                    rowsHtml += `<tr>
-                        <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${item.name}</td>
-                        <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${item.std}</td>`;
-                    for (let i = 1; i <= 31; i++) {
-                        rowsHtml += `<td class="check-cell mach-${i}" data-state="0" data-num="${i}" style="border: 1px solid #000;"></td>`;
-                    }
-                    rowsHtml += `</tr>`;
-                });
-            });
-
-            div.innerHTML = `
-                <div style="border-left: 1px solid #000; margin-bottom: 0;">
-                    <div class="form-header" style="display: flex; align-items: stretch;">
-                        <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center;">
-                            <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
-                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
-                        </div>
-
-                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center;">
-                            ตารางการตรวจเครื่องบดโฟมประจำวัน
-                        </div>
-
-                        <div style="flex: 1.2; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
-                            <b>เดือน</b>
-                            <select class="fmt02-month-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
-                                <option value="">เลือก</option>
-                                ${thaiMonths.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('')}
-                            </select>
-                            <select class="fmt02-year-select" style="padding: 2px 4px; border: 1px solid #000; font-size: 0.65rem;">
-                                <option value="">ปี</option>
-                                ${Array.from({ length: 10 }, (_, i) => getCurrentThaiYear() - 5 + i).map(y => `<option value="${y}">${y}</option>`).join('')}
-                            </select>
-                            <b style="margin-left: auto;">FMT-16</b>
-                            <b style="margin-left: 10px;">Re#0</b>
-                        </div>
-                    </div>
-                    
-
-                    <div style="display: flex; border: 1px solid #000; border-top: none; font-size: 0.8rem;">
-                        <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000;">เบอร์เครื่องจักร/Machine No.: <span contenteditable="true" class="fmt02-m-no" style="; display: inline-block; min-width: 80px;"></span></div>
-                        <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span contenteditable="true" class="fmt-m-name" style="font-weight: bold;  display: inline-block; min-width: 120px;">เครื่องรีไซเคิล</span></div>
-                        <div style="flex: 1.5; padding: 6px 10px;">พื้นที่ติดตั้ง: <span contenteditable="true" class="fmt02-area" style="font-weight: bold; display: inline-block; min-width: 120px;">ด้านข้างอาคารผลิต 1</span></div>
-                    </div>
-                </div>
-
-                <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0;">
-                    <thead>
-                        <tr>
-                            <th rowspan="2" style="width:130px;">รายละเอียดของการตรวจเช็ค</th>
-                            <th rowspan="2" style="width:130px;">มาตรฐานการตรวจ</th>
-                            <th colspan="31">Date/วันที่</th>
-                        </tr>
-                        <tr>${dateHeaders}</tr>
-                    </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
                     <div style="display:flex;">
@@ -1256,15 +1009,13 @@
             const sigNames = Array.from(document.querySelectorAll('.sig-name')).map(el => el.textContent);
 
             let metadata = {};
-            if (currentFMT === 2 || currentFMT === 3 || currentFMT === 5 || currentFMT === 6 || currentFMT === 16) {
+            if (currentFMT === 2 || currentFMT === 3 || currentFMT === 5 || currentFMT === 6) {
                 const monthSelect = document.querySelector('.fmt02-month-select');
                 const yearSelect = document.querySelector('.fmt02-year-select');
                 const monthText = monthSelect && monthSelect.value ? thaiMonths[parseInt(monthSelect.value) - 1] + ' ' + yearSelect.value : '';
 
                 metadata = {
                     mNo: document.querySelector('.fmt02-m-no')?.textContent || '',
-                    mName: document.querySelector('.fmt-m-name')?.textContent || '',
-                    cycle: document.querySelector('.fmt-cycle')?.textContent || '',
                     month: monthText,
                     area: document.querySelector('.fmt02-area')?.textContent || '',
                     dept: document.querySelector('.fmt02-dept')?.textContent || ''
@@ -1380,7 +1131,6 @@
             if (item.fmt === 3) return renderStaticForm03(item);
             if (item.fmt === 5) return renderStaticForm05(item);
             if (item.fmt === 6) return renderStaticForm06(item);
-            if (item.fmt === 16) return renderStaticForm16(item);
             return renderStaticForm37(item);
         }
 
@@ -1553,18 +1303,7 @@
                         </tr>
                         <tr>${dateHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        ${Array(4).fill(0).map((_, i) => {
-                const offset = typeof checklistData !== 'undefined' ? checklistData.flatMap(g => g.items).length : 0;
-                // This offset logic is tricky because each form has different checklistData.
-                // For simplicity, let's just use the end of item.rowRemarks or pass the specific checklistData.
-                return `<tr><td colspan="33" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px; font-size: 0.75rem;">${item.rowRemarks ? item.rowRemarks[item.rowRemarks.length - 4 + i] || '' : ''}</td></tr>`;
-            }).join('')}
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
                     <div style="display:flex;">
@@ -1672,24 +1411,7 @@
                         </tr>
                         <tr>${dateHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
                     <div style="display:flex;">
@@ -1797,24 +1519,7 @@
                         </tr>
                         <tr>${dateHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
                     <div style="display:flex;">
@@ -1922,149 +1627,7 @@
                         </tr>
                         <tr>${dateHeaders}</tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
-                    <div style="display:flex;">
-                        <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
-                            <div style="font-size: 0.85rem; font-weight: bold;">
-                                หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
-                            </div>
-                            <div style="font-size: 0.75rem; line-height: 1.4;">
-                                พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
-                            </div>
-                        </div>
-                        <div style="flex: 1.2; padding: 0;">
-                            <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
-                                <tr style="height: 25px;">
-                                    <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
-                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
-                                    <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
-                                    <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
-                                </tr>
-                                <tr style="height: 35px;">
-                                    <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
-                                    <td style="border: 1px solid #000;"></td>
-                                    <td style="border: 1px solid #000;"></td>
-                                    <td style="border: 1px solid #000; border-right: none;"></td>
-                                </tr>
-                                <tr style="height: 25px;">
-                                    <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
-                                    <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
-                                    <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
-                                    <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
-                                </tr>
-                                <tr style="height: 25px;">
-                                    <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
-                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[0] || '') : ''}</td>
-                                    <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[1] || '') : ''}</td>
-                                    <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[2] || '') : ''}</td>
-                                </tr>
-                            </table>
-                        </div>
-                </div>
-            </div>`;
-        }
-
-        function renderStaticForm16(item) {
-            let dateHeaders = '';
-            for (let i = 1; i <= 31; i++) {
-                dateHeaders += `<th style="width: 20px; text-align: center;">${i}</th>`;
-            }
-
-            let rowsHtml = '';
-            checklistData16.forEach(group => {
-                rowsHtml += `<tr style="background: #fdfdfd;">
-                    <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
-                    ${Array(31).fill('<td style="border: 1px solid #000;"></td>').join('')}
-                </tr>`;
-
-                group.items.forEach((chkItem, idx) => {
-                    rowsHtml += `<tr>
-                        <td class="col-item" style="font-size:0.65rem; padding-left: 15px; border: 1px solid #000;">${chkItem.name}</td>
-                        <td class="col-std" style="font-size:0.65rem; border: 1px solid #000;">${chkItem.std}</td>`;
-                    for (let i = 1; i <= 31; i++) {
-                        const cellIdx = checklistData16.flatMap(g => g.items).indexOf(chkItem) * 31 + (i - 1);
-                        const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
-                        let content = "";
-                        let cls = "";
-                        if (state === 1) { content = "/"; cls = "status-ok"; }
-                        else if (state === 2) { content = "X"; cls = "status-bad"; }
-
-                        rowsHtml += `<td class="check-cell ${cls}" style="text-align:center; font-weight:800; border: 1px solid #000; width:22px;">${content}</td>`;
-                    }
-                    rowsHtml += `</tr>`;
-                });
-            });
-
-            const mData = item.metadata || {};
-
-            return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
-                <div style="border: 2px solid #000; margin-bottom: 0;">
-                    <div class="form-header" style="border: none; border-bottom: 2px solid #000;">
-                        <div class="logo-box" style="border-right: 2px solid #000; padding: 8px 15px; width: auto; flex: 1; display: flex; flex-direction: row; gap: 10px; align-items: center;">
-                            <img src="Logo.png" alt="Logo" style="height: 38px; width: auto;">
-                            <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
-                        </div>
-                        <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเครื่องบดโฟมประจำวัน</div>
-                        <div style="flex: 1.2; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
-                            <b>เดือน</b> ${mData.month || '................../..................'}
-                            <b style="margin-left: auto;">FMT-16</b>
-                            <b style="margin-left: 10px;">Re#0</b>
-                        </div>
-                    </div>
-                    <div style="display: flex; border-bottom: 2px solid #000; font-size: 0.8rem;">
-                        <div style="flex: 1.2; padding: 6px 10px; border-right: 2px solid #000;">เบอร์เครื่องจักร/Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
-                        <div style="flex: 1.5; padding: 6px 10px; border-right: 2px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">${mData.mName || 'เครื่องบดโฟม'}</span></div>
-                        <div style="flex: 1; padding: 6px 10px; border-right: 2px solid #000;">เครื่องวิไคเคิล : <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.cycle || ''}</span></div>
-                        <div style="flex: 1.5; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">${mData.area || 'ด้านข้างอาคารผลิต 1'}</span></div>
-                    </div>
-                </div>
-
-                <table class="main-table" style="font-size:0.6rem; width:100%; border-top: none;">
-                    <thead>
-                        <tr>
-                            <th rowspan="2" style="width:120px;">รายละเอียดของการตรวจเช็ค</th>
-                            <th rowspan="2" style="width:120px;">มาตรฐานการตรวจ</th>
-                            <th colspan="31">Date/วันที่</th>
-                        </tr>
-                        <tr>${dateHeaders}</tr>
-                    </thead>
-                    <tbody>
-                        ${rowsHtml}
-                        <tr style="background: #efefef;">
-                            <td colspan="33" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">รายละเอียดการแก้ไข</td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="33" contenteditable="true" class="row-remark" style="height: 22px; border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
                 <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
                     <div style="display:flex;">
@@ -2137,10 +1700,8 @@
                 item.rowRemarks.forEach((txt, i) => { if (rowRemarks[i]) rowRemarks[i].textContent = txt; });
             }
 
-            if ((item.fmt === 2 || item.fmt === 3 || item.fmt === 5 || item.fmt === 6 || item.fmt === 16) && item.metadata) {
+            if ((item.fmt === 2 || item.fmt === 3 || item.fmt === 5 || item.fmt === 6) && item.metadata) {
                 if (document.querySelector('.fmt02-m-no')) document.querySelector('.fmt02-m-no').textContent = item.metadata.mNo || '';
-                if (document.querySelector('.fmt-m-name')) document.querySelector('.fmt-m-name').textContent = item.metadata.mName || '';
-                if (document.querySelector('.fmt-cycle')) document.querySelector('.fmt-cycle').textContent = item.metadata.cycle || '';
 
                 // Parse and set month/year
                 if (item.metadata.month && document.querySelector('.fmt02-month-select')) {
@@ -2173,7 +1734,6 @@
             document.getElementById('editToggleBtn').style.display = 'flex';
             document.getElementById('updateBtn').style.display = 'none';
         }
-
         function toggleEditMode() {
             if (!currentLoadedId) return;
             const badge = document.getElementById('statusBadge');
