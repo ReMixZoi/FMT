@@ -15,61 +15,7 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --border-color: #ddd;
-            --bg-light: #f4f4f4;
-        }
-
-        /* --- ส่วนของ Tabs Styling --- */
-        .tab-container {
-            display: flex;
-            border-bottom: 2px solid var(--border-color);
-            margin-bottom: 20px;
-            background: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .tab-button {
-            padding: 12px 24px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 16px;
-            font-family: 'Sarabun', sans-serif;
-            transition: 0.3s;
-            color: #666;
-        }
-
-        .tab-button:hover {
-            background-color: var(--bg-light);
-            color: var(--primary-color);
-        }
-
-        .tab-button.active {
-            border-bottom: 3px solid var(--primary-color);
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        /* ซ่อนเนื้อหาที่ไม่ใช่ Tab ที่เลือก */
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @media print {
-            .tab-container, .no-print {
-                display: none !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href=""tabs.css">
 </head>
 
 <body>
@@ -189,3 +135,4 @@
 
 
 </html>
+
