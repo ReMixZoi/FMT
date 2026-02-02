@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ทะเบียนแบบฟอร์มแผนกซ่อมบำรุง</title>
+    <link rel="icon" type="image/png" href="Logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Tabs.css">
+</head>
+
+<body>
+    <div id="saveModal" class="modal-overlay">
+        <div class="custom-modal">
+            <h3 style="margin-bottom: 15px;">💾 บันทึกข้อมูล</h3>
+            <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 10px;">ระบุชื่องานที่ต้องการบันทึก:</p>
+            <input type="text" id="modalInput"
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; margin-bottom: 20px;">
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button onclick="document.getElementById('saveModal').style.display='none'" class="btn"
+                    style="width:auto; padding: 8px 20px; background:#f3f4f6;">ยกเลิก</button>
+                <button onclick="confirmSaveHistory()" class="btn btn-primary"
+                    style="width:auto; padding: 8px 20px;">ตกลง</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadModal" class="modal-overlay">
+        <div class="custom-modal">
+            <h3 style="margin-bottom: 15px;">📂 โหลดข้อมูลเก่า</h3>
+            <p id="loadModalText" style="margin-bottom: 20px;"></p>
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button onclick="document.getElementById('loadModal').style.display='none'" class="btn"
+                    style="width:auto; padding: 8px 20px; background:#f3f4f6;">ยกเลิก</button>
+                <button id="confirmLoadBtn" class="btn btn-primary"
+                    style="width:auto; padding: 8px 20px;">แก้ไขข้อมูลนี้</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar with history -->
+    <div class="history-sidebar no-print">
+        <div class="sidebar-header">
+            <div class="sidebar-title">📋 ฟอร์มที่เลือก</div>
+            <select id="fmtSelector" onchange="switchFMT(this.value)"
+                style="width: 100%; padding: 8px; margin-top: 10px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--font-main);">
+                <option value="01">FMT-01 (ต้นกำลังประจำวัน)</option>
+                <option value="02">FMT-02 (ฉีดโฟมประจำวัน)</option>
+                <option value="03">FMT-03 (นิ่งเม็ดประจำวัน)</option>
+                <option value="05">FMT-05 (ปั๊มลมประจำวัน)</option>
+                <option value="06">FMT-06 (ปั๊มสูญญากาศประจำวัน)</option>
+                <option value="15">FMT-15 (เครื่องจักรปั๊มน้ำประจำวัน)</option>
+                <option value="16">FMT-16 (เครื่องบดโฟมประจำวัน)</option>
+                <option value="19">FMT-19 (ตรวจเช็คสภาพโครงสร้างพื้นฐานประจำวัน)</option>
+                <option value="37">FMT-37 (ระบบสารสนเทศ)</option>
+                <option value="38">FMT-38 (รอกไฟฟ้าประจำวัน)</option>
+            </select>
+        </div>
+        <div class="sidebar-header">
+            <div class="sidebar-title">📋 ประวัติการตรวจเช็ค</div>
+            <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 5px;">ฝ่าย / แผนก ซ่อมบำรุง</div>
+        </div>
+        <div class="sidebar-actions">
+            <input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" style="cursor: pointer;">
+            <label for="selectAll" style="cursor: pointer; font-weight: 600;">เลือกทั้งหมด</label>
+            <button onclick="syncFromCloud()"
+                style="margin-left: auto; border: none; background: none; cursor: pointer; color: var(--primary);"
+                title="ดึงข้อมูลจาก Cloud">
+                ☁️ Sync
+            </button>
+        </div>
+        <div class="sidebar-content" id="history-list">
+            <!-- Items injected here -->
+        </div>
+    </div>
+
+    <!-- Main Content & Controls -->
+    <div class="controls no-print">
+        <div id="statusBadge"
+            style="padding: 8px; background: #fee2e2; color: #991b1b; font-size: 0.75rem; text-align: center; border-radius: 8px; margin-bottom: 10px; display: none; font-weight: bold; border: 1px solid #fecaca;">
+            👀 Viewing History</div>
+
+        <button id="editToggleBtn" class="btn" onclick="toggleEditMode()"
+            style="display: none; background: #3b82f6; color: white;"><span>✏️ แก้ไขข้อมูลนี้</span></button>
+        <button id="updateBtn" class="btn" onclick="updateCurrentHistory()"
+            style="display: none; background: var(--warning); color: white;"><span>🔄 อัปเดตข้อมูลเดิม</span></button>
+        <button class="btn btn-primary" onclick="saveToHistory()"><span>💾 บันทึกใหม่</span></button>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button class="btn btn-success" onclick="markAllNormal()"
+                style="font-size: 0.75rem; padding: 10px 5px;"><span>✅ ติ๊กผ่านทั้งหมด</span></button>
+            <button class="btn btn-danger" onclick="clearAll()" style="font-size: 0.75rem; padding: 10px 5px;"><span>🗑️
+                    ล้างทั้งหมด</span></button>
+        </div>
+
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border);">
+
+        <button class="btn btn-primary" onclick="printSelected()" id="printSelectedBtn"
+            style="background: #000; display: none;">
+            <span>🖨️ พิมพ์รายการที่เลือก</span>
+        </button>
+
+        <button class="btn btn-outline" onclick="window.print()">
+            <span>🖨️ พิมพ์หน้าปัจจุบัน</span>
+        </button>
+        <div class="drag-handle-bar">•••</div>
+    </div>
+
+    <!-- Print Area -->
+    <div id="print-area"></div>
+
+    <!-- Forms Container (Rendered by JS) -->
+    <div id="forms-container"></div>
+
+    <!-- Scripts -->
+    <script src="checklist_data.js"></script>
+    <script src="utils.js"></script>
+    <script src="forms_render_a.js"></script>
+    <script src="forms_render_b.js"></script>
+    <script src="static_forms_a.js"></script>
+    <script src="static_forms_b.js"></script>
+    <script src="forms_logic.js"></script>
+    <script src="main.js"></script>
+
+</body>
+
+</html>
