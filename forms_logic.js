@@ -26,8 +26,26 @@ function renderAllTables() {
         renderExactTable15();
     } else if (currentFMT === 16) {
         renderExactTable16();
+    } else if (currentFMT === 7) {
+        renderExactTable07();
+    } else if (currentFMT === 9) {
+        renderExactTable09();
+    } else if (currentFMT === 10) {
+        renderExactTable10();
+    } else if (currentFMT === 11) {
+        renderExactTable11();
+    } else if (currentFMT === 12) {
+        renderExactTable12();
+    } else if (currentFMT === 13) {
+        renderExactTable13();
+    } else if (currentFMT === 14) {
+        renderExactTable14();
     } else if (currentFMT === 19) {
         renderExactTable19()
+    } else if (currentFMT === 22) {
+        renderExactTable22()
+    } else if (currentFMT === 23) {
+        renderExactTable23()
     }
 }
 

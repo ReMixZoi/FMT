@@ -18,12 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // Cell Drag Logic
 document.addEventListener('mousedown', (e) => {
     if (e.target.classList.contains('check-cell')) {
+        toggle(e.target);
         isDragging = true;
         dragStartCell = e.target;
-        // If empty (0), toggle to OK (1). If OK(1)/Bad(2), toggle to next state logic handled in toggle() typically, 
-        // but here we just want to start a drag fill sequence.
-        // Actually, let's mimic the click behavior for the start cell:
-        toggle(e.target);
         dragStartState = parseInt(e.target.dataset.state);
         e.preventDefault(); // Prevent text selection
     }
@@ -69,18 +66,58 @@ function confirmSaveHistory() {
     const sigNames = Array.from(document.querySelectorAll('.sig-name')).map(el => el.textContent);
 
     let metadata = {};
-    if (currentFMT === 2 || currentFMT === 3 || currentFMT === 5 || currentFMT === 6 || currentFMT === 38 || currentFMT === 15 || currentFMT === 16) {
+    if (currentFMT === 2 || currentFMT === 3 || currentFMT === 5 || currentFMT === 6 || currentFMT === 38 || currentFMT === 15 || currentFMT === 16 || currentFMT === 7 || currentFMT === 22 || currentFMT === 23 || (currentFMT >= 9 && currentFMT <= 14)) {
         const monthSelect = document.querySelector('.fmt02-month-select');
         const yearSelect = document.querySelector('.fmt02-year-select');
 
-        metadata = {
-            month: monthSelect ? monthSelect.value : '',
-            year: yearSelect ? yearSelect.value : '',
-            mNo: document.querySelector('.fmt02-m-no')?.textContent || '',
-            mName: document.querySelector('.fmt02-m-name') ? document.querySelector('.fmt02-m-name').textContent : '',
-            area: document.querySelector('.fmt02-area') ? document.querySelector('.fmt02-area').textContent : '',
-            dept: document.querySelector('.fmt02-dept') ? document.querySelector('.fmt02-dept').textContent : ''
-        };
+        if (currentFMT === 7) {
+            metadata = {
+                workType: document.querySelector('.fmt07-work-type')?.textContent || '',
+                dept: document.querySelector('.fmt07-dept')?.textContent || '',
+                machine: document.querySelector('.fmt07-machine')?.textContent || '',
+                month: document.querySelector('.fmt07-month')?.textContent || '',
+                year: document.querySelector('.fmt07-year')?.textContent || ''
+            };
+        } else if (currentFMT === 9) {
+            metadata = {
+                mNo: document.querySelector('.fmt09-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt09-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 10) {
+            metadata = {
+                mNo: document.querySelector('.fmt10-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt10-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 11) {
+            metadata = {
+                mNo: document.querySelector('.fmt11-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt11-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 12) {
+            metadata = {
+                mNo: document.querySelector('.fmt12-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt12-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 13) {
+            metadata = {
+                mNo: document.querySelector('.fmt13-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt13-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 14) {
+            metadata = {
+                mNo: document.querySelector('.fmt14-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt14-loc')?.textContent || ''
+            };
+        } else {
+            metadata = {
+                month: monthSelect ? monthSelect.value : '',
+                year: yearSelect ? yearSelect.value : '',
+                mNo: document.querySelector('.fmt02-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt02-m-name') ? document.querySelector('.fmt02-m-name').textContent : '',
+                area: document.querySelector('.fmt02-area') ? document.querySelector('.fmt02-area').textContent : '',
+                dept: document.querySelector('.fmt02-dept') ? document.querySelector('.fmt02-dept').textContent : ''
+            };
+        }
     }
 
     const entry = {
@@ -199,10 +236,13 @@ function generateFormHTMLFromData(item) {
     if (item.fmt === 3) return renderStaticForm03(item);
     if (item.fmt === 5) return renderStaticForm05(item);
     if (item.fmt === 6) return renderStaticForm06(item);
+    if (item.fmt === 7) return renderStaticForm07(item);
     if (item.fmt === 15) return renderStaticForm15(item);
     if (item.fmt === 37) return renderStaticForm37(item);
     if (item.fmt === 38) return renderStaticForm38(item);
     if (item.fmt === 16) return renderStaticForm16(item);
+    if (item.fmt === 22) return renderStaticForm22(item);
+    if (item.fmt === 23) return renderStaticForm23(item);
     return '<div>Form format not found</div>';
 }
 
@@ -255,13 +295,44 @@ function applyHistoryState(item) {
         item.rowRemarks.forEach((txt, i) => { if (rowRemarks[i]) rowRemarks[i].textContent = txt; });
     }
 
-    if ((item.fmt === 2 || item.fmt === 3 || item.fmt === 5 || item.fmt === 6 || item.fmt === 38 || item.fmt === 15 || item.fmt === 16) && item.metadata) {
+    if ((item.fmt === 2 || item.fmt === 3 || item.fmt === 5 || item.fmt === 6 || item.fmt === 38 || item.fmt === 15 || item.fmt === 16 || item.fmt === 22 || item.fmt === 23) && item.metadata) {
         if (document.querySelector('.fmt02-month-select')) document.querySelector('.fmt02-month-select').value = item.metadata.month || '';
         if (document.querySelector('.fmt02-year-select')) document.querySelector('.fmt02-year-select').value = item.metadata.year || '';
         if (document.querySelector('.fmt02-m-no')) document.querySelector('.fmt02-m-no').textContent = item.metadata.mNo || '';
         if (document.querySelector('.fmt02-m-name')) document.querySelector('.fmt02-m-name').textContent = item.metadata.mName || '';
         if (document.querySelector('.fmt02-area')) document.querySelector('.fmt02-area').textContent = item.metadata.area || '';
         if (document.querySelector('.fmt02-dept')) document.querySelector('.fmt02-dept').textContent = item.metadata.dept || '';
+    }
+    if (item.fmt === 7 && item.metadata) {
+        if (document.querySelector('.fmt07-work-type')) document.querySelector('.fmt07-work-type').textContent = item.metadata.workType || '';
+        if (document.querySelector('.fmt07-dept')) document.querySelector('.fmt07-dept').textContent = item.metadata.dept || '';
+        if (document.querySelector('.fmt07-machine')) document.querySelector('.fmt07-machine').textContent = item.metadata.machine || '';
+        if (document.querySelector('.fmt07-month')) document.querySelector('.fmt07-month').textContent = item.metadata.month || '';
+        if (document.querySelector('.fmt07-year')) document.querySelector('.fmt07-year').textContent = item.metadata.year || '';
+    }
+    if (item.fmt === 9 && item.metadata) {
+        if (document.querySelector('.fmt09-m-no')) document.querySelector('.fmt09-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt09-loc')) document.querySelector('.fmt09-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 10 && item.metadata) {
+        if (document.querySelector('.fmt10-m-no')) document.querySelector('.fmt10-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt10-loc')) document.querySelector('.fmt10-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 11 && item.metadata) {
+        if (document.querySelector('.fmt11-m-no')) document.querySelector('.fmt11-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt11-loc')) document.querySelector('.fmt11-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 12 && item.metadata) {
+        if (document.querySelector('.fmt12-m-no')) document.querySelector('.fmt12-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt12-loc')) document.querySelector('.fmt12-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 13 && item.metadata) {
+        if (document.querySelector('.fmt13-m-no')) document.querySelector('.fmt13-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt13-loc')) document.querySelector('.fmt13-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 14 && item.metadata) {
+        if (document.querySelector('.fmt14-m-no')) document.querySelector('.fmt14-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt14-loc')) document.querySelector('.fmt14-loc').textContent = item.metadata.loc || '';
     }
 }
 

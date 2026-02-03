@@ -627,3 +627,247 @@ function renderStaticForm16(item) {
         </div>
     `;
 }
+
+function renderStaticForm22(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    let globalCellIndex = 0;
+    let rowsHtml = '';
+    checklistData22.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((cItem) => {
+            rowsHtml += `<tr>
+                <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${cItem.name}</td>
+                <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${cItem.std}</td>`;
+            for (let i = 1; i <= 31; i++) {
+                let state = 0;
+                if (item && item.data && item.data[globalCellIndex]) {
+                    state = parseInt(item.data[globalCellIndex].state);
+                }
+
+                let mark = '';
+                let bgClass = '';
+                if (state === 1) { mark = '/'; }
+                else if (state === 2) { mark = 'X'; bgClass = 'background:#fef2f2; color:red;'; }
+
+                rowsHtml += `<td style="border: 1px solid #000; text-align: center; font-weight: bold; font-size: 0.8rem; ${bgClass}">${mark}</td>`;
+                globalCellIndex++;
+            }
+            rowsHtml += `</tr>`;
+        });
+    });
+
+    const mNo = (item.metadata && item.metadata.mNo) ? item.metadata.mNo : '';
+    const mName = (item.metadata && item.metadata.mName) ? item.metadata.mName : 'เครื่องกลึง';
+    const area = (item.metadata && item.metadata.area) ? item.metadata.area : 'ข้างอาคารผลิต 1';
+    const month = (item.metadata && item.metadata.month) ? thaiMonths[parseInt(item.metadata.month) - 1] : '..........';
+    const year = (item.metadata && item.metadata.year) ? item.metadata.year : '..........';
+
+    return `
+        <div class="sheet-container" style="page-break-after: always; margin: 0; width: 297mm; height: 209mm; border: none !important;">
+            <div style="border-left: 1px solid #000; border-right: 1px solid #000; border-top: 1px solid #000; margin-bottom: 0;">
+                <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                    <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                        <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                        <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                    </div>
+    
+                    <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
+                        ตารางการตรวจเช็คเครื่องกลึงประจำวัน
+                    </div>
+    
+                    <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                        <b>เดือน</b> ${month} <b>ปี</b> ${year}
+                        <b style="margin-left: auto;">FMT-22</b>
+                        <b style="margin-left: 10px;">Re:#0</b>
+                    </div>
+                </div>
+                
+                <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.8rem;">
+                    <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข/Machine No.: ${mNo}</div>
+                    <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <b>${mName}</b></div>
+                    <div style="flex: 1.5; padding: 6px 10px;">พื้นที่ติดตั้ง: <b>${area}</b></div>
+                </div>
+            </div>
+    
+            <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%;">
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="width:130px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                        <th rowspan="2" style="width:130px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                        <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                    </tr>
+                    <tr>${dateHeaders}</tr>
+                </thead>
+                <tbody>${rowsHtml}</tbody>
+            </table>
+            
+            <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                <div style="display:flex;">
+                    <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="font-size: 0.85rem; font-weight: bold;">
+                            หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                        </div>
+                    </div>
+                    <div style="flex: 1.2; padding: 0;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                            <tr style="height: 25px;">
+                                <td style="border: 1px solid #000; text-align: center;">ลงชื่อ</td>
+                                <td style="border: 1px solid #000; text-align: center;">ผู้บันทึก</td>
+                                <td style="border: 1px solid #000; text-align: center;">ผู้ตรวจเช็ค</td>
+                                <td style="border: 1px solid #000; text-align: center;">ผู้อนุมัติ</td>
+                            </tr>
+                            <tr style="height: 35px;">
+                                <td style="border: 1px solid #000; text-align: center;">ลายเซ็น</td>
+                                <td style="border: 1px solid #000;"></td>
+                                <td style="border: 1px solid #000;"></td>
+                                <td style="border: 1px solid #000;"></td>
+                            </tr>
+                            <tr style="height: 25px;">
+                                <td style="border: 1px solid #000; text-align: center;">ชื่อ</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[0]) || ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[1]) || ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[2]) || ''}</td>
+                            </tr>
+                            <tr style="height: 25px;">
+                                <td style="border: 1px solid #000; text-align: center;">วันที่</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[0]) ? toThaiDateStr(item.sigDates[0]) : ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[1]) ? toThaiDateStr(item.sigDates[1]) : ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[2]) ? toThaiDateStr(item.sigDates[2]) : ''}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderStaticForm23(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    let globalCellIndex = 0;
+    let rowsHtml = '';
+    checklistData23.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((cItem) => {
+            rowsHtml += `<tr>
+                <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${cItem.name}</td>
+                <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${cItem.std}</td>`;
+            for (let i = 1; i <= 31; i++) {
+                let state = 0;
+                if (item && item.data && item.data[globalCellIndex]) {
+                    state = parseInt(item.data[globalCellIndex].state);
+                }
+
+                let mark = '';
+                let bgClass = '';
+                if (state === 1) { mark = '/'; }
+                else if (state === 2) { mark = 'X'; bgClass = 'background:#fef2f2; color:red;'; }
+
+                rowsHtml += `<td style="border: 1px solid #000; text-align: center; font-weight: bold; font-size: 0.8rem; ${bgClass}">${mark}</td>`;
+                globalCellIndex++;
+            }
+            rowsHtml += `</tr>`;
+        });
+    });
+
+    const mNo = (item.metadata && item.metadata.mNo) ? item.metadata.mNo : '';
+    const mName = (item.metadata && item.metadata.mName) ? item.metadata.mName : 'เครื่องมิลลิ่ง';
+    const area = (item.metadata && item.metadata.area) ? item.metadata.area : 'ข้างอาคารผลิต 1';
+    const month = (item.metadata && item.metadata.month) ? thaiMonths[parseInt(item.metadata.month) - 1] : '..........';
+    const year = (item.metadata && item.metadata.year) ? item.metadata.year : '..........';
+
+    return `
+        <div class="sheet-container" style="page-break-after: always; margin: 0; width: 297mm; height: 209mm; border: none !important;">
+            <div style="border-left: 1px solid #000; border-right: 1px solid #000; border-top: 1px solid #000; margin-bottom: 0;">
+                <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                    <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                        <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                        <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                    </div>
+    
+                    <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
+                        ตารางการตรวจเช็คเครื่องมิลลิ่งประจำวัน
+                    </div>
+    
+                    <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                        <b>เดือน</b> ${month} <b>ปี</b> ${year}
+                        <b style="margin-left: auto;">FMT-23</b>
+                        <b style="margin-left: 10px;">Re:#0</b>
+                    </div>
+                </div>
+                
+                <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.8rem;">
+                    <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข/Machine No.: ${mNo}</div>
+                    <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <b>${mName}</b></div>
+                    <div style="flex: 1.5; padding: 6px 10px;">พื้นที่ติดตั้ง: <b>${area}</b></div>
+                </div>
+            </div>
+    
+            <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%;">
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="width:130px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                        <th rowspan="2" style="width:130px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                        <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                    </tr>
+                    <tr>${dateHeaders}</tr>
+                </thead>
+                <tbody>${rowsHtml}</tbody>
+            </table>
+            
+            <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                <div style="display:flex;">
+                    <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="font-size: 0.85rem; font-weight: bold;">
+                            หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                        </div>
+                    </div>
+                    <div style="flex: 1.2; padding: 0;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                            <tr style="height: 25px;">
+                                <td style="border: 1px solid #000; text-align: center;">ลงชื่อ</td>
+                                <td style="border: 1px solid #000; text-align: center;">ผู้บันทึก</td>
+                                <td style="border: 1px solid #000; text-align: center;">ผู้ตรวจเช็ค</td>
+                                <td style="border: 1px solid #000; text-align: center;">ผู้อนุมัติ</td>
+                            </tr>
+                            <tr style="height: 35px;">
+                                <td style="border: 1px solid #000; text-align: center;">ลายเซ็น</td>
+                                <td style="border: 1px solid #000;"></td>
+                                <td style="border: 1px solid #000;"></td>
+                                <td style="border: 1px solid #000;"></td>
+                            </tr>
+                            <tr style="height: 25px;">
+                                <td style="border: 1px solid #000; text-align: center;">ชื่อ</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[0]) || ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[1]) || ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[2]) || ''}</td>
+                            </tr>
+                            <tr style="height: 25px;">
+                                <td style="border: 1px solid #000; text-align: center;">วันที่</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[0]) ? toThaiDateStr(item.sigDates[0]) : ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[1]) ? toThaiDateStr(item.sigDates[1]) : ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[2]) ? toThaiDateStr(item.sigDates[2]) : ''}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}

@@ -475,38 +475,495 @@ function renderExactTable01() {
             </div>
         </div>
         
-        <div style="border: 1px solid #000; border-top: none; padding: 5px; font-size: 0.75rem;">
-            หมายเหตุ
-            <div class="correction-input" contenteditable="true" style="min-height: 20px; border: 1px dashed #ccc; margin-top: 4px; padding: 4px;"></div>
+        <div style="display: flex; border: 1px solid #000; border-top: none;">
+            <div style="flex: 2; padding: 8px; border-right: 1px solid #000;">
+                <div style="font-size: 0.75rem; font-weight: bold;">หมายเหตุ</div>
+                <div class="correction-input" contenteditable="true" style="min-height: 60px; border: none; margin-top: 4px; padding: 4px;"></div>
+            </div>
+            <div style="flex: 3;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem; height: 100%;">
+                    <tr style="height: 28px;">
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; width: 80px; font-weight: bold;">ลงชื่อ</td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; font-weight: bold;">ผู้ตรวจเช็ค</td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; font-weight: bold;">ผู้ตรวจสอบ</td>
+                        <td style="border-bottom: 1px solid #000; text-align: center; font-weight: bold;">ผู้อนุมัติ</td>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; vertical-align: middle;">ลายเซ็น</td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
+                        <td style="border-bottom: 1px solid #000;"></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; vertical-align: middle; font-size: 0.65rem;">ชื่อ(ตัวบรรจง)</td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border-right: 1px solid #000; text-align: center; vertical-align: middle;">วันที่</td>
+                        <td style="border-right: 1px solid #000; text-align: center; padding: 2px; vertical-align: middle;">
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 30px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span>
+                        </td>
+                        <td style="border-right: 1px solid #000; text-align: center; padding: 2px; vertical-align: middle;">
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 30px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span>
+                        </td>
+                        <td style="text-align: center; padding: 2px; vertical-align: middle;">
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 30px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    `;
+    document.getElementById('forms-container').appendChild(div);
+}
+
+function renderExactTable07() {
+    const div = document.createElement('div');
+    div.className = 'sheet-container';
+
+    let rowsHtml = '';
+    for (let i = 0; i < 20; i++) {
+        rowsHtml += `<tr style="height: 30px;">
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 40px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 100px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 80px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 100px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 100px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 90px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: left; padding-left: 5px; width: 150px;"></td>
+        </tr>`;
+    }
+
+    div.innerHTML = `
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div style="padding: 5px 15px; flex: 1; display: flex; align-items: center; gap: 10px; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                
+                <div style="flex: 1.5; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
+                    ใบรายงานการทำงาน
+                </div>
+                
+                <div style="flex: 0.8; padding: 6px 10px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; font-size: 0.7rem; gap: 2px;">
+                    <div><b>FMT-07</b> <b>Re#0</b></div>
+                </div>
+            </div>
+            
+            <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.8rem;">
+                <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    <b>ลักษณะงาน</b>
+                    <span contenteditable="true" class="fmt07-work-type" style="flex: 1; border-bottom: 1px solid #999; min-width: 80px; padding: 2px;"></span>
+                </div>
+                <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    <b>แผนก</b>
+                    <span contenteditable="true" class="fmt07-dept" style="flex: 1; border-bottom: 1px solid #999; min-width: 100px; padding: 2px;"></span>
+                </div>
+                <div style="flex: 1; padding: 6px 10px; display: flex; align-items: center; gap: 5px;">
+                    <b>เครื่อง</b>
+                    <span contenteditable="true" class="fmt07-machine" style="flex: 1; border-bottom: 1px solid #999; min-width: 100px; padding: 2px;"></span>
+                </div>
+            </div>
+            
+            <div style="display: flex; font-size: 0.8rem;">
+                <div style="flex: 1; padding: 6px 10px; display: flex; align-items: center; gap: 5px;">
+                    <b>เดือน</b>
+                    <span contenteditable="true" class="fmt07-month" style="border-bottom: 1px solid #999; min-width: 80px; padding: 2px; text-align: center;"></span>
+                    <b>/</b>
+                    <span contenteditable="true" class="fmt07-year" style="border-bottom: 1px solid #999; min-width: 60px; padding: 2px; text-align: center;"></span>
+                </div>
+            </div>
         </div>
 
-        <div style="border: 1px solid #000; border-top: none;">
-             <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
-                <tr style="height: 25px;">
-                    <td style="border-right: 1px solid #000; border-bottom: none; text-align: center; width: 60px;">ลงชื่อ</td>
-                    <td style="border-right: 1px solid #000; border-bottom: none; text-align: center;">ผู้ตรวจเช็ค</td>
-                    <td style="border-right: 1px solid #000; border-bottom: none; text-align: center;">ผู้ตรวจสอบ</td>
-                    <td style="border-bottom: none; text-align: center;">ผู้อนุมัติ</td>
+        <table class="main-table" style="font-size: 0.7rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #000; width: 40px;">วันที่</th>
+                    <th style="border: 1px solid #000; width: 100px;">รายละเอียดงาน</th>
+                    <th style="border: 1px solid #000;">ใบสั่งซ่อม</th>
+                    <th style="border: 1px solid #000; width: 80px;">วันที่เรียก</th>
+                    <th style="border: 1px solid #000; width: 100px;">ใบสั่งการผลิต</th>
+                    <th style="border: 1px solid #000; width: 100px;">ระยะเวลาซ่อม</th>
+                    <th style="border: 1px solid #000; width: 90px;">หมายเหตุ</th>
                 </tr>
-                <tr style="height: 35px;">
-                    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center;">ลายเซ็น</td>
-                    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
-                    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
-                    <td style="border-bottom: 1px solid #000;"></td>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="display: flex; border: 1px solid #000; border-top: none;">
+            <div style="flex: 2; padding: 8px; border-right: 1px solid #000;">
+                <div style="font-size: 0.75rem; font-weight: bold;">หมายเหตุ</div>
+                <div class="correction-input" contenteditable="true" style="min-height: 60px; border: none; margin-top: 4px; padding: 4px;"></div>
+            </div>
+            <div style="flex: 3;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem; height: 100%;">
+                    <tr style="height: 28px;">
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; width: 80px; font-weight: bold;">ลงชื่อ</td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; font-weight: bold;">ผู้บันทึก</td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; font-weight: bold;">ผู้ตรวจสอบ</td>
+                        <td style="border-bottom: 1px solid #000; text-align: center; font-weight: bold;">ผู้อนุมัติ</td>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; vertical-align: middle;">ลายเซ็น</td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
+                        <td style="border-bottom: 1px solid #000;"></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; text-align: center; vertical-align: middle; font-size: 0.65rem;">ชื่อ(ตัวบรรจง)</td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border-right: 1px solid #000; text-align: center; vertical-align: middle;">วันที่</td>
+                        <td style="border-right: 1px solid #000; text-align: center; padding: 2px; vertical-align: middle;">
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 30px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span>
+                        </td>
+                        <td style="border-right: 1px solid #000; text-align: center; padding: 2px; vertical-align: middle;">
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 30px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span>
+                        </td>
+                        <td style="text-align: center; padding: 2px; vertical-align: middle;">
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 20px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span> / 
+                            <span contenteditable="true" style="display: inline-block; min-width: 30px; border-bottom: 1px solid #999; padding: 0 4px; font-size: 0.65rem;"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    `;
+    document.getElementById('forms-container').appendChild(div);
+}
+
+function renderExactTable09() {
+    const div = document.createElement('div');
+    div.className = 'sheet-container portrait-sheet';
+
+    let rowsHtml = '';
+    for (let i = 0; i < 28; i++) {
+        rowsHtml += `<tr style="height: 28px;">
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 80px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 60px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 60px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 120px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: left; padding-left: 5px; width: 120px;"></td>
+        </tr>`;
+    }
+
+    div.innerHTML = `
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div style="padding: 5px 15px; flex: 1.2; display: flex; align-items: center; gap: 10px; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div style="font-size: 0.9rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                
+                <div style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
+                    ใบบันทึกประวัติการซ่อมเครื่องจักรฉีดโฟม
+                </div>
+                
+                <div style="flex: 0.8; padding: 6px 10px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; font-size: 0.75rem; gap: 2px;">
+                    <div style="font-weight: bold;">FMT-09 Re#0</div>
+                </div>
+            </div>
+            
+            <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.9rem;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    <b>Machine No</b>
+                    <span contenteditable="true" class="fmt09-m-no" style="flex: 1; min-width: 100px; padding: 2px; text-align: center;"></span>
+                    <span style="margin: 0 10px;">/</span>
+                    <span contenteditable="true" style="flex: 1; min-width: 100px; padding: 2px;"></span>
+                </div>
+                <div style="flex: 1; padding: 6px 10px; display: flex; align-items: center; gap: 5px;">
+                    <b>Location</b>
+                    <span contenteditable="true" class="fmt09-loc" style="flex: 1; font-weight: bold; text-align: center; padding: 2px;">ฝ่ายผลิต</span>
+                </div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.85rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse; table-layout: fixed;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ว/ด/ป</th>
+                    <th style="border: 1px solid #000; background: #fff;">รายละเอียด</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ซ่อม</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">PM</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ผู้ปฏิบัติ</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">หมายเหตุ</th>
                 </tr>
-                    <tr style="height: 25px;">
-                    <td style="border-right: 1px solid #000; text-align: center; border-bottom: 1px solid #000; font-size: 0.6rem;">ชื่อ (ตัวบรรจง)</td>
-                    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
-                    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
-                    <td style="border-bottom: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="display: flex; justify-content: flex-end; border: 1px solid #000; border-top: none;">
+            <div style="width: 320px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; table-layout: fixed;">
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ลงชื่อ</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้บันทึก</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้ตรวจเช็ค</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้อนุมัติ</td>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border: 1px solid #000; text-align: center; vertical-align: middle;">ลายเซ็น</td>
+                        <td style="border: 1px solid #000;"></td>
+                        <td style="border: 1px solid #000;"></td>
+                        <td style="border: 1px solid #000;"></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; text-align: center; vertical-align: middle; font-size: 0.65rem;">ชื่อ(ตัวบรรจง)</td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; vertical-align: middle;">วันที่</td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    `;
+    document.getElementById('forms-container').appendChild(div);
+}
+
+function renderExactTable10() {
+    const div = document.createElement('div');
+    div.className = 'sheet-container portrait-sheet';
+
+    let rowsHtml = '';
+    for (let i = 0; i < 28; i++) {
+        rowsHtml += `<tr style="height: 28px;">
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 80px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 60px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 60px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 120px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: left; padding-left: 5px; width: 120px;"></td>
+        </tr>`;
+    }
+
+    div.innerHTML = `
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div style="padding: 5px 15px; flex: 1.2; display: flex; align-items: center; gap: 10px; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div style="font-size: 0.9rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                
+                <div style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
+                    ใบบันทึกประวัติการซ่อมเครื่องจักรนิ่มมัด
+                </div>
+                
+                <div style="flex: 0.8; padding: 6px 10px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; font-size: 0.75rem; gap: 2px;">
+                    <div style="font-weight: bold;">FMT-10 Re#0</div>
+                </div>
+            </div>
+            
+            <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.9rem;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    <b>Machine No</b>
+                    <span contenteditable="true" class="fmt10-m-no" style="flex: 1; min-width: 100px; padding: 2px; text-align: center;"></span>
+                    <span style="margin: 0 10px;">/</span>
+                    <span contenteditable="true" style="flex: 1; min-width: 100px; padding: 2px;"></span>
+                </div>
+                <div style="flex: 1; padding: 6px 10px; display: flex; align-items: center; gap: 5px;">
+                    <b>Location</b>
+                    <span contenteditable="true" class="fmt10-loc" style="flex: 1; font-weight: bold; text-align: center; padding: 2px;">ฝ่ายผลิต</span>
+                </div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.85rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse; table-layout: fixed;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ว/ด/ป</th>
+                    <th style="border: 1px solid #000; background: #fff;">รายละเอียด</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ซ่อม</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">PM</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ผู้ปฏิบัติ</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">หมายเหตุ</th>
                 </tr>
-                <tr style="height: 25px;">
-                    <td style="border-right: 1px solid #000; text-align: center;">วันที่</td>
-                    <td style="border-right: 1px solid #000; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; font-size: 0.6rem;"></td>
-                    <td style="border-right: 1px solid #000; text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; font-size: 0.6rem;"></td>
-                    <td style="text-align: center; padding: 2px;"><input type="date" class="date-input" style="width: 100%; border: none; font-size: 0.6rem;"></td>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="display: flex; justify-content: flex-end; border: 1px solid #000; border-top: none;">
+            <div style="width: 320px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; table-layout: fixed;">
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ลงชื่อ</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้บันทึก</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้ตรวจเช็ค</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้อนุมัติ</td>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border: 1px solid #000; text-align: center; vertical-align: middle;">ลายเซ็น</td>
+                        <td style="border: 1px solid #000;"></td>
+                        <td style="border: 1px solid #000;"></td>
+                        <td style="border: 1px solid #000;"></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; text-align: center; vertical-align: middle; font-size: 0.65rem;">ชื่อ(ตัวบรรจง)</td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; vertical-align: middle;">วันที่</td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    `;
+    document.getElementById('forms-container').appendChild(div);
+}
+
+function renderExactTable11() {
+    renderHistoryBaseForm(11, 'ใบบันทึกประวัติการซ่อมเครื่องจักรหม้อไอน้ำไม้สับ', 'ฝ่ายผลิต');
+}
+
+function renderExactTable12() {
+    renderHistoryBaseForm(12, 'ใบบันทึกประวัติการซ่อมเครื่องจักรปั๊มลม', 'แท่นปั๊มลม');
+}
+
+function renderExactTable13() {
+    renderHistoryBaseForm(13, 'ใบบันทึกประวัติการซ่อมเครื่องจักรปั๊มน้ำ', 'ฝ่ายผลิต');
+}
+
+function renderExactTable14() {
+    renderHistoryBaseForm(14, 'ใบบันทึกประวัติการซ่อมเครื่องจักรปั๊มสูญญากาศ', 'ฝ่ายผลิต');
+}
+
+function renderHistoryBaseForm(fmtNum, title, defaultLoc) {
+    const div = document.createElement('div');
+    div.className = 'sheet-container portrait-sheet';
+
+    let rowsHtml = '';
+    for (let i = 0; i < 28; i++) {
+        rowsHtml += `<tr style="height: 28px;">
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 80px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: left; padding-left: 5px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 60px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 60px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: center; width: 120px;"></td>
+            <td class="log-cell" contenteditable="true" style="border: 1px solid #000; text-align: left; padding-left: 5px; width: 120px;"></td>
+        </tr>`;
+    }
+
+    div.innerHTML = `
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div style="padding: 5px 15px; flex: 1.2; display: flex; align-items: center; gap: 10px; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div style="font-size: 0.9rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                
+                <div style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
+                    ${title}
+                </div>
+                
+                <div style="flex: 0.8; padding: 6px 10px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; font-size: 0.75rem; gap: 2px;">
+                    <div style="font-weight: bold;">FMT-${fmtNum < 10 ? '0' + fmtNum : fmtNum} Re#0</div>
+                </div>
+            </div>
+            
+            <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.9rem;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    <b>Machine No</b>
+                    <span contenteditable="true" class="fmt${fmtNum}-m-no" style="flex: 1; min-width: 100px; padding: 2px; text-align: center;"></span>
+                    <span style="margin: 0 10px;">/</span>
+                    <span contenteditable="true" style="flex: 1; min-width: 100px; padding: 2px;"></span>
+                </div>
+                <div style="flex: 1; padding: 6px 10px; display: flex; align-items: center; gap: 5px;">
+                    <b>Location</b>
+                    <span contenteditable="true" class="fmt${fmtNum}-loc" style="flex: 1; font-weight: bold; text-align: center; padding: 2px;">${defaultLoc}</span>
+                </div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.85rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse; table-layout: fixed;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ว/ด/ป</th>
+                    <th style="border: 1px solid #000; background: #fff;">รายละเอียด</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ซ่อม</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">PM</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">ผู้ปฏิบัติ</th>
+                    <th style="border: 1px solid #000; width: 80px; background: #fff;">หมายเหตุ</th>
                 </tr>
-            </table>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="display: flex; justify-content: flex-end; border: 1px solid #000; border-top: none;">
+            <div style="width: 320px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; table-layout: fixed;">
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ลงชื่อ</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้บันทึก</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้ตรวจเช็ค</td>
+                        <td style="border: 1px solid #000; border-top: none; text-align: center; width: 80px; font-weight: bold;">ผู้อนุมัติ</td>
+                    </tr>
+                    <tr style="height: 35px;">
+                        <td style="border: 1px solid #000; text-align: center; vertical-align: middle;">ลายเซ็น</td>
+                        <td style="border: 1px solid #000;"></td>
+                        <td style="border: 1px solid #000;"></td>
+                        <td style="border: 1px solid #000;"></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; text-align: center; vertical-align: middle; font-size: 0.65rem;">ชื่อ(ตัวบรรจง)</td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                        <td style="border: 1px solid #000; padding: 2px;"><span contenteditable="true" class="sig-name" style="display: block; outline: none; text-align: center;"></span></td>
+                    </tr>
+                    <tr style="height: 28px;">
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; vertical-align: middle;">วันที่</td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                        <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">
+                            <input type="date" class="date-input" style="width: 100%; border: none; text-align: center; font-size: 0.65rem;">
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     `;
     document.getElementById('forms-container').appendChild(div);
