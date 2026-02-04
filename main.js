@@ -57,7 +57,10 @@ function confirmSaveHistory() {
     if (!label) return alert("กรุณาระบุชื่อ");
 
     const cellStates = Array.from(document.querySelectorAll('.check-cell')).map(c => ({ num: c.dataset.num, state: c.dataset.state }));
-    const logData = Array.from(document.querySelectorAll('.log-cell')).map(c => c.textContent);
+    const logData = Array.from(document.querySelectorAll('.log-cell')).map(c => {
+        if (c.tagName === 'INPUT') return c.value;
+        return c.textContent;
+    });
     const summaryWater = document.querySelector('.summary-water')?.textContent || '';
     const fmt01Date = document.querySelector('.fmt01-date')?.value || '';
     const rowRemarks = Array.from(document.querySelectorAll('.row-remark')).map(el => el.textContent);
@@ -66,7 +69,7 @@ function confirmSaveHistory() {
     const sigNames = Array.from(document.querySelectorAll('.sig-name')).map(el => el.textContent);
 
     let metadata = {};
-    if (currentFMT === 2 || currentFMT === 3 || currentFMT === 5 || currentFMT === 6 || currentFMT === 38 || currentFMT === 15 || currentFMT === 16 || currentFMT === 7 || currentFMT === 22 || currentFMT === 23 || (currentFMT >= 9 && currentFMT <= 14)) {
+    if (currentFMT === 2 || currentFMT === 3 || currentFMT === 5 || currentFMT === 6 || currentFMT === 38 || currentFMT === 15 || currentFMT === 16 || currentFMT === 7 || currentFMT === 22 || currentFMT === 23 || currentFMT === 26 || currentFMT === 27 || currentFMT === 28 || currentFMT === 30 || currentFMT === 31 || currentFMT === 32 || currentFMT === 36 || currentFMT === 39 || currentFMT === 40 || currentFMT === 44 || (currentFMT >= 9 && currentFMT <= 14) || currentFMT === 17 || currentFMT === 18 || currentFMT === 20 || currentFMT === 21 || currentFMT === 24 || currentFMT === 25) {
         const monthSelect = document.querySelector('.fmt02-month-select');
         const yearSelect = document.querySelector('.fmt02-year-select');
 
@@ -107,6 +110,80 @@ function confirmSaveHistory() {
             metadata = {
                 mNo: document.querySelector('.fmt14-m-no')?.textContent || '',
                 loc: document.querySelector('.fmt14-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 17) {
+            metadata = {
+                mNo: document.querySelector('.fmt17-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt17-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 18) {
+            metadata = {
+                mNo: document.querySelector('.fmt18-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt18-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 20) {
+            metadata = {
+                mNo: document.querySelector('.fmt20-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt20-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 21) {
+            metadata = {
+                mNo: document.querySelector('.fmt21-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt21-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 24) {
+            metadata = {
+                mNo: document.querySelector('.fmt24-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt24-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 25) {
+            metadata = {
+                mNo: document.querySelector('.fmt25-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt25-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 39) {
+            metadata = {
+                mNo: document.querySelector('.fmt39-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt39-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 40) {
+            metadata = {
+                mNo: document.querySelector('.fmt40-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt40-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 30) {
+            metadata = {
+                date: document.querySelector('.fmt30-date')?.textContent || '',
+                mName: document.querySelector('.fmt30-m-name')?.textContent || '',
+                model: document.querySelector('.fmt30-model')?.textContent || '',
+                subject: document.querySelector('.fmt30-subject')?.textContent || '',
+                week: document.querySelector('.fmt30-week')?.textContent || '',
+                month: document.querySelector('.fmt30-month')?.textContent || '',
+                performer: document.querySelector('.fmt30-performer')?.textContent || ''
+            };
+        } else if (currentFMT === 31) {
+            metadata = {
+                day: document.querySelector('.fmt31-day')?.textContent || '',
+                month: document.querySelector('.fmt31-month')?.textContent || '',
+                wkPending: document.querySelector('.fmt31-wk-pending')?.textContent || '',
+                wkCurrent: document.querySelector('.fmt31-wk-current')?.textContent || ''
+            };
+        } else if (currentFMT === 32) {
+            metadata = {
+                day: document.querySelector('.fmt32-day')?.textContent || '',
+                month: document.querySelector('.fmt32-month')?.textContent || '',
+                wkPending: document.querySelector('.fmt32-wk-pending')?.textContent || '',
+                wkCurrent: document.querySelector('.fmt32-wk-current')?.textContent || ''
+            };
+        } else if (currentFMT === 36) {
+            metadata = {
+                hDay: document.querySelector('.fmt36-h-day')?.textContent || '',
+                hMonth: document.querySelector('.fmt36-h-month')?.textContent || '',
+                hYear: document.querySelector('.fmt36-h-year')?.textContent || '',
+                date: document.querySelector('.fmt36-date')?.textContent || '',
+                subject: document.querySelector('.fmt36-subject')?.textContent || '',
+                to: document.querySelector('.fmt36-to')?.textContent || '',
+                reason: document.querySelector('.fmt36-reason')?.textContent || ''
             };
         } else {
             metadata = {
@@ -243,6 +320,20 @@ function generateFormHTMLFromData(item) {
     if (item.fmt === 16) return renderStaticForm16(item);
     if (item.fmt === 22) return renderStaticForm22(item);
     if (item.fmt === 23) return renderStaticForm23(item);
+    if (item.fmt === 25) return renderStaticForm25(item);
+    if (item.fmt === 26) return renderStaticForm26(item);
+    if (item.fmt === 27) return renderStaticForm27(item);
+    if (item.fmt === 28) return renderStaticForm28(item);
+    if (item.fmt === 29) return renderStaticForm29(item);
+    if (item.fmt === 30) return renderStaticForm30(item);
+    if (item.fmt === 31) return renderStaticForm31(item);
+    if (item.fmt === 32) return renderStaticForm32(item);
+    if (item.fmt === 33) return renderStaticForm33(item);
+    if (item.fmt === 35) return renderStaticForm35(item);
+    if (item.fmt === 36) return renderStaticForm36(item);
+    if (item.fmt === 39) return renderStaticForm39(item);
+    if (item.fmt === 40) return renderStaticForm40(item);
+    if (item.fmt === 44) return renderStaticForm44(item);
     return '<div>Form format not found</div>';
 }
 
@@ -266,12 +357,17 @@ function applyHistoryState(item) {
     const cells = document.querySelectorAll('.check-cell');
     item.data.forEach((d, i) => { if (cells[i]) setCellState(cells[i], parseInt(d.state)); });
 
-    if (item.fmt === 1 && item.logData) {
+    if (item.logData) {
         const logCells = document.querySelectorAll('.log-cell');
-        item.logData.forEach((val, i) => { if (logCells[i]) logCells[i].textContent = val; });
-        if (document.querySelector('.summary-water')) document.querySelector('.summary-water').textContent = item.summaryWater || '';
-        if (document.querySelector('.fmt01-date')) document.querySelector('.fmt01-date').value = item.fmt01Date || '';
+        item.logData.forEach((val, i) => {
+            if (logCells[i]) {
+                if (logCells[i].tagName === 'INPUT') logCells[i].value = val;
+                else logCells[i].textContent = val;
+            }
+        });
     }
+    if (document.querySelector('.summary-water')) document.querySelector('.summary-water').textContent = item.summaryWater || '';
+    if (document.querySelector('.fmt01-date')) document.querySelector('.fmt01-date').value = item.fmt01Date || '';
     const remarks = document.querySelectorAll('.correction-input');
     item.remarks.forEach((txt, i) => { if (remarks[i]) remarks[i].textContent = txt; });
 
@@ -295,7 +391,7 @@ function applyHistoryState(item) {
         item.rowRemarks.forEach((txt, i) => { if (rowRemarks[i]) rowRemarks[i].textContent = txt; });
     }
 
-    if ((item.fmt === 2 || item.fmt === 3 || item.fmt === 5 || item.fmt === 6 || item.fmt === 38 || item.fmt === 15 || item.fmt === 16 || item.fmt === 22 || item.fmt === 23) && item.metadata) {
+    if ((item.fmt === 2 || item.fmt === 3 || item.fmt === 5 || item.fmt === 6 || item.fmt === 38 || item.fmt === 15 || item.fmt === 16 || item.fmt === 22 || item.fmt === 23 || item.fmt === 26 || item.fmt === 27 || item.fmt === 28 || item.fmt === 44) && item.metadata) {
         if (document.querySelector('.fmt02-month-select')) document.querySelector('.fmt02-month-select').value = item.metadata.month || '';
         if (document.querySelector('.fmt02-year-select')) document.querySelector('.fmt02-year-select').value = item.metadata.year || '';
         if (document.querySelector('.fmt02-m-no')) document.querySelector('.fmt02-m-no').textContent = item.metadata.mNo || '';
@@ -309,6 +405,36 @@ function applyHistoryState(item) {
         if (document.querySelector('.fmt07-machine')) document.querySelector('.fmt07-machine').textContent = item.metadata.machine || '';
         if (document.querySelector('.fmt07-month')) document.querySelector('.fmt07-month').textContent = item.metadata.month || '';
         if (document.querySelector('.fmt07-year')) document.querySelector('.fmt07-year').textContent = item.metadata.year || '';
+    }
+    if (item.fmt === 30 && item.metadata) {
+        if (document.querySelector('.fmt30-date')) document.querySelector('.fmt30-date').textContent = item.metadata.date || '';
+        if (document.querySelector('.fmt30-m-name')) document.querySelector('.fmt30-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt30-model')) document.querySelector('.fmt30-model').textContent = item.metadata.model || '';
+        if (document.querySelector('.fmt30-subject')) document.querySelector('.fmt30-subject').textContent = item.metadata.subject || '';
+        if (document.querySelector('.fmt30-week')) document.querySelector('.fmt30-week').textContent = item.metadata.week || '';
+        if (document.querySelector('.fmt30-month')) document.querySelector('.fmt30-month').textContent = item.metadata.month || '';
+        if (document.querySelector('.fmt30-performer')) document.querySelector('.fmt30-performer').textContent = item.metadata.performer || '';
+    }
+    if (item.fmt === 31 && item.metadata) {
+        if (document.querySelector('.fmt31-day')) document.querySelector('.fmt31-day').textContent = item.metadata.day || '';
+        if (document.querySelector('.fmt31-month')) document.querySelector('.fmt31-month').textContent = item.metadata.month || '';
+        if (document.querySelector('.fmt31-wk-pending')) document.querySelector('.fmt31-wk-pending').textContent = item.metadata.wkPending || '';
+        if (document.querySelector('.fmt31-wk-current')) document.querySelector('.fmt31-wk-current').textContent = item.metadata.wkCurrent || '';
+    }
+    if (item.fmt === 32 && item.metadata) {
+        if (document.querySelector('.fmt32-day')) document.querySelector('.fmt32-day').textContent = item.metadata.day || '';
+        if (document.querySelector('.fmt32-month')) document.querySelector('.fmt32-month').textContent = item.metadata.month || '';
+        if (document.querySelector('.fmt32-wk-pending')) document.querySelector('.fmt32-wk-pending').textContent = item.metadata.wkPending || '';
+        if (document.querySelector('.fmt32-wk-current')) document.querySelector('.fmt32-wk-current').textContent = item.metadata.wkCurrent || '';
+    }
+    if (item.fmt === 36 && item.metadata) {
+        if (document.querySelector('.fmt36-h-day')) document.querySelector('.fmt36-h-day').textContent = item.metadata.hDay || '';
+        if (document.querySelector('.fmt36-h-month')) document.querySelector('.fmt36-h-month').textContent = item.metadata.hMonth || '';
+        if (document.querySelector('.fmt36-h-year')) document.querySelector('.fmt36-h-year').textContent = item.metadata.hYear || '';
+        if (document.querySelector('.fmt36-date')) document.querySelector('.fmt36-date').textContent = item.metadata.date || '';
+        if (document.querySelector('.fmt36-subject')) document.querySelector('.fmt36-subject').textContent = item.metadata.subject || '';
+        if (document.querySelector('.fmt36-to')) document.querySelector('.fmt36-to').textContent = item.metadata.to || '';
+        if (document.querySelector('.fmt36-reason')) document.querySelector('.fmt36-reason').textContent = item.metadata.reason || '';
     }
     if (item.fmt === 9 && item.metadata) {
         if (document.querySelector('.fmt09-m-no')) document.querySelector('.fmt09-m-no').textContent = item.metadata.mNo || '';
@@ -333,6 +459,38 @@ function applyHistoryState(item) {
     if (item.fmt === 14 && item.metadata) {
         if (document.querySelector('.fmt14-m-no')) document.querySelector('.fmt14-m-no').textContent = item.metadata.mNo || '';
         if (document.querySelector('.fmt14-loc')) document.querySelector('.fmt14-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 17 && item.metadata) {
+        if (document.querySelector('.fmt17-m-no')) document.querySelector('.fmt17-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt17-loc')) document.querySelector('.fmt17-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 18 && item.metadata) {
+        if (document.querySelector('.fmt18-m-no')) document.querySelector('.fmt18-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt18-loc')) document.querySelector('.fmt18-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 20 && item.metadata) {
+        if (document.querySelector('.fmt20-m-no')) document.querySelector('.fmt20-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt20-loc')) document.querySelector('.fmt20-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 21 && item.metadata) {
+        if (document.querySelector('.fmt21-m-no')) document.querySelector('.fmt21-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt21-loc')) document.querySelector('.fmt21-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 24 && item.metadata) {
+        if (document.querySelector('.fmt24-m-no')) document.querySelector('.fmt24-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt24-loc')) document.querySelector('.fmt24-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 25 && item.metadata) {
+        if (document.querySelector('.fmt25-m-no')) document.querySelector('.fmt25-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt25-loc')) document.querySelector('.fmt25-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 39 && item.metadata) {
+        if (document.querySelector('.fmt39-m-no')) document.querySelector('.fmt39-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt39-loc')) document.querySelector('.fmt39-loc').textContent = item.metadata.loc || '';
+    }
+    if (item.fmt === 40 && item.metadata) {
+        if (document.querySelector('.fmt40-m-no')) document.querySelector('.fmt40-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt40-loc')) document.querySelector('.fmt40-loc').textContent = item.metadata.loc || '';
     }
 }
 

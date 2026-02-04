@@ -40,18 +40,56 @@ function renderAllTables() {
         renderExactTable13();
     } else if (currentFMT === 14) {
         renderExactTable14();
+    } else if (currentFMT === 17) {
+        renderExactTable17();
+    } else if (currentFMT === 18) {
+        renderExactTable18();
+    } else if (currentFMT === 20) {
+        renderExactTable20();
+    } else if (currentFMT === 21) {
+        renderExactTable21();
     } else if (currentFMT === 19) {
         renderExactTable19()
     } else if (currentFMT === 22) {
-        renderExactTable22()
+        renderExactTable22();
     } else if (currentFMT === 23) {
-        renderExactTable23()
+        renderExactTable23();
+    } else if (currentFMT === 24) {
+        renderExactTable24();
+    } else if (currentFMT === 25) {
+        renderExactTable25();
+    } else if (currentFMT === 26) {
+        renderExactTable26();
+    } else if (currentFMT === 27) {
+        renderExactTable27();
+    } else if (currentFMT === 28) {
+        renderExactTable28();
+    } else if (currentFMT === 29) {
+        renderExactTable29();
+    } else if (currentFMT === 30) {
+        renderExactTable30();
+    } else if (currentFMT === 31) {
+        renderExactTable31();
+    } else if (currentFMT === 32) {
+        renderExactTable32();
+    } else if (currentFMT === 33) {
+        renderExactTable33();
+    } else if (currentFMT === 35) {
+        renderExactTable35();
+    } else if (currentFMT === 36) {
+        renderExactTable36();
+    } else if (currentFMT === 39) {
+        renderExactTable39();
+    } else if (currentFMT === 40) {
+        renderExactTable40();
+    } else if (currentFMT === 44) {
+        renderExactTable44();
     }
 }
 
 function toggle(cell) {
     if (!isDragging) {
-        setCellState(cell, (parseInt(cell.dataset.state) + 1) % 4);
+        setCellState(cell, (parseInt(cell.dataset.state) + 1) % 3);
     }
 }
 

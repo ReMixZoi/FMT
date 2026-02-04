@@ -868,6 +868,30 @@ function renderExactTable14() {
     renderHistoryBaseForm(14, 'ใบบันทึกประวัติการซ่อมเครื่องจักรปั๊มสูญญากาศ', 'ฝ่ายผลิต');
 }
 
+function renderExactTable17() {
+    renderHistoryBaseForm(17, 'ใบบันทึกประวัติการซ่อมเครื่องจักรเครื่องบดโฟม', 'แผนกบด');
+}
+
+function renderExactTable18() {
+    renderHistoryBaseForm(18, 'ใบบันทึกประวัติการซ่อมเครื่องจักรคูลลิ่งทาวเวอร์', 'ชั้นดาดฟ้า');
+}
+
+function renderExactTable20() {
+    renderHistoryBaseForm(20, 'ใบบันทึกประวัติการซ่อมโครงสร้างพื้นฐาน', 'ฝ่ายผลิต');
+}
+
+function renderExactTable21() {
+    renderHistoryBaseForm(21, 'ใบบันทึกประวัติการซ่อมเครื่องกรองน้ำ', 'ฝ่ายผลิต');
+}
+
+function renderExactTable24() {
+    renderHistoryBaseForm(24, 'ใบบันทึกประวัติการซ่อมเครื่องกลึง', 'ฝ่ายผลิต');
+}
+
+function renderExactTable25() {
+    renderHistoryBaseForm(25, 'ใบบันทึกประวัติการซ่อมเครื่องมิลลิ่ง', 'ฝ่ายผลิต');
+}
+
 function renderHistoryBaseForm(fmtNum, title, defaultLoc) {
     const div = document.createElement('div');
     div.className = 'sheet-container portrait-sheet';

@@ -7,14 +7,39 @@ function generateFormHTMLFromData(item) {
     if (item.fmt === 38) return renderStaticForm38(item);
     if (item.fmt === 15) return renderStaticForm15(item);
     if (item.fmt === 7) return renderStaticForm07(item);
-    if (item.fmt === 7) return renderStaticForm07(item);
     if (item.fmt === 9) return renderStaticForm09(item);
     if (item.fmt === 10) return renderStaticForm10(item);
     if (item.fmt === 11) return renderStaticForm11(item);
     if (item.fmt === 12) return renderStaticForm12(item);
     if (item.fmt === 13) return renderStaticForm13(item);
     if (item.fmt === 14) return renderStaticForm14(item);
+    if (item.fmt === 17) return renderStaticForm17(item);
+    if (item.fmt === 18) return renderStaticForm18(item);
+    if (item.fmt === 20) return renderStaticForm20(item);
+    if (item.fmt === 21) return renderStaticForm21(item);
+    if (item.fmt === 24) return renderStaticForm24(item);
+    if (item.fmt === 25) return renderStaticForm25(item);
+    if (item.fmt === 26) return renderStaticForm26(item);
+    if (item.fmt === 27) return renderStaticForm27(item);
+    if (item.fmt === 28) return renderStaticForm28(item);
+    if (item.fmt === 29) return renderStaticForm29(item);
+    if (item.fmt === 30) return renderStaticForm30(item);
+    if (item.fmt === 31) return renderStaticForm31(item);
+    if (item.fmt === 32) return renderStaticForm32(item);
+    if (item.fmt === 33) return renderStaticForm33(item);
+    if (item.fmt === 35) return renderStaticForm35(item);
+    if (item.fmt === 36) return renderStaticForm36(item);
+    if (item.fmt === 39) return renderStaticForm39(item);
+    if (item.fmt === 40) return renderStaticForm40(item);
     return renderStaticForm37(item);
+}
+
+function renderStaticForm40(item) {
+    return renderHistoryBaseStaticForm(item, 40, 'ใบบันทึกประวัติการซ่อมเครื่องจักรและอุปกรณ์สารสนเทศ', '');
+}
+
+function renderStaticForm39(item) {
+    return renderHistoryBaseStaticForm(item, 39, 'ใบบันทึกประวัติการซ่อมรอกไฟฟ้า', '');
 }
 
 // ... existing forms (09, 10 etc) ...
@@ -33,6 +58,30 @@ function renderStaticForm13(item) {
 
 function renderStaticForm14(item) {
     return renderHistoryBaseStaticForm(item, 14, 'ใบบันทึกประวัติการซ่อมเครื่องจักรปั๊มสูญญากาศ', 'ฝ่ายผลิต');
+}
+
+function renderStaticForm17(item) {
+    return renderHistoryBaseStaticForm(item, 17, 'ใบบันทึกประวัติการซ่อมเครื่องจักรเครื่องบดโฟม', 'แผนกบด');
+}
+
+function renderStaticForm18(item) {
+    return renderHistoryBaseStaticForm(item, 18, 'ใบบันทึกประวัติการซ่อมเครื่องจักรคูลลิ่งทาวเวอร์', 'ชั้นดาดฟ้า');
+}
+
+function renderStaticForm20(item) {
+    return renderHistoryBaseStaticForm(item, 20, 'ใบบันทึกประวัติการซ่อมโครงสร้างพื้นฐาน', 'ฝ่ายผลิต');
+}
+
+function renderStaticForm21(item) {
+    return renderHistoryBaseStaticForm(item, 21, 'ใบบันทึกประวัติการซ่อมเครื่องกรองน้ำ', 'ฝ่ายผลิต');
+}
+
+function renderStaticForm24(item) {
+    return renderHistoryBaseStaticForm(item, 24, 'ใบบันทึกประวัติการซ่อมเครื่องกลึง', 'ฝ่ายผลิต');
+}
+
+function renderStaticForm25(item) {
+    return renderHistoryBaseStaticForm(item, 25, 'ใบบันทึกประวัติการซ่อมเครื่องมิลลิ่ง', 'ฝ่ายผลิต');
 }
 
 function renderHistoryBaseStaticForm(item, fmtNum, title, defaultLoc) {
