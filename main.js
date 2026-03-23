@@ -69,7 +69,7 @@ function confirmSaveHistory() {
     const sigNames = Array.from(document.querySelectorAll('.sig-name')).map(el => el.textContent);
 
     let metadata = {};
-    if (currentFMT === 2 || currentFMT === 3 || currentFMT === 5 || currentFMT === 6 || currentFMT === 38 || currentFMT === 15 || currentFMT === 16 || currentFMT === 7 || currentFMT === 22 || currentFMT === 23 || currentFMT === 26 || currentFMT === 27 || currentFMT === 28 || currentFMT === 30 || currentFMT === 31 || currentFMT === 32 || currentFMT === 36 || currentFMT === 39 || currentFMT === 40 || currentFMT === 44 || (currentFMT >= 9 && currentFMT <= 14) || currentFMT === 17 || currentFMT === 18 || currentFMT === 20 || currentFMT === 21 || currentFMT === 24 || currentFMT === 25) {
+    if (currentFMT === 2 || currentFMT === 3 || currentFMT === 4 || currentFMT === 5 || currentFMT === 6 || currentFMT === 38 || currentFMT === 15 || currentFMT === 16 || currentFMT === 7 || currentFMT === 22 || currentFMT === 23 || currentFMT === 26 || currentFMT === 27 || currentFMT === 28 || currentFMT === 30 || currentFMT === 31 || currentFMT === 32 || currentFMT === 36 || currentFMT === 39 || currentFMT === 40 || currentFMT === 44 || (currentFMT >= 9 && currentFMT <= 14) || currentFMT === 17 || currentFMT === 18 || currentFMT === 20 || currentFMT === 21 || currentFMT === 24 || currentFMT === 25) {
         const monthSelect = document.querySelector('.fmt02-month-select');
         const yearSelect = document.querySelector('.fmt02-year-select');
 
@@ -81,99 +81,60 @@ function confirmSaveHistory() {
                 month: document.querySelector('.fmt07-month')?.textContent || '',
                 year: document.querySelector('.fmt07-year')?.textContent || ''
             };
-        } else if (currentFMT === 9) {
+        } else if ([9, 10, 11, 12, 13, 17, 18, 24, 25, 39, 40].includes(currentFMT)) {
             metadata = {
-                mNo: document.querySelector('.fmt09-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt09-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 10) {
-            metadata = {
-                mNo: document.querySelector('.fmt10-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt10-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 11) {
-            metadata = {
-                mNo: document.querySelector('.fmt11-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt11-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 12) {
-            metadata = {
-                mNo: document.querySelector('.fmt12-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt12-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 13) {
-            metadata = {
-                mNo: document.querySelector('.fmt13-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt13-loc')?.textContent || ''
+                mNo: document.querySelector(`.fmt${currentFMT < 10 ? '0' + currentFMT : currentFMT}-m-no`)?.textContent || '',
+                loc: document.querySelector(`.fmt${currentFMT < 10 ? '0' + currentFMT : currentFMT}-loc`)?.textContent || ''
             };
         } else if (currentFMT === 14) {
             metadata = {
                 mNo: document.querySelector('.fmt14-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt14-loc')?.textContent || ''
+                mName: document.querySelector('.fmt14-m-name')?.textContent || '',
+                loc: document.querySelector('.fmt14-loc')?.textContent || '',
+                month: document.querySelector('.fmt14-month')?.textContent || '',
+                year: document.querySelector('.fmt14-year')?.textContent || ''
             };
-        } else if (currentFMT === 17) {
+        } else if ([17, 20, 21, 24, 25].includes(currentFMT)) {
             metadata = {
-                mNo: document.querySelector('.fmt17-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt17-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 18) {
-            metadata = {
-                mNo: document.querySelector('.fmt18-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt18-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 20) {
-            metadata = {
-                mNo: document.querySelector('.fmt20-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt20-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 21) {
-            metadata = {
-                mNo: document.querySelector('.fmt21-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt21-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 24) {
-            metadata = {
-                mNo: document.querySelector('.fmt24-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt24-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 25) {
-            metadata = {
-                mNo: document.querySelector('.fmt25-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt25-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 39) {
-            metadata = {
-                mNo: document.querySelector('.fmt39-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt39-loc')?.textContent || ''
-            };
-        } else if (currentFMT === 40) {
-            metadata = {
-                mNo: document.querySelector('.fmt40-m-no')?.textContent || '',
-                loc: document.querySelector('.fmt40-loc')?.textContent || ''
+                mNo: document.querySelector(`.fmt${currentFMT}-m-no`)?.textContent || '',
+                loc: document.querySelector(`.fmt${currentFMT}-loc`)?.textContent || ''
             };
         } else if (currentFMT === 30) {
             metadata = {
                 date: document.querySelector('.fmt30-date')?.textContent || '',
-                mName: document.querySelector('.fmt30-m-name')?.textContent || '',
-                model: document.querySelector('.fmt30-model')?.textContent || '',
-                subject: document.querySelector('.fmt30-subject')?.textContent || '',
-                week: document.querySelector('.fmt30-week')?.textContent || '',
-                month: document.querySelector('.fmt30-month')?.textContent || '',
-                performer: document.querySelector('.fmt30-performer')?.textContent || ''
+                start: document.querySelector('.fmt30-start')?.textContent || '',
+                stop: document.querySelector('.fmt30-stop')?.textContent || '',
+                water: document.querySelector('.fmt30-water')?.textContent || '',
+                coalU: document.querySelector('.fmt30-coal-u')?.textContent || '',
+                coalR: document.querySelector('.fmt30-coal-r')?.textContent || '',
+                woodU: document.querySelector('.fmt30-wood-u')?.textContent || '',
+                woodR: document.querySelector('.fmt30-wood-r')?.textContent || '',
+                lpgU: document.querySelector('.fmt30-lpg-u')?.textContent || '',
+                lpgR: document.querySelector('.fmt30-lpg-r')?.textContent || '',
+                palmU: document.querySelector('.fmt30-palm-u')?.textContent || '',
+                palmR: document.querySelector('.fmt30-palm-r')?.textContent || '',
+                svTime: document.querySelector('.fmt30-sv-time')?.textContent || '',
+                wlTime: document.querySelector('.fmt30-wl-time')?.textContent || ''
             };
         } else if (currentFMT === 31) {
             metadata = {
-                day: document.querySelector('.fmt31-day')?.textContent || '',
-                month: document.querySelector('.fmt31-month')?.textContent || '',
-                wkPending: document.querySelector('.fmt31-wk-pending')?.textContent || '',
-                wkCurrent: document.querySelector('.fmt31-wk-current')?.textContent || ''
+                pumpModel: document.querySelector('.fmt31-pump-model')?.textContent || '',
+                pumpSn: document.querySelector('.fmt31-pump-sn')?.textContent || '',
+                type: document.querySelector('.fmt31-type')?.textContent || '',
+                dateVal: document.querySelector('.fmt31-date-val')?.textContent || '',
+                driven: document.querySelector('.fmt31-driven')?.textContent || '',
+                drivenSn: document.querySelector('.fmt31-driven-sn')?.textContent || '',
+                jockeyModel: document.querySelector('.fmt31-jockey-model')?.textContent || '',
+                jockeySn: document.querySelector('.fmt31-jockey-sn')?.textContent || '',
+                time: document.querySelector('.fmt31-time')?.textContent || ''
             };
         } else if (currentFMT === 32) {
             metadata = {
-                day: document.querySelector('.fmt32-day')?.textContent || '',
-                month: document.querySelector('.fmt32-month')?.textContent || '',
-                wkPending: document.querySelector('.fmt32-wk-pending')?.textContent || '',
-                wkCurrent: document.querySelector('.fmt32-wk-current')?.textContent || ''
+                month: document.querySelector('.fmt32-month-select')?.value || '',
+                year: document.querySelector('.fmt32-year-select')?.value || '',
+                mNo: document.querySelector('.fmt32-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt32-m-name')?.textContent || '',
+                area: document.querySelector('.fmt32-area')?.textContent || ''
             };
         } else if (currentFMT === 36) {
             metadata = {
@@ -184,6 +145,79 @@ function confirmSaveHistory() {
                 subject: document.querySelector('.fmt36-subject')?.textContent || '',
                 to: document.querySelector('.fmt36-to')?.textContent || '',
                 reason: document.querySelector('.fmt36-reason')?.textContent || ''
+            };
+        } else if (currentFMT === 19) {
+            metadata = {
+                month: document.querySelector('.fmt19-month-select')?.value || '',
+                year: document.querySelector('.fmt19-year-select')?.value || '',
+                mName: document.querySelector('.fmt19-m-name')?.textContent || '',
+                area: document.querySelector('.fmt19-area')?.textContent || ''
+            };
+        } else if (currentFMT === 22) {
+            metadata = {
+                month: document.querySelector('.fmt22-month-select')?.value || '',
+                year: document.querySelector('.fmt22-year-select')?.value || '',
+                mNo: document.querySelector('.fmt22-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt22-m-name')?.textContent || '',
+                area: document.querySelector('.fmt22-area')?.textContent || ''
+            };
+        } else if (currentFMT === 23) {
+            metadata = {
+                month: document.querySelector('.fmt23-month-select')?.value || '',
+                year: document.querySelector('.fmt23-year-select')?.value || '',
+                mNo: document.querySelector('.fmt23-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt23-m-name')?.textContent || '',
+                area: document.querySelector('.fmt23-area')?.textContent || ''
+            };
+        } else if (currentFMT === 24) {
+            metadata = {
+                month: document.querySelector('.fmt24-month-select')?.value || '',
+                year: document.querySelector('.fmt24-year-select')?.value || '',
+                mNo: document.querySelector('.fmt24-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt24-m-name')?.textContent || '',
+                area: document.querySelector('.fmt24-area')?.textContent || ''
+            };
+        } else if (currentFMT === 25) {
+            metadata = {
+                month: document.querySelector('.fmt25-month-select')?.value || '',
+                year: document.querySelector('.fmt25-year-select')?.value || '',
+                mNo: document.querySelector('.fmt25-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt25-m-name')?.textContent || '',
+                area: document.querySelector('.fmt25-area')?.textContent || ''
+            };
+        } else if (currentFMT === 26) {
+            metadata = {
+                month: document.querySelector('.fmt26-month-select')?.value || '',
+                year: document.querySelector('.fmt26-year-select')?.value || '',
+                mNo: document.querySelector('.fmt26-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt26-m-name')?.textContent || '',
+                area: document.querySelector('.fmt26-area')?.textContent || ''
+            };
+        } else if (currentFMT === 27) {
+            metadata = {
+                month: document.querySelector('.fmt27-month-select')?.value || '',
+                year: document.querySelector('.fmt27-year-select')?.value || '',
+                mNo: document.querySelector('.fmt27-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt27-m-name')?.textContent || '',
+                area: document.querySelector('.fmt27-area')?.textContent || ''
+            };
+        } else if (currentFMT === 38) {
+            metadata = {
+                month: document.querySelector('.fmt38-month-select')?.value || '',
+                year: document.querySelector('.fmt38-year-select')?.value || '',
+                mNo: document.querySelector('.fmt38-m-no')?.textContent || '',
+                mName: document.querySelector('.fmt38-m-name')?.textContent || '',
+                area: document.querySelector('.fmt38-area')?.textContent || ''
+            };
+        } else if (currentFMT === 39) {
+            metadata = {
+                mNo: document.querySelector('.fmt39-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt39-loc')?.textContent || ''
+            };
+        } else if (currentFMT === 40) {
+            metadata = {
+                mNo: document.querySelector('.fmt40-m-no')?.textContent || '',
+                loc: document.querySelector('.fmt40-loc')?.textContent || ''
             };
         } else {
             metadata = {
@@ -307,35 +341,6 @@ function printSelected() {
     printArea.innerHTML = '';
 }
 
-function generateFormHTMLFromData(item) {
-    if (item.fmt === 1) return renderStaticForm01(item);
-    if (item.fmt === 2) return renderStaticForm02(item);
-    if (item.fmt === 3) return renderStaticForm03(item);
-    if (item.fmt === 5) return renderStaticForm05(item);
-    if (item.fmt === 6) return renderStaticForm06(item);
-    if (item.fmt === 7) return renderStaticForm07(item);
-    if (item.fmt === 15) return renderStaticForm15(item);
-    if (item.fmt === 37) return renderStaticForm37(item);
-    if (item.fmt === 38) return renderStaticForm38(item);
-    if (item.fmt === 16) return renderStaticForm16(item);
-    if (item.fmt === 22) return renderStaticForm22(item);
-    if (item.fmt === 23) return renderStaticForm23(item);
-    if (item.fmt === 25) return renderStaticForm25(item);
-    if (item.fmt === 26) return renderStaticForm26(item);
-    if (item.fmt === 27) return renderStaticForm27(item);
-    if (item.fmt === 28) return renderStaticForm28(item);
-    if (item.fmt === 29) return renderStaticForm29(item);
-    if (item.fmt === 30) return renderStaticForm30(item);
-    if (item.fmt === 31) return renderStaticForm31(item);
-    if (item.fmt === 32) return renderStaticForm32(item);
-    if (item.fmt === 33) return renderStaticForm33(item);
-    if (item.fmt === 35) return renderStaticForm35(item);
-    if (item.fmt === 36) return renderStaticForm36(item);
-    if (item.fmt === 39) return renderStaticForm39(item);
-    if (item.fmt === 40) return renderStaticForm40(item);
-    if (item.fmt === 44) return renderStaticForm44(item);
-    return '<div>Form format not found</div>';
-}
 
 function viewHistoryItem(item) {
     applyHistoryState(item);
@@ -408,24 +413,85 @@ function applyHistoryState(item) {
     }
     if (item.fmt === 30 && item.metadata) {
         if (document.querySelector('.fmt30-date')) document.querySelector('.fmt30-date').textContent = item.metadata.date || '';
-        if (document.querySelector('.fmt30-m-name')) document.querySelector('.fmt30-m-name').textContent = item.metadata.mName || '';
-        if (document.querySelector('.fmt30-model')) document.querySelector('.fmt30-model').textContent = item.metadata.model || '';
-        if (document.querySelector('.fmt30-subject')) document.querySelector('.fmt30-subject').textContent = item.metadata.subject || '';
-        if (document.querySelector('.fmt30-week')) document.querySelector('.fmt30-week').textContent = item.metadata.week || '';
-        if (document.querySelector('.fmt30-month')) document.querySelector('.fmt30-month').textContent = item.metadata.month || '';
-        if (document.querySelector('.fmt30-performer')) document.querySelector('.fmt30-performer').textContent = item.metadata.performer || '';
+        if (document.querySelector('.fmt30-start')) document.querySelector('.fmt30-start').textContent = item.metadata.start || '';
+        if (document.querySelector('.fmt30-stop')) document.querySelector('.fmt30-stop').textContent = item.metadata.stop || '';
+        if (document.querySelector('.fmt30-water')) document.querySelector('.fmt30-water').textContent = item.metadata.water || '';
+        if (document.querySelector('.fmt30-coal-u')) document.querySelector('.fmt30-coal-u').textContent = item.metadata.coalU || '';
+        if (document.querySelector('.fmt30-coal-r')) document.querySelector('.fmt30-coal-r').textContent = item.metadata.coalR || '';
+        if (document.querySelector('.fmt30-wood-u')) document.querySelector('.fmt30-wood-u').textContent = item.metadata.woodU || '';
+        if (document.querySelector('.fmt30-wood-r')) document.querySelector('.fmt30-wood-r').textContent = item.metadata.woodR || '';
+        if (document.querySelector('.fmt30-lpg-u')) document.querySelector('.fmt30-lpg-u').textContent = item.metadata.lpgU || '';
+        if (document.querySelector('.fmt30-lpg-r')) document.querySelector('.fmt30-lpg-r').textContent = item.metadata.lpgR || '';
+        if (document.querySelector('.fmt30-palm-u')) document.querySelector('.fmt30-palm-u').textContent = item.metadata.palmU || '';
+        if (document.querySelector('.fmt30-palm-r')) document.querySelector('.fmt30-palm-r').textContent = item.metadata.palmR || '';
+        if (document.querySelector('.fmt30-sv-time')) document.querySelector('.fmt30-sv-time').textContent = item.metadata.svTime || '';
+        if (document.querySelector('.fmt30-wl-time')) document.querySelector('.fmt30-wl-time').textContent = item.metadata.wlTime || '';
     }
     if (item.fmt === 31 && item.metadata) {
-        if (document.querySelector('.fmt31-day')) document.querySelector('.fmt31-day').textContent = item.metadata.day || '';
-        if (document.querySelector('.fmt31-month')) document.querySelector('.fmt31-month').textContent = item.metadata.month || '';
-        if (document.querySelector('.fmt31-wk-pending')) document.querySelector('.fmt31-wk-pending').textContent = item.metadata.wkPending || '';
-        if (document.querySelector('.fmt31-wk-current')) document.querySelector('.fmt31-wk-current').textContent = item.metadata.wkCurrent || '';
+        if (document.querySelector('.fmt31-pump-model')) document.querySelector('.fmt31-pump-model').textContent = item.metadata.pumpModel || '';
+        if (document.querySelector('.fmt31-pump-sn')) document.querySelector('.fmt31-pump-sn').textContent = item.metadata.pumpSn || '';
+        if (document.querySelector('.fmt31-type')) document.querySelector('.fmt31-type').textContent = item.metadata.type || '';
+        if (document.querySelector('.fmt31-date-val')) document.querySelector('.fmt31-date-val').textContent = item.metadata.dateVal || '';
+        if (document.querySelector('.fmt31-driven')) document.querySelector('.fmt31-driven').textContent = item.metadata.driven || '';
+        if (document.querySelector('.fmt31-driven-sn')) document.querySelector('.fmt31-driven-sn').textContent = item.metadata.drivenSn || '';
+        if (document.querySelector('.fmt31-jockey-model')) document.querySelector('.fmt31-jockey-model').textContent = item.metadata.jockeyModel || '';
+        if (document.querySelector('.fmt31-jockey-sn')) document.querySelector('.fmt31-jockey-sn').textContent = item.metadata.jockeySn || '';
+        if (document.querySelector('.fmt31-time')) document.querySelector('.fmt31-time').textContent = item.metadata.time || '';
     }
     if (item.fmt === 32 && item.metadata) {
-        if (document.querySelector('.fmt32-day')) document.querySelector('.fmt32-day').textContent = item.metadata.day || '';
-        if (document.querySelector('.fmt32-month')) document.querySelector('.fmt32-month').textContent = item.metadata.month || '';
-        if (document.querySelector('.fmt32-wk-pending')) document.querySelector('.fmt32-wk-pending').textContent = item.metadata.wkPending || '';
-        if (document.querySelector('.fmt32-wk-current')) document.querySelector('.fmt32-wk-current').textContent = item.metadata.wkCurrent || '';
+        if (document.querySelector('.fmt32-month-select')) document.querySelector('.fmt32-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt32-year-select')) document.querySelector('.fmt32-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt32-m-no')) document.querySelector('.fmt32-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt32-m-name')) document.querySelector('.fmt32-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt32-area')) document.querySelector('.fmt32-area').textContent = item.metadata.area || '';
+    }
+    if (item.fmt === 19 && item.metadata) {
+        if (document.querySelector('.fmt19-month-select')) document.querySelector('.fmt19-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt19-year-select')) document.querySelector('.fmt19-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt19-m-name')) document.querySelector('.fmt19-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt19-area')) document.querySelector('.fmt19-area').textContent = item.metadata.area || '';
+    }
+    if (item.fmt === 22 && item.metadata) {
+        if (document.querySelector('.fmt22-month-select')) document.querySelector('.fmt22-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt22-year-select')) document.querySelector('.fmt22-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt22-m-no')) document.querySelector('.fmt22-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt22-m-name')) document.querySelector('.fmt22-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt22-area')) document.querySelector('.fmt22-area').textContent = item.metadata.area || '';
+    }
+    if (item.fmt === 24 && item.metadata) {
+        if (document.querySelector('.fmt24-month-select')) document.querySelector('.fmt24-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt24-year-select')) document.querySelector('.fmt24-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt24-m-no')) document.querySelector('.fmt24-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt24-m-name')) document.querySelector('.fmt24-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt24-area')) document.querySelector('.fmt24-area').textContent = item.metadata.area || '';
+    }
+    if (item.fmt === 25 && item.metadata) {
+        if (document.querySelector('.fmt25-month-select')) document.querySelector('.fmt25-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt25-year-select')) document.querySelector('.fmt25-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt25-m-no')) document.querySelector('.fmt25-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt25-m-name')) document.querySelector('.fmt25-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt25-area')) document.querySelector('.fmt25-area').textContent = item.metadata.area || '';
+    }
+    if (item.fmt === 26 && item.metadata) {
+        if (document.querySelector('.fmt26-month-select')) document.querySelector('.fmt26-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt26-year-select')) document.querySelector('.fmt26-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt26-m-no')) document.querySelector('.fmt26-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt26-m-name')) document.querySelector('.fmt26-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt26-area')) document.querySelector('.fmt26-area').textContent = item.metadata.area || '';
+    }
+    if (item.fmt === 27 && item.metadata) {
+        if (document.querySelector('.fmt27-month-select')) document.querySelector('.fmt27-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt27-year-select')) document.querySelector('.fmt27-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt27-m-no')) document.querySelector('.fmt27-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt27-m-name')) document.querySelector('.fmt27-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt27-area')) document.querySelector('.fmt27-area').textContent = item.metadata.area || '';
+    }
+    if (item.fmt === 23 && item.metadata) {
+        if (document.querySelector('.fmt23-month-select')) document.querySelector('.fmt23-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt23-year-select')) document.querySelector('.fmt23-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt23-m-no')) document.querySelector('.fmt23-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt23-m-name')) document.querySelector('.fmt23-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt23-area')) document.querySelector('.fmt23-area').textContent = item.metadata.area || '';
     }
     if (item.fmt === 36 && item.metadata) {
         if (document.querySelector('.fmt36-h-day')) document.querySelector('.fmt36-h-day').textContent = item.metadata.hDay || '';
@@ -436,61 +502,24 @@ function applyHistoryState(item) {
         if (document.querySelector('.fmt36-to')) document.querySelector('.fmt36-to').textContent = item.metadata.to || '';
         if (document.querySelector('.fmt36-reason')) document.querySelector('.fmt36-reason').textContent = item.metadata.reason || '';
     }
-    if (item.fmt === 9 && item.metadata) {
-        if (document.querySelector('.fmt09-m-no')) document.querySelector('.fmt09-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt09-loc')) document.querySelector('.fmt09-loc').textContent = item.metadata.loc || '';
+    if (item.fmt === 38 && item.metadata) {
+        if (document.querySelector('.fmt38-month-select')) document.querySelector('.fmt38-month-select').value = item.metadata.month || '';
+        if (document.querySelector('.fmt38-year-select')) document.querySelector('.fmt38-year-select').value = item.metadata.year || '';
+        if (document.querySelector('.fmt38-m-no')) document.querySelector('.fmt38-m-no').textContent = item.metadata.mNo || '';
+        if (document.querySelector('.fmt38-m-name')) document.querySelector('.fmt38-m-name').textContent = item.metadata.mName || '';
+        if (document.querySelector('.fmt38-area')) document.querySelector('.fmt38-area').textContent = item.metadata.area || '';
     }
-    if (item.fmt === 10 && item.metadata) {
-        if (document.querySelector('.fmt10-m-no')) document.querySelector('.fmt10-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt10-loc')) document.querySelector('.fmt10-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 11 && item.metadata) {
-        if (document.querySelector('.fmt11-m-no')) document.querySelector('.fmt11-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt11-loc')) document.querySelector('.fmt11-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 12 && item.metadata) {
-        if (document.querySelector('.fmt12-m-no')) document.querySelector('.fmt12-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt12-loc')) document.querySelector('.fmt12-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 13 && item.metadata) {
-        if (document.querySelector('.fmt13-m-no')) document.querySelector('.fmt13-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt13-loc')) document.querySelector('.fmt13-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 14 && item.metadata) {
-        if (document.querySelector('.fmt14-m-no')) document.querySelector('.fmt14-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt14-loc')) document.querySelector('.fmt14-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 17 && item.metadata) {
-        if (document.querySelector('.fmt17-m-no')) document.querySelector('.fmt17-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt17-loc')) document.querySelector('.fmt17-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 18 && item.metadata) {
-        if (document.querySelector('.fmt18-m-no')) document.querySelector('.fmt18-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt18-loc')) document.querySelector('.fmt18-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 20 && item.metadata) {
-        if (document.querySelector('.fmt20-m-no')) document.querySelector('.fmt20-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt20-loc')) document.querySelector('.fmt20-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 21 && item.metadata) {
-        if (document.querySelector('.fmt21-m-no')) document.querySelector('.fmt21-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt21-loc')) document.querySelector('.fmt21-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 24 && item.metadata) {
-        if (document.querySelector('.fmt24-m-no')) document.querySelector('.fmt24-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt24-loc')) document.querySelector('.fmt24-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 25 && item.metadata) {
-        if (document.querySelector('.fmt25-m-no')) document.querySelector('.fmt25-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt25-loc')) document.querySelector('.fmt25-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 39 && item.metadata) {
-        if (document.querySelector('.fmt39-m-no')) document.querySelector('.fmt39-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt39-loc')) document.querySelector('.fmt39-loc').textContent = item.metadata.loc || '';
-    }
-    if (item.fmt === 40 && item.metadata) {
-        if (document.querySelector('.fmt40-m-no')) document.querySelector('.fmt40-m-no').textContent = item.metadata.mNo || '';
-        if (document.querySelector('.fmt40-loc')) document.querySelector('.fmt40-loc').textContent = item.metadata.loc || '';
+    if ([9, 10, 11, 12, 13, 14, 17, 18, 20, 21, 24, 25, 39, 40].includes(item.fmt) && item.metadata) {
+        const fNum = item.fmt < 10 ? '0' + item.fmt : item.fmt;
+        if (document.querySelector(`.fmt${fNum}-m-no`))
+            document.querySelector(`.fmt${fNum}-m-no`).textContent = item.metadata.mNo || '';
+        if (document.querySelector(`.fmt${fNum}-loc`))
+            document.querySelector(`.fmt${fNum}-loc`).textContent = item.metadata.loc || (item.metadata.area || '');
+        if (item.fmt === 14) {
+            if (document.querySelector('.fmt14-m-name')) document.querySelector('.fmt14-m-name').textContent = item.metadata.mName || '';
+            if (document.querySelector('.fmt14-month')) document.querySelector('.fmt14-month').textContent = item.metadata.month || '';
+            if (document.querySelector('.fmt14-year')) document.querySelector('.fmt14-year').textContent = item.metadata.year || '';
+        }
     }
 }
 

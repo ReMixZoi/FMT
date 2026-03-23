@@ -337,9 +337,15 @@
      }
 
      @media print {
+         @page {
+             size: landscape;
+             margin: 0;
+         }
+
          body {
              padding: 0 !important;
              background: white;
+             width: 100%;
          }
 
          .history-sidebar,
@@ -353,16 +359,23 @@
              border: none !important;
              box-shadow: none !important;
              padding: 5mm !important;
-             margin: 0 !important;
+             margin: 0 auto !important;
              width: 297mm !important;
              height: 210mm !important;
              page-break-after: always;
              overflow: hidden;
+             display: block !important;
+             box-sizing: border-box !important;
          }
 
          .sheet-container.portrait-sheet {
              width: 210mm !important;
              height: 297mm !important;
+         }
+
+         /* Adjust scaling if needed */
+         .sheet-container>div {
+             transform-origin: top left;
          }
 
          .main-table {

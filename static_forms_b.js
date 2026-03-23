@@ -363,7 +363,7 @@ function renderStaticForm15(item) {
         <div style="border: 2px solid #000; margin-bottom: 0;">
             <div class="form-header" style="border: none; border-bottom: 2px solid #000;">
                 <div class="logo-box" style="border-right: 2px solid #000; padding: 8px 15px; width: auto; flex: 1; display: flex; flex-direction: row; gap: 10px; align-items: center;">
-                    <img src="Logo.png" alt="Logo" style="height: 38px; width: auto;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
                     <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
                 </div>
                 <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเช็คเครื่องจักรปั๊มน้ำประจำวัน</div>
@@ -373,10 +373,10 @@ function renderStaticForm15(item) {
                     <b style="margin-left: 10px;">Re#0</b>
                 </div>
             </div>
-            <div style="display: flex; border-bottom: 2px solid #000; font-size: 0.8rem;">
-                <div style="flex: 1; padding: 6px 10px; border-right: 2px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
-                <div style="flex: 1.5; padding: 6px 10px; border-right: 2px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">${mData.mName || 'ปั๊มน้ำ'}</span></div>
-                <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">${mData.area || 'บ่อน้ำร้อน 1'}</span></div>
+            <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.8rem;">
+                <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">${mData.mName || 'ปั๊มน้ำ'}</span></div>
+                <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">${mData.area || 'บ่อน้ำร้อน'}</span></div>
             </div>
         </div>
 
@@ -391,6 +391,19 @@ function renderStaticForm15(item) {
             </thead>
             <tbody>${rowsHtml}</tbody>
         </table>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 5px; font-size: 0.75rem;">
+            รายละเอียดการแก้ไข
+            <div style="margin-top: 5px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    ${(item.remarks && item.remarks.length > 0) ?
+            item.remarks.map(c => `<tr style="height: 25px;"><td style="border: 1px solid #ccc; padding: 2px;">${c}</td></tr>`).join('') :
+            Array(5).fill('<tr style="height: 25px;"><td style="border: 1px solid #ccc; padding: 2px;">&nbsp;</td></tr>').join('')
+        }
+                </table>
+            </div>
+        </div>
+
         <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
             <div style="display:flex;">
                 <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
@@ -398,7 +411,7 @@ function renderStaticForm15(item) {
                         หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
                     </div>
                     <div style="font-size: 0.75rem; line-height: 1.4;">
-                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
                     </div>
                 </div>
                 <div style="flex: 1.2; padding: 0;">
@@ -449,133 +462,43 @@ function renderStaticForm16(item) {
 
         group.items.forEach((cItem, idx) => {
             rowsHtml += `<tr>
-                <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${cItem.name}</td>
-                <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${cItem.std}</td>`;
+                <td class="col-item" style="font-size:0.65rem; padding-left: 15px; border: 1px solid #000;">${cItem.name}</td>
+                <td class="col-std" style="font-size:0.65rem; border: 1px solid #000;">${cItem.std}</td>`;
             for (let i = 1; i <= 31; i++) {
-                // Find check state for this machine (column i)
-                const cIndex = (group.items.reduce((acc, prevG, pIdx) => acc, 0)) // This logic is tricky with flat array.
-                // Re-using same logic as other forms:
-                // We rely on the fact that item.data is flat array of all cells.
-                // BUT item.data structure depends on how it was saved.
-                // Typically saved as array of {num, state}.
-                // We need to find the cell corresponding to this item row and column i.
-                // Wait, item.data is flat list of ALL cells in order of DOM.
-                // So we can just iterate. But simpler to lookup if we had structured data.
-                // For static form, we might just re-render from saved state if we knew the index.
+                const state = (item.data && item.data[globalCellIndex]) ? parseInt(item.data[globalCellIndex].state) : 0;
+                let content = "";
+                let cls = "";
+                if (state === 1) { content = "/"; cls = "status-ok"; }
+                else if (state === 2) { content = "X"; cls = "status-bad"; }
 
-                // Let's use the find approach if the data is reliable:
-                // Actually, let's just make empty cells for static structural render, but we need to fill valid checks.
-                // The `generateFormHTMLFromData` usually has `item` (history entry).
-                // `item.data` is array of {num, state}.
-                // The order in `item.data` is exactly the DOM order (querySelectorAll('.check-cell')).
-                // So if we iterate clearly, we can pop from a copy of data or use index.
-            }
-            // Retrying the row generation with data filling:
-            // Since we need to fill the exact state, we should probably pass a counter or index.
-            // But let's look at how renderStaticForm02 did it (I can't see it right now, but I recall it likely just re-renders structure).
-            // Actually, the previous implementation of `renderStaticForm...` usually takes `item` and fills values.
-            // Check `renderStaticForm02` implementation in `static_forms_a/b.js`?
-            // I'll assume standard 0-based indexing matching the generation order.
-        });
-    });
-    // Wait, I can't easily reproduce the exact index without external counter.
-    // Let's look at `renderStaticForm02` pattern in my memory or previous context?
-    // In `renderExactTable...` we generate cells `mach-${i}`.
-    // In saved history, `data` is `[{num: "1", state: "0"}, {num:"2", state:"1"}...]`.
-    // It's a flat list of ALL check cells.
-    // So for 16, we have N items * 31 days.
-    // We can just iterate linearly if we render in same order.
-
-    let cellIndex = 0;
-    rowsHtml = ''; // Reset and rebuild with data
-    checklistData16.forEach(group => {
-        rowsHtml += `<tr style="background: #fdfdfd;">
-                <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
-                ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
-            </tr>`;
-        group.items.forEach((cItem) => {
-            rowsHtml += `<tr>
-                <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${cItem.name}</td>
-                <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${cItem.std}</td>`;
-            for (let i = 1; i <= 31; i++) {
-                // Get state from item.data
-                // We need to know the global index of this cell.
-                // The global index increments by 1 for every cell in the table.
-                // But wait, `item.data` is stored from `querySelectorAll('.check-cell')`.
-                // So as long as we render in SAME order, we can pop/shift.
-                // But we can't easily shift if we want to keep `item` pure.
-                // Let's calculate index:
-                // We need a counter outside the loops.
-            }
-            rowsHtml += `</tr>`;
-        });
-    });
-
-    // Correct Implementation with Counter
-    let globalCellIndex = 0;
-    rowsHtml = '';
-    checklistData16.forEach(group => {
-        rowsHtml += `<tr style="background: #fdfdfd;">
-            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
-            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
-        </tr>`;
-
-        group.items.forEach((cItem) => {
-            rowsHtml += `<tr>
-                <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${cItem.name}</td>
-                <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${cItem.std}</td>`;
-            for (let i = 1; i <= 31; i++) {
-                let state = 0;
-                if (item && item.data && item.data[globalCellIndex]) {
-                    state = parseInt(item.data[globalCellIndex].state);
-                }
-
-                let mark = '';
-                let bgClass = '';
-                if (state === 1) { mark = '/'; }
-                else if (state === 2) { mark = 'X'; bgClass = 'background:#fef2f2; color:red;'; }
-
-                rowsHtml += `<td style="border: 1px solid #000; text-align: center; font-weight: bold; font-size: 0.8rem; ${bgClass}">${mark}</td>`;
+                rowsHtml += `<td class="check-cell ${cls}" style="text-align:center; font-weight:800; border: 1px solid #000; width:22px;">${content}</td>`;
                 globalCellIndex++;
             }
             rowsHtml += `</tr>`;
         });
     });
-
-    const mNo = (item.metadata && item.metadata.mNo) ? item.metadata.mNo : '';
-    const mName = (item.metadata && item.metadata.mName) ? item.metadata.mName : 'เครื่องรีไซเคิล';
-    const area = (item.metadata && item.metadata.area) ? item.metadata.area : 'ด้านข้างอาคารผลิต 1';
-    const month = (item.metadata && item.metadata.month) ? thaiMonths[parseInt(item.metadata.month) - 1] : '..........';
-    const year = (item.metadata && item.metadata.year) ? item.metadata.year : '..........';
-
-    return `
-        <div class="sheet-container" style="page-break-after: always; margin: 0; width: 297mm; height: 209mm; border: none !important;">
-           <div style="border-left: 1px solid #000; margin-bottom: 0;">
-            <div class="form-header" style="display: flex; align-items: stretch; border: 1px solid #000;">
-                <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+    return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+        <div style="border: 2px solid #000; margin-bottom: 0;">
+            <div class="form-header" style="border: none; border-bottom: 2px solid #000;">
+                <div class="logo-box" style="border-right: 2px solid #000; padding: 8px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center;">
                     <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
                     <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
                 </div>
-
-                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center;">
-                    ตารางการตรวจเช็คเครื่องบดโฟมประจำวัน
-                </div>
-
-                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem; border-left: 1px solid #000;">
-                    <b>เดือน</b> ${month} <b>ปี</b> ${year}
+                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 8px; border-right: 2px solid #000; font-size: 1rem; font-weight: 700; text-align: center;">ตารางการตรวจเช็คเครื่องบดโฟมประจำวัน</div>
+                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                    <b>เดือน</b> ${monthText}
                     <b style="margin-left: auto;">FMT-16</b>
-                    <b style="margin-left: 10px;">Re:#0</b>
+                    <b style="margin-left: 10px;">Re#0</b>
                 </div>
             </div>
-            
-            <div style="display: flex; border: 1px solid #000; border-top: none; font-size: 0.8rem;">
-                <div style="flex: 1; padding: 6px 10px; border-right: 1px solid #000;">เบอร์เครื่องจักร/Machine No.: ${mNo}</div>
-                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <b>${mName}</b></div>
-                <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: <b>${area}</b></div>
+            <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.8rem;">
+                <div style="flex: 1.2; padding: 6px 10px; border-right: 1px solid #000;">เบอร์เครื่องจักร/Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mNo}</span></div>
+                <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="font-weight: bold;">${mName}</span></div>
+                <div style="flex: 1.2; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">${area}</span></div>
             </div>
         </div>
 
-        <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0;">
+        <table class="main-table" style="font-size:0.6rem; width:100%; border-top: none;">
             <thead>
                 <tr>
                     <th rowspan="2" style="width:130px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
@@ -586,169 +509,62 @@ function renderStaticForm16(item) {
             </thead>
             <tbody>${rowsHtml}</tbody>
         </table>
-        
+
+        <div style="border: 2px solid #000; border-top: none; padding: 5px; font-size: 0.75rem;">
+            รายละเอียดการแก้ไข
+            <div style="margin-top: 5px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    ${(item.remarks && item.remarks.length > 0) ?
+            item.remarks.map(c => `<tr style="height: 25px;"><td style="border: 1px solid #ccc; padding: 2px;">${c}</td></tr>`).join('') :
+            Array(5).fill('<tr style="height: 25px;"><td style="border: 1px solid #ccc; padding: 2px;">&nbsp;</td></tr>').join('')
+        }
+                </table>
+            </div>
+        </div>
+
         <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
             <div style="display:flex;">
                 <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
-                     <div style="font-size: 0.85rem; font-weight: bold;">
+                    <div style="font-size: 0.85rem; font-weight: bold;">
                         หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                    </div>
+                    <div style="font-size: 0.75rem; line-height: 1.4;">
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
                     </div>
                 </div>
                 <div style="flex: 1.2; padding: 0;">
-                     <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
                         <tr style="height: 25px;">
-                            <td style="border: 1px solid #000; text-align: center;">ลงชื่อ</td>
-                            <td style="border: 1px solid #000; text-align: center;">ผู้บันทึก</td>
-                            <td style="border: 1px solid #000; text-align: center;">ผู้ตรวจเช็ค</td>
-                            <td style="border: 1px solid #000; text-align: center;">ผู้อนุมัติ</td>
+                            <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                            <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
                         </tr>
                         <tr style="height: 35px;">
-                            <td style="border: 1px solid #000; text-align: center;">ลายเซ็น</td>
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
                             <td style="border: 1px solid #000;"></td>
                             <td style="border: 1px solid #000;"></td>
-                            <td style="border: 1px solid #000;"></td>
-                        </tr>
-                         <tr style="height: 25px;">
-                            <td style="border: 1px solid #000; text-align: center;">ชื่อ</td>
-                             <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[0]) || ''}</td>
-                             <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[1]) || ''}</td>
-                             <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[2]) || ''}</td>
+                            <td style="border: 1px solid #000; border-right: none;"></td>
                         </tr>
                         <tr style="height: 25px;">
-                            <td style="border: 1px solid #000; text-align: center;">วันที่</td>
-                             <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[0]) ? toThaiDateStr(item.sigDates[0]) : ''}</td>
-                             <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[1]) ? toThaiDateStr(item.sigDates[1]) : ''}</td>
-                             <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[2]) ? toThaiDateStr(item.sigDates[2]) : ''}</td>
+                            <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[0]) : ''}</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[1]) : ''}</td>
+                            <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[2]) : ''}</td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
-        </div>
-    `;
+    </div>`;
 }
 
-function renderStaticForm22(item) {
-    let dateHeaders = '';
-    for (let i = 1; i <= 31; i++) {
-        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
-    }
-
-    let globalCellIndex = 0;
-    let rowsHtml = '';
-    checklistData22.forEach(group => {
-        rowsHtml += `<tr style="background: #fdfdfd;">
-            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
-            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
-        </tr>`;
-
-        group.items.forEach((cItem) => {
-            rowsHtml += `<tr>
-                <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">${cItem.name}</td>
-                <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${cItem.std}</td>`;
-            for (let i = 1; i <= 31; i++) {
-                let state = 0;
-                if (item && item.data && item.data[globalCellIndex]) {
-                    state = parseInt(item.data[globalCellIndex].state);
-                }
-
-                let mark = '';
-                let bgClass = '';
-                if (state === 1) { mark = '/'; }
-                else if (state === 2) { mark = 'X'; bgClass = 'background:#fef2f2; color:red;'; }
-
-                rowsHtml += `<td style="border: 1px solid #000; text-align: center; font-weight: bold; font-size: 0.8rem; ${bgClass}">${mark}</td>`;
-                globalCellIndex++;
-            }
-            rowsHtml += `</tr>`;
-        });
-    });
-
-    const mNo = (item.metadata && item.metadata.mNo) ? item.metadata.mNo : '';
-    const mName = (item.metadata && item.metadata.mName) ? item.metadata.mName : 'เครื่องกลึง';
-    const area = (item.metadata && item.metadata.area) ? item.metadata.area : 'ข้างอาคารผลิต 1';
-    const month = (item.metadata && item.metadata.month) ? thaiMonths[parseInt(item.metadata.month) - 1] : '..........';
-    const year = (item.metadata && item.metadata.year) ? item.metadata.year : '..........';
-
-    return `
-        <div class="sheet-container" style="page-break-after: always; margin: 0; width: 297mm; height: 209mm; border: none !important;">
-            <div style="border-left: 1px solid #000; border-right: 1px solid #000; border-top: 1px solid #000; margin-bottom: 0;">
-                <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
-                    <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
-                        <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
-                        <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
-                    </div>
-    
-                    <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
-                        ตารางการตรวจเช็คเครื่องกลึงประจำวัน
-                    </div>
-    
-                    <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
-                        <b>เดือน</b> ${month} <b>ปี</b> ${year}
-                        <b style="margin-left: auto;">FMT-22</b>
-                        <b style="margin-left: 10px;">Re:#0</b>
-                    </div>
-                </div>
-                
-                <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.8rem;">
-                    <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข/Machine No.: ${mNo}</div>
-                    <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <b>${mName}</b></div>
-                    <div style="flex: 1.5; padding: 6px 10px;">พื้นที่ติดตั้ง: <b>${area}</b></div>
-                </div>
-            </div>
-    
-            <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%;">
-                <thead>
-                    <tr>
-                        <th rowspan="2" style="width:130px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
-                        <th rowspan="2" style="width:130px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
-                        <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
-                    </tr>
-                    <tr>${dateHeaders}</tr>
-                </thead>
-                <tbody>${rowsHtml}</tbody>
-            </table>
-            
-            <div style="border: 2px solid #000; border-top: none; padding: 0; margin-top: 0;">
-                <div style="display:flex;">
-                    <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
-                        <div style="font-size: 0.85rem; font-weight: bold;">
-                            หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
-                        </div>
-                    </div>
-                    <div style="flex: 1.2; padding: 0;">
-                        <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
-                            <tr style="height: 25px;">
-                                <td style="border: 1px solid #000; text-align: center;">ลงชื่อ</td>
-                                <td style="border: 1px solid #000; text-align: center;">ผู้บันทึก</td>
-                                <td style="border: 1px solid #000; text-align: center;">ผู้ตรวจเช็ค</td>
-                                <td style="border: 1px solid #000; text-align: center;">ผู้อนุมัติ</td>
-                            </tr>
-                            <tr style="height: 35px;">
-                                <td style="border: 1px solid #000; text-align: center;">ลายเซ็น</td>
-                                <td style="border: 1px solid #000;"></td>
-                                <td style="border: 1px solid #000;"></td>
-                                <td style="border: 1px solid #000;"></td>
-                            </tr>
-                            <tr style="height: 25px;">
-                                <td style="border: 1px solid #000; text-align: center;">ชื่อ</td>
-                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[0]) || ''}</td>
-                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[1]) || ''}</td>
-                                <td style="border: 1px solid #000; text-align: center;">${(item.sigNames && item.sigNames[2]) || ''}</td>
-                            </tr>
-                            <tr style="height: 25px;">
-                                <td style="border: 1px solid #000; text-align: center;">วันที่</td>
-                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[0]) ? toThaiDateStr(item.sigDates[0]) : ''}</td>
-                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[1]) ? toThaiDateStr(item.sigDates[1]) : ''}</td>
-                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[2]) ? toThaiDateStr(item.sigDates[2]) : ''}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
 
 function renderStaticForm23(item) {
     let dateHeaders = '';
@@ -1135,118 +951,257 @@ function renderStaticForm27(item) {
 function renderStaticForm30(item) {
     const meta = item.metadata || {};
     const logs = item.logData || [];
-    const checks = item.data || []; // For the 2 checkboxes at the bottom
 
-    let itemsHtml = '';
-    for (let i = 0; i < 5; i++) {
-        const detail = logs[i] || '';
-        const result = logs[i + 5] || '';
-        itemsHtml += `
-            <div style="margin-bottom: 20px; font-size: 0.95rem;">
-                <div style="display: flex; gap: 10px;">
-                    <span style="font-weight: bold;">${i + 1}.</span>
-                    <div style="flex: 1; border-bottom: 1px dotted #000; min-height: 25px;">${detail}</div>
-                </div>
-                <div style="display: flex; gap: 10px; margin-left: 25px; margin-top: 8px;">
-                    <span>ผลการทำงาน :</span>
-                    <div style="flex: 1; border-bottom: 1px dotted #000; min-height: 25px;">${result}</div>
-                </div>
-            </div>
+    const times = [
+        "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+        "20:00", "21:00", "22:00", "23:00", "24:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00"
+    ];
+
+    let rowsHtml = '';
+    let globalLogIndex = 0;
+    times.forEach(time => {
+        rowsHtml += `
+            <tr style="height: 22px;">
+                <td style="border: 1px solid #000; text-align: center; font-weight: bold;">${time}</td>
+                ${Array(21).fill(0).map(() => `<td style="border: 1px solid #000; text-align: center;">${logs[globalLogIndex++] || ''}</td>`).join('')}
+            </tr>
+        `;
+    });
+
+    const dust1 = logs[globalLogIndex++] || '';
+    const dust2 = logs[globalLogIndex++] || '';
+    const dust3 = logs[globalLogIndex++] || '';
+
+    let blowdownsHtml = '';
+    for (let i = 1; i <= 6; i++) {
+        blowdownsHtml += `
+            <tr>
+                <td style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 5px; width: 60%;">Blowdown ครั้งที่ ${i}</td>
+                <td style="border-bottom: 1px solid #000; padding: 5px;">เวลา <span style="border-bottom: 1px dotted #000; min-width: 40px; display: inline-block;">${logs[globalLogIndex++] || ''}</span> น.</td>
+            </tr>
         `;
     }
 
-    const suggestion = logs[10] || '';
-    const reason = logs[11] || '';
-
-    const check1 = (checks[0] && parseInt(checks[0].state) === 1) ? '✓' : '';
-    const check2 = (checks[1] && parseInt(checks[1].state) === 1) ? '✓' : '';
+    const sigDate1 = logs[globalLogIndex++] || '';
+    const sigDate2 = logs[globalLogIndex++] || '';
+    const sigDate3 = logs[globalLogIndex++] || '';
 
     return `
-        <div class="sheet-container" style="page-break-after: always; margin: 0; width: 210mm; min-height: 297mm; padding: 15mm; font-family: 'Sarabun', sans-serif; border: none !important;">
-            <!-- Header -->
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 25px;">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <img src="Logo.png" alt="Logo" style="height: 40px; width: auto;">
-                    <div style="font-size: 1.1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 1.35rem; font-weight: 700;">ใบบันทึกผลการบำรุงรักษาเชิงป้องกัน</div>
-                </div>
-                <div style="text-align: right; font-size: 0.85rem; font-weight: bold;">
-                    FMT-30 Re#0
-                </div>
-            </div>
-
-            <!-- Top Info -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; font-size: 1rem;">
-                <div>วันที่: <span style="border-bottom: 1px dotted #000; display: inline-block; min-width: 140px;">${meta.date || ''}</span></div>
-                <div>ชื่อเครื่องจักร: <span style="border-bottom: 1px dotted #000; display: inline-block; min-width: 140px;">${meta.mName || ''}</span></div>
-                <div>รุ่น: <span style="border-bottom: 1px dotted #000; display: inline-block; min-width: 80px;">${meta.model || ''}</span></div>
-                
-                <div>หัวข้องาน PM: <span style="border-bottom: 1px dotted #000; display: inline-block; min-width: 140px;">${meta.subject || ''}</span></div>
-                <div>ประจำสัปดาห์ที่: <span style="border-bottom: 1px dotted #000; display: inline-block; min-width: 40px;">${meta.week || ''}</span></div>
-                <div>ประจำเดือน: <span style="border-bottom: 1px dotted #000; display: inline-block; min-width: 80px;">${meta.month || ''}</span></div>
-            </div>
-            <div style="font-size: 1rem; margin-bottom: 30px;">
-                ผู้ดำเนินงาน : <span style="border-bottom: 1px dotted #000; display: inline-block; min-width: 350px;">${meta.performer || ''}</span>
-            </div>
-
-            <!-- Body Sections -->
-            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; text-decoration: underline;">รายละเอียดการบำรุงรักษาเชิงป้องกัน</div>
-            
-            ${itemsHtml}
-
-            <div style="margin-top: 30px;">
-                <div style="font-weight: bold; font-size: 1.05rem; margin-bottom: 8px;">ข้อเสนอแนะ</div>
-                <div style="border: 1px solid #000; padding: 15px; min-height: 100px; font-size: 1rem;">${suggestion}</div>
-            </div>
-
-            <!-- Signatures Section A -->
-            <div style="display: flex; justify-content: space-around; margin-top: 50px; text-align: center; font-size: 0.95rem;">
-                <div style="width: 180px;">
-                    <div style="border-bottom: 1px solid #000; margin-bottom: 8px; min-height: 40px;"></div>
-                    <div>ผู้ปฏิบัติงาน</div>
-                    <div style="margin-top: 8px;">(${(item.sigNames && item.sigNames[0]) || '................................'})</div>
-                </div>
-                <div style="width: 180px;">
-                    <div style="border-bottom: 1px solid #000; margin-bottom: 8px; min-height: 40px;"></div>
-                    <div>หัวหน้าแผนก</div>
-                    <div style="margin-top: 8px;">(${(item.sigNames && item.sigNames[1]) || '................................'})</div>
-                </div>
-                <div style="width: 180px;">
-                    <div style="border-bottom: 1px solid #000; margin-bottom: 8px; min-height: 40px;"></div>
-                    <div>ผู้อนุมัติ</div>
-                    <div style="margin-top: 8px;">(${(item.sigNames && item.sigNames[2]) || '................................'})</div>
-                </div>
-            </div>
-
-            <!-- Footer Section (ฝ่ายตรวจสอบติดตามผล) -->
-            <div style="margin-top: 60px; border: 1px solid #000; padding: 20px; position: relative;">
-                <div style="position: absolute; top: -12px; left: 20px; background: #fff; padding: 0 10px; font-weight: bold; font-size: 1.1rem;">ฝ่ายตรวจสอบติดตามผล</div>
-                
-                <div style="display: flex; justify-content: center; gap: 80px; margin-bottom: 20px; font-size: 1.05rem;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 20px; height: 20px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-weight: bold;">${check1}</div> เรียบร้อย
+        <div class="sheet-container" style="page-break-after: always; margin: 0; width: 297mm; height: 210mm; font-family: 'Sarabun', sans-serif; border: none !important;">
+            <div style="border: 1px solid #000;">
+                <!-- Header -->
+                <div style="display: flex; border-bottom: 2px solid #000; align-items: stretch;">
+                    <div style="flex: 1; padding: 5px 15px; display: flex; align-items: center; gap: 10px; border-right: 1px solid #000;">
+                        <img src="Logo.png" alt="Logo" style="height: 35px; width: auto;">
+                        <div style="font-size: 0.8rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 20px; height: 20px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-weight: bold;">${check2}</div> ไม่เรียบร้อย
+                    <div style="flex: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; text-align: center; border-right: 1px solid #000;">
+                        <div style="font-size: 1.2rem; font-weight: 700;">ใบรายงานการตรวจเช็คหม้อไอน้ำไม้สับประจำวัน</div>
+                        <div style="font-size: 1rem; margin-top: 5px;">วันที่ <b>${meta.date || ''}</b></div>
+                    </div>
+                    <div style="flex: 0.8; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; font-size: 0.85rem; font-weight: bold;">
+                        <div>FMT-30 Re#0</div>
                     </div>
                 </div>
-                
-                <div style="font-size: 1rem; margin-bottom: 35px;">
-                    เนื่องจาก : <div style="display: block; width: 100%; border-bottom: 1px dotted #000; min-height: 50px; margin-top: 10px;">${reason}</div>
-                </div>
 
-                <div style="display: flex; justify-content: space-around; text-align: center; font-size: 0.95rem;">
-                    <div style="width: 220px;">
-                        <div style="border-bottom: 1px solid #000; margin-bottom: 8px; min-height: 40px;"></div>
-                        <div>ผู้ตรวจสอบ</div>
-                        <div style="margin-top: 8px;">(${(item.sigNames && item.sigNames[3]) || '................................'})</div>
+                <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th rowspan="3" style="border: 1px solid #000; width: 40px;">เวลา</th>
+                            <th style="border: 1px solid #000; width: 45px;">แรงดันไอน้ำ</th>
+                            <th style="border: 1px solid #000; width: 45px;">ระดับน้ำใน</th>
+                            <th colspan="2" style="border: 1px solid #000;">น้ำเข้า Boiler</th>
+                            <th colspan="3" style="border: 1px solid #000;">อุณหภูมิ</th>
+                            <th colspan="3" style="border: 1px solid #000;">ความถี่มอเตอร์</th>
+                            <th style="border: 1px solid #000; width: 45px;">จำนวนรอบ</th>
+                            <th style="border: 1px solid #000; width: 45px;">ระดับการ</th>
+                            <th rowspan="3" style="border: 1px solid #000; width: 35px;">ค่า TDS<br>(PPM)</th>
+                            <th style="border: 1px solid #000; width: 45px;">เชื้อเพลิงถ่าน</th>
+                            <th style="border: 1px solid #000; width: 45px;">เชื้อเพลิงไม้</th>
+                            <th style="border: 1px solid #000; width: 45px;">อุณหภูมิน้ำ</th>
+                            <th style="border: 1px solid #000; width: 45px;">อุณหภูมิ</th>
+                            <th style="border: 1px solid #000; width: 45px;">อุณหภูมิ</th>
+                            <th style="border: 1px solid #000; width: 45px;">อุณหภูมิ</th>
+                            <th rowspan="3" style="border: 1px solid #000;">หมายเหตุ</th>
+                        </tr>
+                        <tr>
+                            <th style="border: 1px solid #000; height: 35px;">7 - 10 (bar)</th>
+                            <th style="border: 1px solid #000;">หลอดแก้วที่ 1</th>
+                            <th style="border: 1px solid #000;">แรงดันปั๊มน้ำ</th>
+                            <th style="border: 1px solid #000;">เลขมิเตอร์</th>
+                            <th style="border: 1px solid #000;">ห้องเผาไหม้</th>
+                            <th style="border: 1px solid #000;">ออกห้องเผาไหม้</th>
+                            <th style="border: 1px solid #000;">น้ำ D-Air</th>
+                            <th style="border: 1px solid #000;">พัดลมลูก</th>
+                            <th style="border: 1px solid #000;">พัดลมเป่า</th>
+                            <th style="border: 1px solid #000;">สายพาน</th>
+                            <th style="border: 1px solid #000;">เตาเกรด</th>
+                            <th style="border: 1px solid #000;">ปล่อยไม้สับ</th>
+                            <th style="border: 1px solid #000;">หิน</th>
+                            <th style="border: 1px solid #000;">สับ</th>
+                            <th style="border: 1px solid #000;">ฮีต</th>
+                            <th style="border: 1px solid #000;">อากาศเข้า</th>
+                            <th style="border: 1px solid #000;">อากาศออก</th>
+                            <th style="border: 1px solid #000;">ปล่อง Wet</th>
+                        </tr>
+                        <tr>
+                            <th style="border: 1px solid #000;"></th>
+                            <th style="border: 1px solid #000;">> 3/4</th>
+                            <th style="border: 1px solid #000;">8 - 11 (bar)</th>
+                            <th style="border: 1px solid #000;">m³</th>
+                            <th style="border: 1px solid #000;">(200 - 500 °C)</th>
+                            <th style="border: 1px solid #000;">(150 - 300 °C)</th>
+                            <th style="border: 1px solid #000;">(70 - 95 °C)</th>
+                            <th style="border: 1px solid #000;">(HZ)</th>
+                            <th style="border: 1px solid #000;">(HZ)</th>
+                            <th style="border: 1px solid #000;">(HZ)</th>
+                            <th style="border: 1px solid #000;">(รอบ/ชั่วโมง)</th>
+                            <th style="border: 1px solid #000;">(เซนติเมตร)</th>
+                            <th style="border: 1px solid #000;">(กิโลกรัม)</th>
+                            <th style="border: 1px solid #000;">(กิโลกรัม)</th>
+                            <th style="border: 1px solid #000;">(°C)</th>
+                            <th style="border: 1px solid #000;">(°C)</th>
+                            <th style="border: 1px solid #000;">(°C)</th>
+                            <th style="border: 1px solid #000;">(°C)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+
+                <!-- Bottom Section -->
+                <div style="display: flex; border-top: 1px solid #000; font-size: 0.7rem; border-collapse: collapse;">
+                    <!-- Left: Metadata and Logs -->
+                    <div style="flex: 3.5; border-right: 1px solid #000; padding: 5px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                            <div style="grid-column: span 2;">Boiler Start................................................ Stop................................................ น.
+                                <div style="position: relative; margin-top: -18px; margin-left: 60px;">
+                                    <b>${meta.start || ''}</b>
+                                    <span style="margin-left: 140px;"></span>
+                                    <b>${meta.stop || ''}</b>
+                                </div>
+                            </div>
+                            
+                            <div style="grid-column: span 2; margin-top: 5px;">ปริมาณน้ำที่ใช้.......................................................................................... m³
+                                <div style="position: relative; margin-top: -18px; margin-left: 80px;">
+                                    <b>${meta.water || ''}</b>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 5px;">ปริมาณถ่านหินที่ใช้.................................... ตัน
+                                <div style="position: relative; margin-top: -18px; margin-left: 90px;">
+                                    <b>${meta.coalU || ''}</b>
+                                </div>
+                            </div>
+                            <div style="margin-top: 5px;">ปริมาณถ่านหินที่เหลือ.................................... ตัน
+                                <div style="position: relative; margin-top: -18px; margin-left: 100px;">
+                                    <b>${meta.coalR || ''}</b>
+                                </div>
+                            </div>
+
+                            <div>ปริมาณไม้สับที่ใช้.................................... ตัน
+                                <div style="position: relative; margin-top: -18px; margin-left: 80px;">
+                                    <b>${meta.woodU || ''}</b>
+                                </div>
+                            </div>
+                            <div>ปริมาณไม้สับที่เหลือ.................................... ตัน
+                                <div style="position: relative; margin-top: -18px; margin-left: 90px;">
+                                    <b>${meta.woodR || ''}</b>
+                                </div>
+                            </div>
+
+                            <div>ปริมาณแก๊สLPGที่ใช้.................................... ตัน
+                                <div style="position: relative; margin-top: -18px; margin-left: 95px;">
+                                    <b>${meta.lpgU || ''}</b>
+                                </div>
+                            </div>
+                            <div>ปริมาณแก๊สLPGที่เหลือ.................................... ตัน
+                                <div style="position: relative; margin-top: -18px; margin-left: 105px;">
+                                    <b>${meta.lpgR || ''}</b>
+                                </div>
+                            </div>
+
+                            <div>ปริมาณกะลาปาล์มที่ใช้.................................... ตัน
+                                <div style="position: relative; margin-top: -18px; margin-left: 105px;">
+                                    <b>${meta.palmU || ''}</b>
+                                </div>
+                            </div>
+                            <div>ปริมาณกะลาปาล์มที่เหลือ.................................... ตัน
+                                <div style="position: relative; margin-top: -18px; margin-left: 115px;">
+                                    <b>${meta.palmR || ''}</b>
+                                </div>
+                            </div>
+
+                            <div>ตรวจสอบ Safety Valve เมื่อเวลา........................ น.
+                                <div style="position: relative; margin-top: -18px; margin-left: 135px;">
+                                    <b>${meta.svTime || ''}</b>
+                                </div>
+                            </div>
+                            <div>ตรวจสอบเครื่องควบคุมระดับน้ำเวลา........................ น.
+                                <div style="position: relative; margin-top: -18px; margin-left: 135px;">
+                                    <b>${meta.wlTime || ''}</b>
+                                </div>
+                            </div>
+
+                            <div style="grid-column: span 2; display: flex; gap: 10px; margin-top: 5px;">
+                                <span>จำนวนฝุ่นDuccollector........................ถุง
+                                    <span style="min-width: 60px; display: inline-block; margin-left: -130px; position: relative; bottom: -2px;"><b>${dust1}</b></span>
+                                </span>
+                                <span>จำนวนฝุ่นปล่องควัน........................ถุง
+                                    <span style="min-width: 60px; display: inline-block; margin-left: -110px; position: relative; bottom: -2px;"><b>${dust2}</b></span>
+                                </span>
+                                <span>จำนวนฝุ่น Slag........................ถุง
+                                    <span style="min-width: 60px; display: inline-block; margin-left: -90px; position: relative; bottom: -2px;"><b>${dust3}</b></span>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div style="width: 220px;">
-                        <div style="border-bottom: 1px solid #000; margin-bottom: 8px; min-height: 40px;"></div>
-                        <div>ผู้รับใบ PM</div>
-                        <div style="margin-top: 8px;">(${(item.sigNames && item.sigNames[4]) || '................................'})</div>
+
+                    <!-- Middle: Blowdown -->
+                    <div style="flex: 2; border-right: 1px solid #000;">
+                        <table style="width: 100%; border-collapse: collapse; height: 100%;">
+                            ${[1, 2, 3, 4, 5, 6].map((i, idx) => `
+                                <tr>
+                                    <td style="border-bottom: 1px solid #000; padding: 2px 5px; font-size: 0.7rem;">
+                                        Blowdown ครั้งที่ ${i} เวลา........................ น.
+                                        <div style="position: relative; margin-top: -16px; margin-left: 105px;">
+                                            <b>${logs[507 + idx] || ''}</b>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    </div>
+
+                    <!-- Right: Signatures -->
+                    <div style="flex: 4;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: center; height: 100%; table-layout: fixed;">
+                            <tr style="height: 25px;">
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; width: 25%;">ลงชื่อ</td>
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold;">ผู้ตรวจเช็ค</td>
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold;">ผู้ตรวจสอบ</td>
+                                <td style="border-bottom: 1px solid #000; font-weight: bold;">ผู้อนุมัติ</td>
+                            </tr>
+                            <tr style="height: 40px;">
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold;">ลายเซ็น</td>
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
+                                <td style="border-bottom: 1px solid #000;"></td>
+                            </tr>
+                            <tr style="height: 25px;">
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold;">ชื่อ(ตัวบรรจง)</td>
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">${(item.sigNames && item.sigNames[0]) || ''}</td>
+                                <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">${(item.sigNames && item.sigNames[1]) || ''}</td>
+                                <td style="border-bottom: 1px solid #000; padding: 2px;">${(item.sigNames && item.sigNames[2]) || ''}</td>
+                            </tr>
+                            <tr style="height: 25px;">
+                                <td style="border-right: 1px solid #000; font-weight: bold;">วันที่</td>
+                                <td style="border-right: 1px solid #000; padding: 2px;">${sigDate1}</td>
+                                <td style="border-right: 1px solid #000; padding: 2px;">${sigDate2}</td>
+                                <td style="padding: 2px;">${sigDate3}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1539,7 +1494,7 @@ function renderStaticForm31(item) {
                     <div style="flex: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5px; text-align: center; border-right: 1px solid #000;">
                         <div style="font-size: 1rem; font-weight: 700;">ตารางบันทึกการซ่อมบำรุงประจำสัปดาห์</div>
                         <div style="font-size: 0.8rem; margin-top: 5px;">
-                            วันที่ <b>${meta.day || ''}</b> เดือน <b>${meta.month || ''}</b> พ.ศ. 2568
+                            วันที่ <b>${meta.day || ''}</b> เดือน <b>${meta.month || ''}</b> พ.ศ. 2569
                         </div>
                     </div>
                     
@@ -1620,107 +1575,98 @@ function renderStaticForm31(item) {
 
 function renderStaticForm32(item) {
     const meta = item.metadata || {};
-    const logs = item.logData || [];
     const cells = item.data || [];
 
-    let globalLogIndex = 0;
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    const allItems = checklistData32.flatMap(g => g.items);
     let globalCellIndex = 0;
+    let rowsHtml = '';
 
-    const generateRows = (start, end) => {
-        let h = '';
-        for (let i = start; i <= end; i++) {
-            const date = logs[globalLogIndex++] || '';
-            const dept = logs[globalLogIndex++] || '';
-            const damage = logs[globalLogIndex++] || '';
-            const mach = logs[globalLogIndex++] || '';
+    checklistData32.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.8rem; height: 22px; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
 
-            const state1 = (cells[globalCellIndex] && parseInt(cells[globalCellIndex].state) === 1) ? '/' : '';
-            globalCellIndex++;
-            const state2 = (cells[globalCellIndex] && parseInt(cells[globalCellIndex].state) === 1) ? '/' : '';
-            globalCellIndex++;
+        group.items.forEach((cItem) => {
+            rowsHtml += `<tr>
+                <td class="col-item" style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">- &nbsp; ${cItem.name}</td>
+                <td class="col-std" style="font-size:0.7rem; border: 1px solid #000;">${cItem.std}</td>`;
+            for (let d = 0; d < 31; d++) {
+                let state = 0;
+                if (cells[globalCellIndex]) {
+                    state = parseInt(cells[globalCellIndex].state);
+                }
+                let mark = '';
+                let bgStyle = '';
+                if (state === 1) { mark = '/'; }
+                else if (state === 2) { mark = 'X'; bgStyle = 'background:#fef2f2; color:red;'; }
+                rowsHtml += `<td style="border: 1px solid #000; text-align: center; font-weight: bold; font-size: 0.8rem; ${bgStyle}">${mark}</td>`;
+                globalCellIndex++;
+            }
+            rowsHtml += `</tr>`;
+        });
+    });
 
-            const remark = logs[globalLogIndex++] || '';
-
-            h += `<tr>
-                <td style="border: 1px solid #000; text-align: center; width: 25px;">${i}</td>
-                <td style="border: 1px solid #000; text-align: center; width: 60px;">${date}</td>
-                <td style="border: 1px solid #000; text-align: center; width: 60px;">${dept}</td>
-                <td style="border: 1px solid #000; padding: 0 5px;">${damage}</td>
-                <td style="border: 1px solid #000; text-align: center; width: 60px;">${mach}</td>
-                <td style="border: 1px solid #000; text-align: center; width: 35px; font-weight: bold;">${state1}</td>
-                <td style="border: 1px solid #000; text-align: center; width: 35px; font-weight: bold;">${state2}</td>
-                <td style="border: 1px solid #000; padding: 0 5px; width: 120px;">${remark}</td>
-            </tr>`;
-        }
-        return h;
-    };
-
-    const rowsHtml1 = generateRows(1, 3);
-    const rowsHtml2 = generateRows(4, 28);
-
-    // Dates from footer
-    const footerDate1 = logs[globalLogIndex++] || '';
-    const footerDate2 = logs[globalLogIndex++] || '';
-    const footerDate3 = logs[globalLogIndex++] || '';
+    const mNo = (meta.mNo) ? meta.mNo : '';
+    const mName = (meta.mName) ? meta.mName : '';
+    const area = (meta.area) ? meta.area : '';
+    const monthIndex = (meta.month) ? parseInt(meta.month) - 1 : -1;
+    const month = (monthIndex >= 0) ? thaiMonths[monthIndex] : '..........';
+    const year = (meta.year) ? meta.year : '..........';
 
     return `
-        <div class="sheet-container" style="page-break-after: always; margin: 0; width: 210mm; min-height: 297mm; padding: 10px; border: none !important;">
-            <div style="border: 1px solid #000; margin-bottom: 0;">
-                <div style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
-                    <div style="padding: 5px 15px; flex: 1.2; display: flex; align-items: center; gap: 10px; border-right: 1px solid #000;">
+        <div class="sheet-container" style="page-break-after: always; margin: 0; width: 297mm; height: 209mm; border: none !important;">
+            <div style="border-left: 1px solid #000; border-right: 1px solid #000; border-top: 1px solid #000; margin-bottom: 0;">
+                <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                    <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
                         <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
-                        <div style="font-size: 0.9rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                        <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
                     </div>
-                    
-                    <div style="flex: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5px; text-align: center; border-right: 1px solid #000;">
-                        <div style="font-size: 1rem; font-weight: 700;">ตารางบันทึกการทำ PM ประจำสัปดาห์แผนกซ่อมบำรุง</div>
-                        <div style="font-size: 0.8rem; margin-top: 5px;">
-                            วันที่ <b>${meta.day || ''}</b> เดือน <b>${meta.month || ''}</b> พ.ศ. 2568
-                        </div>
+
+                    <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">
+                        แบบตรวจสอบรอบประจำวัน ( Forklift Daily Check List )
                     </div>
-                    
-                    <div style="flex: 1; padding: 6px 10px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; font-size: 0.7rem;">
-                        <div><b>FMT-32</b> <b>Re#0</b></div>
+
+                    <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.7rem;">
+                        <b>เดือน</b> ${month} <b>ปี</b> ${year}
+                        <b style="margin-left: auto;">FMT-32</b>
+                        <b style="margin-left: 10px;">Re#1</b>
                     </div>
+                </div>
+                
+                <div style="display: flex; border-bottom: 1px solid #000; font-size: 0.8rem;">
+                    <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <b>${mNo}</b></div>
+                    <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <b>${mName}</b></div>
+                    <div style="flex: 1.5; padding: 6px 10px;">คันที่ใช้งาน: <b>${area}</b></div>
                 </div>
             </div>
 
-            <table class="main-table" style="font-size: 0.7rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+            <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%;">
                 <thead>
-                    <tr style="background: #f8f8f8;">
-                        <th colspan="8" style="border: 1px solid #000; text-align: left; padding: 4px 10px;">
-                            งานค้างซ่อม Wk ที่ <b>${meta.wkPending || ''}</b>
-                        </th>
-                    </tr>
                     <tr>
-                        <th rowspan="2" style="border: 1px solid #000; width: 25px;">ที่</th>
-                        <th rowspan="2" style="border: 1px solid #000; width: 60px;">วันเดือนปี</th>
-                        <th rowspan="2" style="border: 1px solid #000; width: 60px;">แผนก</th>
-                        <th rowspan="2" style="border: 1px solid #000;">ความเสียหาย</th>
-                        <th rowspan="2" style="border: 1px solid #000; width: 60px;">เครื่อง</th>
-                        <th colspan="2" style="border: 1px solid #000;">ผลการซ่อม</th>
-                        <th rowspan="2" style="border: 1px solid #000; width: 120px;">หมายเหตุ</th>
+                        <th rowspan="2" style="width:180px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                        <th rowspan="2" style="width:50px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                        <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
                     </tr>
-                    <tr>
-                        <th style="border: 1px solid #000; width: 40px;">เสร็จ</th>
-                        <th style="border: 1px solid #000; width: 40px;">ไม่เสร็จ</th>
-                    </tr>
+                    <tr>${dateHeaders}</tr>
                 </thead>
-                <tbody>${rowsHtml1}</tbody>
-                <thead>
-                    <tr style="background: #f8f8f8;">
-                        <th colspan="8" style="border: 1px solid #000; text-align: left; padding: 4px 10px;">
-                            งานซ่อม Wk ที่ <b>${meta.wkCurrent || ''}</b>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>${rowsHtml2}</tbody>
+                <tbody>${rowsHtml}</tbody>
             </table>
-
-            <div style="border: 1px solid #000; border-top: none; padding: 0;">
-                <div style="display: flex;">
-                    <div style="flex: 2; border-right: 1px solid #000;"></div>
-                    <div style="flex: 1.5;">
+            
+            <div style="border: 1px solid #000; border-top: none; padding: 0; margin-top: 0;">
+                <div style="display:flex;">
+                    <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="font-size: 0.85rem; font-weight: bold;">หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ</div>
+                        <div style="font-size: 0.7rem; line-height: 1.4;">
+                            พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                        </div>
+                    </div>
+                    <div style="flex: 1.2; padding: 0;">
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
                             <tr style="height: 25px;">
                                 <td style="border: 1px solid #000; text-align: center; width: 60px;">ลงชื่อ</td>
@@ -1728,7 +1674,7 @@ function renderStaticForm32(item) {
                                 <td style="border: 1px solid #000; text-align: center;">ผู้ตรวจเช็ค</td>
                                 <td style="border: 1px solid #000; text-align: center;">ผู้อนุมัติ</td>
                             </tr>
-                            <tr style="height: 30px;">
+                            <tr style="height: 35px;">
                                 <td style="border: 1px solid #000; text-align: center;">ลายเซ็น</td>
                                 <td style="border: 1px solid #000;"></td>
                                 <td style="border: 1px solid #000;"></td>
@@ -1742,9 +1688,9 @@ function renderStaticForm32(item) {
                             </tr>
                             <tr style="height: 25px;">
                                 <td style="border: 1px solid #000; text-align: center;">วันที่</td>
-                                <td style="border: 1px solid #000; text-align: center;">${footerDate1}</td>
-                                <td style="border: 1px solid #000; text-align: center;">${footerDate2}</td>
-                                <td style="border: 1px solid #000; text-align: center;">${footerDate3}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[0]) ? toThaiDateStr(item.sigDates[0]) : ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[1]) ? toThaiDateStr(item.sigDates[1]) : ''}</td>
+                                <td style="border: 1px solid #000; text-align: center;">${(item.sigDates && item.sigDates[2]) ? toThaiDateStr(item.sigDates[2]) : ''}</td>
                             </tr>
                         </table>
                     </div>
@@ -2252,3 +2198,997 @@ function renderStaticForm44(item) {
         </div>
     </div>`;
 }
+
+function renderStaticForm19(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center;">${i}</th>`;
+    }
+
+    const allItems = checklistData19.flatMap(g => g.items);
+    let rowsHtml = '';
+    checklistData19.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((chkItem) => {
+            rowsHtml += `<tr>
+                <td class="col-item" style="font-size:0.65rem; padding-left: 15px; border: 1px solid #000;">- &nbsp; ${chkItem.name}</td>
+                <td class="col-std" style="font-size:0.65rem; border: 1px solid #000;">${chkItem.std}</td>`;
+            for (let i = 1; i <= 31; i++) {
+                const cellIdx = allItems.indexOf(chkItem) * 31 + (i - 1);
+                const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                let content = "";
+                let cls = "";
+                if (state === 1) { content = "/"; cls = "status-ok"; }
+                else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                rowsHtml += `<td class="check-cell ${cls}" style="text-align:center; font-weight:800; border: 1px solid #000; width:22px;">${content}</td>`;
+            }
+            rowsHtml += `</tr>`;
+        });
+    });
+
+    const mData = item.metadata || {};
+    const monthText = mData.month && mData.year ? thaiMonths[parseInt(mData.month) - 1] + ' ' + mData.year : '................../..................';
+
+    return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div class="form-header" style="display: flex; align-items: stretch;">
+                <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1.1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">ตารางตรวจเช็คสภาพโครงสร้างพื้นฐานประจำวัน</div>
+                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.75rem;">
+                    <b>เดือน</b> ${monthText}
+                    <b style="margin-left: auto;">FMT-19</b>
+                    <b style="margin-left: 10px;">Re#0</b>
+                </div>
+            </div>
+            <div style="display: flex; border: 1px solid #000; border-top: 1px solid #000; border-left: none; border-right: none; font-size: 0.85rem;">
+                <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000;">ชื่อโครงสร้างพื้นฐาน ( Infrastructure Name ) : <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 150px;">${mData.mName || ''}</span></div>
+                <div style="flex: 1; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">${mData.area || 'บริเวณโรงงานทั้งหมด'}</span></div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size:0.6rem; width:100%; border-top: none;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="width:180px; border: 1px solid #000;">รายละเอียดในการตรวจเช็ค</th>
+                    <th rowspan="2" style="width:150px; border: 1px solid #000;">มาตรฐานการตรวจเช็ค</th>
+                    <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                </tr>
+                <tr>${dateHeaders}</tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 5px; font-size: 0.8rem;">
+            รายละเอียดการแก้ไข
+            <div style="margin-top: 5px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    ${(item.remarks && item.remarks.length > 0) ?
+            item.remarks.map(c => `<tr style="height: 25px;"><td style="border: 1px solid #ccc; padding: 2px;">${c}</td></tr>`).join('') :
+            Array(4).fill('<tr style="height: 25px;"><td style="border: 1px solid #ccc; padding: 2px;"></td></tr>').join('')
+        }
+                </table>
+            </div>
+        </div>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 0; margin-top: 0;">
+            <div style="display:flex;">
+                <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 0.85rem; font-weight: bold;">
+                        หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                    </div>
+                    <div style="font-size: 0.75rem; line-height: 1.4;">
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                    </div>
+                </div>
+                <div style="flex: 1.2; padding: 0;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                            <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                        </tr>
+                        <tr style="height: 35px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000; border-right: none;"></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[0] || '') : ''}</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[1] || '') : ''}</td>
+                            <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[2] || '') : ''}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderStaticForm22(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    const allItems = checklistData22.flatMap(g => g.items);
+    let rowsHtml = '';
+    checklistData22.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((chkItem) => {
+            const rowIdx = allItems.indexOf(chkItem);
+            let cells = '';
+            for (let d = 0; d < 31; d++) {
+                const cellIdx = rowIdx * 31 + d;
+                const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                let content = "";
+                let cls = "";
+                if (state === 1) { content = "/"; cls = "status-ok"; }
+                else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                cells += `<td style="text-align:center; font-weight:800; border: 1px solid #000; width: 22px; font-size:0.8rem;" class="${cls}">${content}</td>`;
+            }
+            rowsHtml += `<tr>
+                <td style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">- &nbsp; ${chkItem.name}</td>
+                <td style="font-size:0.7rem; border: 1px solid #000;">${chkItem.std}</td>
+                ${cells}
+            </tr>`;
+        });
+    });
+
+    const mData = item.metadata || {};
+    const monthText = mData.month && mData.year ? thaiMonths[parseInt(mData.month) - 1] + ' / ' + mData.year : '................../..................';
+
+    return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1.1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">ตารางการตรวจเช็คเครื่องกลึงประจำวัน</div>
+                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.75rem;">
+                    <b>เดือน</b> ${monthText}
+                    <b style="margin-left: auto;">FMT-22</b>
+                    <b style="margin-left: 10px;">Re#0</b>
+                </div>
+            </div>
+            
+            <div style="display: flex; font-size: 0.85rem;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
+                <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 150px;">${mData.mName || ''}</span></div>
+                <div style="flex: 1.5; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">${mData.area || 'ข้างอาคารผลิต 1'}</span></div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="width:180px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                    <th rowspan="2" style="width:150px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                    <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                </tr>
+                <tr>${dateHeaders}</tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 0; margin-top: 0;">
+            <div style="display:flex;">
+                <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 0.85rem; font-weight: bold;">
+                        หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                    </div>
+                    <div style="font-size: 0.75rem; line-height: 1.4;">
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                    </div>
+                </div>
+                <div style="flex: 1.2; padding: 0;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                            <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                        </tr>
+                        <tr style="height: 35px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000; border-right: none;"></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[0]) : ''}</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[1]) : ''}</td>
+                            <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[2]) : ''}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderStaticForm23(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    const allItems = checklistData23.flatMap(g => g.items);
+    let rowsHtml = '';
+    checklistData23.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((chkItem) => {
+            const rowIdx = allItems.indexOf(chkItem);
+            let cells = '';
+            for (let d = 0; d < 31; d++) {
+                const cellIdx = rowIdx * 31 + d;
+                const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                let content = "";
+                let cls = "";
+                if (state === 1) { content = "/"; cls = "status-ok"; }
+                else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                cells += `<td style="text-align:center; font-weight:800; border: 1px solid #000; width: 22px; font-size:0.8rem;" class="${cls}">${content}</td>`;
+            }
+            rowsHtml += `<tr>
+                <td style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">- &nbsp; ${chkItem.name}</td>
+                <td style="font-size:0.7rem; border: 1px solid #000;">${chkItem.std}</td>
+                ${cells}
+            </tr>`;
+        });
+    });
+
+    const mData = item.metadata || {};
+    const monthText = mData.month && mData.year ? thaiMonths[parseInt(mData.month) - 1] + ' / ' + mData.year : '................../..................';
+
+    return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1.1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">ตารางการตรวจเช็คเครื่องมิลลิ่งประจำวัน</div>
+                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.75rem;">
+                    <b>เดือน</b> ${monthText}
+                    <b style="margin-left: auto;">FMT-23</b>
+                    <b style="margin-left: 10px;">Re#0</b>
+                </div>
+            </div>
+            
+            <div style="display: flex; font-size: 0.85rem;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000;">เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px;">${mData.mNo || ''}</span></div>
+                <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000;">ชื่อเครื่องจักร/Machine Name : <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 150px;">${mData.mName || 'เครื่องมิลลิ่ง'}</span></div>
+                <div style="flex: 1.5; padding: 6px 10px;">พื้นที่ติดตั้ง: <span style="font-weight: bold;">${mData.area || 'ข้างอาคารผลิต 1'}</span></div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="width:180px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                    <th rowspan="2" style="width:150px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                    <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                </tr>
+                <tr>${dateHeaders}</tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 0; margin-top: 0;">
+            <div style="display:flex;">
+                <div style="flex: 2; padding: 10px 15px; border-right: 2px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 0.85rem; font-weight: bold;">
+                        หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                    </div>
+                    <div style="font-size: 0.75rem; line-height: 1.4;">
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                    </div>
+                </div>
+                <div style="flex: 1.2; padding: 0;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.7rem;">
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                            <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                        </tr>
+                        <tr style="height: 35px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000; border-right: none;"></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center; font-size: 0.65rem;">ชื่อ (ตัวบรรจง)</td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[0]) : ''}</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[1]) : ''}</td>
+                            <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates ? toThaiDateStr(item.sigDates[2]) : ''}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderStaticForm24(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    const allItems = checklistData24.flatMap(g => g.items);
+    let rowsHtml = '';
+    checklistData24.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((chkItem) => {
+            const rowIdx = allItems.indexOf(chkItem);
+            let cells = '';
+            for (let d = 0; d < 31; d++) {
+                const cellIdx = rowIdx * 31 + d;
+                const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                let content = "";
+                let cls = "";
+                if (state === 1) { content = "/"; cls = "status-ok"; }
+                else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                cells += `<td style="text-align:center; font-weight:800; border: 1px solid #000; width: 22px; font-size:0.8rem;" class="${cls}">${content}</td>`;
+            }
+            rowsHtml += `<tr>
+                <td style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">- &nbsp; ${chkItem.name}</td>
+                <td style="font-size:0.7rem; border: 1px solid #000;">${chkItem.std}</td>
+                ${cells}
+            </tr>`;
+        });
+    });
+
+    const mData = item.metadata || {};
+    const monthText = mData.month && mData.year ? thaiMonths[parseInt(mData.month) - 1] + ' / ' + mData.year : '................../..................';
+
+    return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">ตารางการตรวจเช็คเครื่องจักรเครื่องกรองน้ำประจำวัน</div>
+                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.75rem;">
+                    <b>เดือน</b> ${monthText}
+                    <b style="margin-left: auto;">FMT-24</b>
+                    <b style="margin-left: 10px;">Re#1</b>
+                </div>
+            </div>
+            
+            <div style="display: flex; font-size: 0.85rem; border-bottom: 1px solid #000;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px; text-align: center;">${mData.mNo || ''}</span>
+                </div>
+                <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000; text-align: center;">
+                    <b>เครื่องกรองน้ำ RO</b>
+                </div>
+                <div style="flex: 1.5; padding: 6px 10px; text-align: center;">
+                    พื้นที่ติดตั้ง <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 100px; text-align: center;">${mData.area || ''}</span>
+                </div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="width:180px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                    <th rowspan="2" style="width:150px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                    <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                </tr>
+                <tr>${dateHeaders}</tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 0; margin-top: 0;">
+            <div style="display:flex;">
+                <div style="flex: 2; padding: 10px 15px; border-right: 1px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 0.85rem; font-weight: bold;">
+                        หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                    </div>
+                    <div style="font-size: 0.7rem; line-height: 1.4;">
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                    </div>
+                </div>
+                <div style="flex: 1.2; padding: 0;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.65rem;">
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                            <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                        </tr>
+                        <tr style="height: 35px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000; border-right: none;"></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ชื่อ (ตัวบรรจง)</td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[0] ? toThaiDateStr(item.sigDates[0]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[1] ? toThaiDateStr(item.sigDates[1]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                            <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[2] ? toThaiDateStr(item.sigDates[2]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderStaticForm25(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    const allItems = checklistData25.flatMap(g => g.items);
+    let rowsHtml = '';
+    checklistData25.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((chkItem) => {
+            const rowIdx = allItems.indexOf(chkItem);
+            let cells = '';
+            for (let d = 0; d < 31; d++) {
+                const cellIdx = rowIdx * 31 + d;
+                const state = item.data[cellIdx] ? parseInt(item.data[cellIdx].state) : 0;
+                let content = "";
+                let cls = "";
+                if (state === 1) { content = "/"; cls = "status-ok"; }
+                else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                cells += `<td style="text-align:center; font-weight:800; border: 1px solid #000; width: 22px; font-size:0.8rem;" class="${cls}">${content}</td>`;
+            }
+            rowsHtml += `<tr>
+                <td style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">- &nbsp; ${chkItem.name}</td>
+                <td style="font-size:0.7rem; border: 1px solid #000;">${chkItem.std}</td>
+                ${cells}
+            </tr>`;
+        });
+    });
+
+    const mData = item.metadata || {};
+    const monthText = mData.month && mData.year ? thaiMonths[parseInt(mData.month) - 1] + ' / ' + mData.year : '................../..................';
+
+    return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">ตารางการตรวจเช็คเครื่องเย็บกระดาษประจำวัน</div>
+                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.75rem;">
+                    <b>เดือน</b> ${monthText}
+                    <b style="margin-left: auto;">FMT-25</b>
+                    <b style="margin-left: 10px;">Re#1</b>
+                </div>
+            </div>
+            
+            <div style="display: flex; font-size: 0.85rem; border-bottom: 1px solid #000;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px; text-align: center;">${mData.mNo || ''}</span>
+                </div>
+                <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000; text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                    ชื่อเครื่องจักร/Machine Name : <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 120px;">${mData.mName || ''}</span>
+                </div>
+                <div style="flex: 1.5; padding: 6px 10px; text-align: center;">
+                    พื้นที่ติดตั้ง <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 100px; text-align: center;">${mData.area || ''}</span>
+                </div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="width:180px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                    <th rowspan="2" style="width:150px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                    <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                </tr>
+                <tr>${dateHeaders}</tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 0; margin-top: 0;">
+            <div style="display:flex;">
+                <div style="flex: 2; padding: 10px 15px; border-right: 1px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 0.85rem; font-weight: bold;">
+                        หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; ปกติ &nbsp; / &nbsp; ไม่ปกติ &nbsp; X
+                    </div>
+                    <div style="font-size: 0.7rem; line-height: 1.4;">
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเพื่อนในใบแจ้งซ่อมทันที
+                    </div>
+                </div>
+                <div style="flex: 1.2; padding: 0;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.65rem;">
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                            <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                        </tr>
+                        <tr style="height: 35px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000; border-right: none;"></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ชื่อ (ตัวบรรจง)</td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[0] ? toThaiDateStr(item.sigDates[0]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[1] ? toThaiDateStr(item.sigDates[1]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                            <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[2] ? toThaiDateStr(item.sigDates[2]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderStaticForm27(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    const allItems = checklistData27.flatMap(g => g.items);
+    let rowsHtml = '';
+    checklistData27.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((chkItem) => {
+            const rowIdx = allItems.indexOf(chkItem);
+            let cells = '';
+            for (let d = 0; d < 31; d++) {
+                const cellIdx = rowIdx * 31 + d;
+                const state = (item.data && item.data[cellIdx]) ? parseInt(item.data[cellIdx].state) : 0;
+                let content = "";
+                let cls = "";
+                if (state === 1) { content = "/"; cls = "status-ok"; }
+                else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                cells += `<td style="text-align:center; font-weight:800; border: 1px solid #000; width: 22px; font-size:0.8rem;" class="${cls}">${content}</td>`;
+            }
+            rowsHtml += `<tr>
+                <td style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">- &nbsp; ${chkItem.name}</td>
+                <td style="font-size:0.7rem; border: 1px solid #000;">${chkItem.std}</td>
+                ${cells}
+            </tr>`;
+        });
+    });
+
+    const mData = item.metadata || {};
+    const monthText = mData.month && mData.year ? thaiMonths[parseInt(mData.month) - 1] + ' / ' + mData.year : '................../..................';
+
+    return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">ตารางการตรวจเช็คเครื่องจักรหม้อไอน้ำไม้สับประจำวัน</div>
+                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.75rem;">
+                    <b>เดือน</b> ${monthText}
+                    <b style="margin-left: auto;">FMT-27</b>
+                    <b style="margin-left: 10px;">Re#0</b>
+                </div>
+            </div>
+            
+            <div style="display: flex; font-size: 0.85rem; border-bottom: 1px solid #000;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px; text-align: center;">${mData.mNo || ''}</span>
+                </div>
+                <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000; text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                    ชื่อเครื่องจักร/Machine Name : <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 120px; font-weight: bold;">${mData.mName || 'หม้อไอน้ำ / Boiler'}</span>
+                </div>
+                <div style="flex: 1.5; padding: 6px 10px; text-align: center;">
+                    พื้นที่ติดตั้ง <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 100px; text-align: center;">${mData.area || 'แผนกซ่อมบำรุง'}</span>
+                </div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="width:180px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                    <th rowspan="2" style="width:150px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                    <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                </tr>
+                <tr>${dateHeaders}</tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 0; margin-top: 0;">
+            <div style="display:flex;">
+                <div style="flex: 2; padding: 10px 15px; border-right: 1px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 0.85rem; font-weight: bold;">
+                        หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                    </div>
+                    <div style="font-size: 0.7rem; line-height: 1.4;">
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                    </div>
+                </div>
+                <div style="flex: 1.2; padding: 0;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.65rem;">
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                            <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                        </tr>
+                        <tr style="height: 35px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000; border-right: none;"></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ชื่อ (ตัวบรรจง)</td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[0] ? toThaiDateStr(item.sigDates[0]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[1] ? toThaiDateStr(item.sigDates[1]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                            <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[2] ? toThaiDateStr(item.sigDates[2]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderStaticForm26(item) {
+    let dateHeaders = '';
+    for (let i = 1; i <= 31; i++) {
+        dateHeaders += `<th style="width: 20px; text-align: center; border: 1px solid #000;">${i}</th>`;
+    }
+
+    const allItems = checklistData26.flatMap(g => g.items);
+    let rowsHtml = '';
+    checklistData26.forEach(group => {
+        rowsHtml += `<tr style="background: #fdfdfd;">
+            <td colspan="2" style="text-align: left; font-weight: bold; padding-left: 5px; font-size: 0.75rem; border: 1px solid #000;">${group.category}</td>
+            ${Array(31).fill('<td style="border: 1px solid #000; background: #fafafa;"></td>').join('')}
+        </tr>`;
+
+        group.items.forEach((chkItem) => {
+            const rowIdx = allItems.indexOf(chkItem);
+            let cells = '';
+            for (let d = 0; d < 31; d++) {
+                const cellIdx = rowIdx * 31 + d;
+                const state = (item.data && item.data[cellIdx]) ? parseInt(item.data[cellIdx].state) : 0;
+                let content = "";
+                let cls = "";
+                if (state === 1) { content = "/"; cls = "status-ok"; }
+                else if (state === 2) { content = "X"; cls = "status-bad"; }
+
+                cells += `<td style="text-align:center; font-weight:800; border: 1px solid #000; width: 22px; font-size:0.8rem;" class="${cls}">${content}</td>`;
+            }
+            rowsHtml += `<tr>
+                <td style="font-size:0.75rem; padding-left: 15px; border: 1px solid #000;">- &nbsp; ${chkItem.name}</td>
+                <td style="font-size:0.7rem; border: 1px solid #000;">${chkItem.std}</td>
+                ${cells}
+            </tr>`;
+        });
+    });
+
+    const mData = item.metadata || {};
+    const monthText = mData.month && mData.year ? thaiMonths[parseInt(mData.month) - 1] + ' / ' + mData.year : '................../..................';
+
+    return `<div class="sheet-container" style="page-break-after: always; margin-bottom: 20px;">
+        <div style="border: 1px solid #000; margin-bottom: 0;">
+            <div class="form-header" style="display: flex; align-items: stretch; border-bottom: 1px solid #000;">
+                <div class="logo-box" style="padding: 5px 15px; width: auto; flex: 1.2; display: flex; flex-direction: row; gap: 10px; align-items: center; border-right: 1px solid #000;">
+                    <img src="Logo.png" alt="Logo" style="height: 30px; width: auto;">
+                    <div class="company-name" style="font-size: 1rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                </div>
+                <div class="form-title" style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; border-right: 1px solid #000;">ตารางการตรวจเช็คเครื่องจักรคูลลิ่งทาวเวอร์ประจำวัน</div>
+                <div style="flex: 1.5; padding: 6px 10px; display: flex; align-items: center; gap: 6px; font-size: 0.75rem;">
+                    <b>เดือน</b> ${monthText}
+                    <b style="margin-left: auto;">FMT-26</b>
+                    <b style="margin-left: 10px;">Re#0</b>
+                </div>
+            </div>
+            
+            <div style="display: flex; font-size: 0.85rem; border-bottom: 1px solid #000;">
+                <div style="flex: 1.5; padding: 6px 10px; border-right: 1px solid #000; display: flex; align-items: center; gap: 5px;">
+                    เครื่องจักรหมายเลข / Machine No.: <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 80px; text-align: center;">${mData.mNo || ''}</span>
+                </div>
+                <div style="flex: 2; padding: 6px 10px; border-right: 1px solid #000; text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                    ชื่อเครื่องจักร/Machine Name : <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 120px; font-weight: bold;">${mData.mName || 'คูลลิ่งทาวเวอร์'}</span>
+                </div>
+                <div style="flex: 1.5; padding: 6px 10px; text-align: center;">
+                    พื้นที่ติดตั้ง <span style="border-bottom: 1px solid #000; display: inline-block; min-width: 100px; text-align: center;">${mData.area || 'อยู่บนถังคูลลิ่ง'}</span>
+                </div>
+            </div>
+        </div>
+
+        <table class="main-table" style="font-size: 0.65rem; border-top: none; margin-top: 0; width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="width:180px; border: 1px solid #000;">รายละเอียดของการตรวจเช็ค</th>
+                    <th rowspan="2" style="width:150px; border: 1px solid #000;">มาตรฐานการตรวจ</th>
+                    <th colspan="31" style="border: 1px solid #000;">Date/วันที่</th>
+                </tr>
+                <tr>${dateHeaders}</tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border: 1px solid #000; border-top: none; padding: 0; margin-top: 0;">
+            <div style="display:flex;">
+                <div style="flex: 2; padding: 10px 15px; border-right: 1px solid #000; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 0.85rem; font-weight: bold;">
+                        หมายเหตุ &nbsp;&nbsp;&nbsp; ระบุ &nbsp; / &nbsp; ปกติ &nbsp;&nbsp; X &nbsp;&nbsp; ไม่ปกติ
+                    </div>
+                    <div style="font-size: 0.7rem; line-height: 1.4;">
+                        พนักงานซ่อมบำรุงเมื่อตรวจเช็คเจอสภาพไม่ปกติจะต้องซ่อมทันที ถ้าเป็นงานใช้เวลา ใช้อะไหล่ให้แจ้งหัวหน้าแผนก และเขียนใบแจ้งซ่อมทันที
+                    </div>
+                </div>
+                <div style="flex: 1.2; padding: 0;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.65rem;">
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-top: none; text-align: center; width: 60px;">ลงชื่อ</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้บันทึก</td>
+                            <td style="border: 1px solid #000; border-top: none; text-align: center;">ผู้ตรวจเช็ค</td>
+                            <td style="border: 1px solid #000; border-right: none; border-top: none; text-align: center;">ผู้อนุมัติ</td>
+                        </tr>
+                        <tr style="height: 35px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ลายเซ็น</td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000;"></td>
+                            <td style="border: 1px solid #000; border-right: none;"></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; text-align: center;">ชื่อ (ตัวบรรจง)</td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[0] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[1] || '' : ''}</span></td>
+                            <td style="border: 1px solid #000; border-right: none; padding: 2px;"><span style="display: block; text-align: center;">${item.sigNames ? item.sigNames[2] || '' : ''}</span></td>
+                        </tr>
+                        <tr style="height: 25px;">
+                            <td style="border: 1px solid #000; border-left: none; border-bottom: none; text-align: center;">วันที่</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[0] ? toThaiDateStr(item.sigDates[0]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                            <td style="border: 1px solid #000; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[1] ? toThaiDateStr(item.sigDates[1]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                            <td style="border: 1px solid #000; border-right: none; border-bottom: none; text-align: center; padding: 2px;">${item.sigDates && item.sigDates[2] ? toThaiDateStr(item.sigDates[2]) : '/&nbsp;&nbsp;&nbsp;/'}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderStaticForm31(item) {
+    const meta = item.metadata || {};
+    const checks = item.data || [];
+    const logs = item.logData || [];
+
+    let rowIdx = 0;
+    let logIdx = 0;
+    let rowsHtml = '';
+    checklistData31.forEach(group => {
+        rowsHtml += `
+            <tr style="background: #eef2f7; height: 25px;">
+                <td style="border: 1px solid #000; font-weight: bold; text-align: center;">${group.category.split(' ')[0]}</td>
+                <td colspan="7" style="border: 1px solid #000; font-weight: bold; padding-left: 5px;">${group.category}</td>
+            </tr>
+        `;
+        group.items.forEach(itemRow => {
+            const mark1 = checks.find(c => c.num == rowIdx)?.state == '1' ? '/' : (checks.find(c => c.num == rowIdx)?.state == '2' ? 'X' : '');
+            rowIdx++;
+            const mark2 = checks.find(c => c.num == rowIdx)?.state == '1' ? '/' : (checks.find(c => c.num == rowIdx)?.state == '2' ? 'X' : '');
+            rowIdx++;
+
+            rowsHtml += `
+                <tr style="height: 25px;">
+                    <td style="border: 1px solid #000; text-align: center; font-size: 0.75rem;">${itemRow.no}</td>
+                    <td style="border: 1px solid #000; padding-left: 5px; font-size: 0.75rem;">${itemRow.name}</td>
+                    <td style="border: 1px solid #000; padding-left: 5px; font-size: 0.7rem;">${itemRow.std}</td>
+                    <td style="border: 1px solid #000; text-align: center; font-size: 0.75rem;">${itemRow.check}</td>
+                    <td style="border: 1px solid #000; width: 35px; text-align: center; font-weight: bold;">${mark1}</td>
+                    <td style="border: 1px solid #000; width: 35px; text-align: center; font-weight: bold;">${mark2}</td>
+                    <td style="border: 1px solid #000; width: 100px; text-align: center; font-size: 0.75rem;">${logs[logIdx++] || ''}</td>
+                    <td style="border: 1px solid #000; width: 120px; text-align: center; font-size: 0.75rem;">${logs[logIdx++] || ''}</td>
+                </tr>
+            `;
+        });
+    });
+
+    for (let i = 0; i < 5; i++) {
+        const mark1 = checks.find(c => c.num == rowIdx)?.state == '1' ? '/' : (checks.find(c => c.num == rowIdx)?.state == '2' ? 'X' : '');
+        rowIdx++;
+        const mark2 = checks.find(c => c.num == rowIdx)?.state == '1' ? '/' : (checks.find(c => c.num == rowIdx)?.state == '2' ? 'X' : '');
+        rowIdx++;
+        rowsHtml += `
+            <tr style="height: 25px;">
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000;"></td>
+                <td style="border: 1px solid #000; width: 35px; text-align: center; font-weight: bold;">${mark1}</td>
+                <td style="border: 1px solid #000; width: 35px; text-align: center; font-weight: bold;">${mark2}</td>
+                <td style="border: 1px solid #000; text-align: center;">${logs[logIdx++] || ''}</td>
+                <td style="border: 1px solid #000; text-align: center;">${logs[logIdx++] || ''}</td>
+            </tr>
+        `;
+    }
+
+    return `
+        <div class="sheet-container" style="page-break-after: always; font-family: 'Sarabun', sans-serif;">
+            <div style="border: 1px solid #000;">
+                <div style="display: flex; border-bottom: 2px solid #000; background: #fff8e1; align-items: stretch;">
+                    <div style="flex: 1; padding: 5px 15px; display: flex; align-items: center; gap: 10px; border-right: 1px solid #000;">
+                        <img src="Logo.png" alt="Logo" style="height: 35px; width: auto;">
+                        <div style="font-size: 0.85rem; font-weight: 700;">POLYFOAM HIGH-TECH (PFH)</div>
+                    </div>
+                    <div style="flex: 2; display: flex; align-items: center; justify-content: center; padding: 10px; text-align: center; border-right: 1px solid #000;">
+                        <div style="font-size: 1.1rem; font-weight: 700;">INSPECTION AND START UP REPORT ENGINE FIRE PUMP</div>
+                    </div>
+                    <div style="flex: 0.8; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; font-size: 0.8rem; font-weight: bold;">
+                        <div>FMT-31 Re# 1</div>
+                    </div>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">
+                    <tr>
+                        <td style="border: 1px solid #ccc; padding: 4px; width: 100px;">PUMP MODEL :</td>
+                        <td style="border: 1px solid #ccc; padding: 4px; width: 150px;"><span style="display: block; width: 100%; border-bottom: 1px dotted #000;"><b>${meta.pumpModel || ''}</b></span></td>
+                        <td style="border: 1px solid #ccc; padding: 4px; width: 50px;">S/N :</td>
+                        <td style="border: 1px solid #ccc; padding: 4px; width: 120px;"><span style="display: block; width: 100%; border-bottom: 1px dotted #000;"><b>${meta.pumpSn || ''}</b></span></td>
+                        <td style="border: 1px solid #ccc; padding: 4px; width: 60px;">TYPE :</td>
+                        <td style="border: 1px solid #ccc; padding: 4px;"><span style="display: block; width: 100%; border-bottom: 1px dotted #000;"><b>${meta.type || ''}</b></span></td>
+                        <td style="border: 1px solid #ccc; padding: 4px; width: 60px;">Date :</td>
+                        <td style="border: 1px solid #ccc; padding: 4px; width: 120px;"><span style="display: block; width: 100%; border-bottom: 1px dotted #000;"><b>${meta.dateVal || ''}</b></span></td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc; padding: 4px;">DRIVEN :</td>
+                        <td style="border: 1px solid #ccc; padding: 4px;"><span style="display: block; width: 100%; border-bottom: 1px dotted #000;"><b>${meta.driven || ''}</b></span></td>
+                        <td style="border: 1px solid #ccc; padding: 4px;">S/N :</td>
+                        <td style="border: 1px solid #ccc; padding: 4px;"><span style="display: block; width: 100%; border-bottom: 1px dotted #000;"><b>${meta.drivenSn || ''}</b></span></td>
+                        <td style="border: 1px solid #ccc; padding: 4px;" colspan="1">JOCKEY PUMP MODEL :</td>
+                        <td style="border: 1px solid #ccc; padding: 4px;"><span style="display: block; width: 100%; border-bottom: 1px dotted #000;"><b>${meta.jockeyModel || ''}</b></span></td>
+                        <td style="border: 1px solid #ccc; padding: 4px;">S/N :</td>
+                        <td style="border: 1px solid #ccc; padding: 4px;"><span style="display: block; width: 100%; border-bottom: 1px dotted #000;"><b>${meta.jockeySn || ''}</b></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="7"></td>
+                        <td style="border: 1px solid #ccc; padding: 4px;">Time : <span style="display: inline-block; width: 60px; border-bottom: 1px dotted #000;"><b>${meta.time || ''}</b></span></td>
+                    </tr>
+                </table>
+
+                <table class="main-table" style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">
+                    <thead style="background: #fdfdfd;">
+                        <tr>
+                            <th rowspan="2" style="border: 1px solid #000; width: 35px;">No.</th>
+                            <th rowspan="2" style="border: 1px solid #000;">DESCRIPTION</th>
+                            <th rowspan="2" style="border: 1px solid #000; width: 33%;">เกณฑ์การตรวจสอบ</th>
+                            <th rowspan="2" style="border: 1px solid #000; width: 50px;">การตรวจเช็ค</th>
+                            <th colspan="2" style="border: 1px solid #000; width: 70px;">สภาพ</th>
+                            <th rowspan="2" style="border: 1px solid #000; width: 100px;">บันทึกผล ค่าต่างๆ</th>
+                            <th rowspan="2" style="border: 1px solid #000; width: 150px;">หมายเหตุ</th>
+                        </tr>
+                        <tr>
+                            <th style="border: 1px solid #000; width: 35px;">ปกติ</th>
+                            <th style="border: 1px solid #000; width: 35px;">แก้ไข</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+
+                <div style="display: flex; border-top: 1px solid #000; font-size: 0.75rem; border-collapse: collapse;">
+                    <div style="flex: 2; border-right: 1px solid #000; padding: 10px;">
+                        <div style="display: flex; gap: 40px; margin-bottom: 10px;">
+                            <div>A = ตรวจเช็คก่อนทำการ Run Fire Pump</div>
+                            <div>B = ตรวจเช็คระหว่าง Run Fire Pump</div>
+                        </div>
+                        <div style="display: flex; gap: 40px;">
+                            <div>C = ตรวจเช็คก่อนทำการ Run Jockey Pump</div>
+                            <div>D = ตรวจเช็คระหว่าง Run Jockey Pump</div>
+                        </div>
+                        <div style="margin-top: 15px; font-weight: bold;">Note :</div>
+                    </div>
+                    <div style="flex: 1.5; border-collapse: collapse;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: center; height: 100%;">
+                            <tr style="height: 30px;">
+                                <td style="border: 1px solid #000; border-top: none; border-left: none; width: 50%;">พนักงานผู้ตรวจสอบ</td>
+                                <td style="border: 1px solid #000; border-top: none; border-right: none;">ผู้ตรวจสอบ</td>
+                            </tr>
+                            <tr style="height: 50px;">
+                                <td style="border: 1px solid #000; border-left: none;"></td>
+                                <td style="border: 1px solid #000; border-right: none;"></td>
+                            </tr>
+                            <tr style="height: 30px;">
+                                <td style="border: 1px solid #000; border-left: none; border-bottom: none; padding: 2px;">
+                                    (<b>${item.sigNames ? item.sigNames[0] || '' : ''}</b>)
+                                </td>
+                                <td style="border: 1px solid #000; border-right: none; border-bottom: none; padding: 2px;">
+                                    (<b>${item.sigNames ? item.sigNames[1] || '' : ''}</b>)
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
