@@ -52,10 +52,7 @@ function saveToHistory() {
     document.getElementById('saveModal').style.display = 'flex';
 }
 
-function confirmSaveHistory() {
-    const label = document.getElementById('modalInput').value.trim();
-    if (!label) return alert("กรุณาระบุชื่อ");
-
+function collectFormData() {
     const cellStates = Array.from(document.querySelectorAll('.check-cell')).map(c => ({ num: c.dataset.num, state: c.dataset.state }));
     const logData = Array.from(document.querySelectorAll('.log-cell')).map(c => {
         if (c.tagName === 'INPUT') return c.value;
@@ -230,21 +227,30 @@ function confirmSaveHistory() {
             };
         }
     }
+    
+    return { cellStates, logData, summaryWater, fmt01Date, rowRemarks, remarks, sigDates, sigNames, metadata };
+}
+
+function confirmSaveHistory() {
+    const label = document.getElementById('modalInput').value.trim();
+    if (!label) return alert("กรุณาระบุชื่อ");
+
+    const formData = collectFormData();
 
     const entry = {
         id: Date.now(),
         fmt: currentFMT,
         label,
         timestamp: new Date().toLocaleString('th-TH'),
-        data: cellStates,
-        logData,
-        summaryWater,
-        fmt01Date,
-        rowRemarks,
-        remarks,
-        sigDates,
-        sigNames,
-        metadata
+        data: formData.cellStates,
+        logData: formData.logData,
+        summaryWater: formData.summaryWater,
+        fmt01Date: formData.fmt01Date,
+        rowRemarks: formData.rowRemarks,
+        remarks: formData.remarks,
+        sigDates: formData.sigDates,
+        sigNames: formData.sigNames,
+        metadata: formData.metadata
     };
     let history = JSON.parse(localStorage.getItem('fmt_history') || '[]');
     history.unshift(entry);
@@ -541,10 +547,17 @@ function updateCurrentHistory() {
     const idx = history.findIndex(h => h.id === currentLoadedId);
     if (idx === -1) return;
 
-    history[idx].data = Array.from(document.querySelectorAll('.check-cell')).map(c => ({ num: c.dataset.num, state: c.dataset.state }));
-    history[idx].rowRemarks = Array.from(document.querySelectorAll('.row-remark')).map(el => el.textContent);
-    history[idx].remarks = Array.from(document.querySelectorAll('.correction-input')).map(el => el.textContent);
-    history[idx].sigDates = Array.from(document.querySelectorAll('.date-input')).map(el => el.value);
+    const formData = collectFormData();
+
+    history[idx].data = formData.cellStates;
+    history[idx].logData = formData.logData;
+    history[idx].summaryWater = formData.summaryWater;
+    history[idx].fmt01Date = formData.fmt01Date;
+    history[idx].rowRemarks = formData.rowRemarks;
+    history[idx].remarks = formData.remarks;
+    history[idx].sigDates = formData.sigDates;
+    history[idx].sigNames = formData.sigNames;
+    history[idx].metadata = formData.metadata;
     history[idx].timestamp = new Date().toLocaleString('th-TH') + " (Updated)";
 
     localStorage.setItem('fmt_history', JSON.stringify(history));
